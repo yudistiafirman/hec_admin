@@ -1,0 +1,10 @@
+.login-container {
+  display: flex;
+  justify-content: "center";
+  align-items: "center";
+  width: 100%;
+  height: 100vh;
+  background-image: url("../../assets/bg_login.jpg");
+  background-position: center center;
+  background-size: cover;
+}

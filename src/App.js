@@ -1,13 +1,8 @@
-import logo from "./logo.svg";
 import "./App.css";
-import AdminRoute from "./Route/AdminRoute";
+import Route from "./Route";
 
 function App() {
-  return (
-    <di>
-      <AdminRoute />
-    </di>
-  );
+  return <Route />;
 }
 
 export default App;

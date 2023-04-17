@@ -48,7 +48,7 @@ const AdminNavbar = () => {
       }
     >
       <NavListItems
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/career")}
         itemIcon={<BusinessCenterIcon />}
         itemTitle="Karir"
       />
