@@ -77,6 +77,11 @@
   cursor: pointer;
 }
 
+.nav-icon {
+  width: "25px";
+  height: "25px";
+  margin-left: "50px";
+}
 .user-menu-content :hover {
   color: #fdc232;
 }

@@ -147,8 +147,6 @@ const AdminPenjualan = () => {
           alignItems: "center",
           paddingBottom: "20px",
           borderRadius: "8px",
-          paddingTop: "20px",
-          marginTop: "40px",
         }}
       >
         <div style={{ marginRight: "20px", width: "200px" }}>

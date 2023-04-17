@@ -1,208 +1,100 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import HecLogo from "../../assets/heclogo.png";
-import {
-  AiFillPicture,
-  AiOutlineLogout,
-  AiOutlineRead,
-  AiOutlineUsergroupAdd,
-} from "react-icons/ai";
-import { RiBuilding2Line, RiServiceLine } from "react-icons/ri";
-import { FaTruckMonster } from "react-icons/fa";
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import FoundationIcon from "@mui/icons-material/Foundation";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import RoomServiceIcon from "@mui/icons-material/RoomService";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import LogoutIcon from "@mui/icons-material/Logout";
+import OnDeviceTrainingIcon from "@mui/icons-material/OnDeviceTraining";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AiFillCaretDown } from "react-icons/ai";
-import UserMenuDialog from "./UserMenuDialog";
+import NavListItems from "../../components/molecules/NavListItems";
+
+import AddHomeIcon from "@mui/icons-material/AddHome";
+import navStyle from "./navStyle";
+
 const AdminNavbar = () => {
   const location = useLocation();
   const [openUser, setOpenuser] = useState(false);
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const [openForm, setOpenForm] = useState(false);
+  const [open, setOpen] = React.useState(true);
   const onLogoutAdmin = () => {
     localStorage.removeItem("user");
     window.location = "/";
   };
-  const onAddUser = () => {
-    setOpenForm(true);
-    setTitle("add");
+
+  const handleOpenGallery = () => {
+    setOpen(!open);
   };
 
-  const onChangePassword = () => {
-    setOpenForm(true);
-    setTitle("change");
-  };
   return (
-    <div>
-      <div className="admin-navbar">
-        <img style={{ marginLeft: "40px" }} src={HecLogo} width="140px" />
-        <div
-          onClick={() => setOpenuser(!openUser)}
-          style={{
-            marginRight: "40px",
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-          }}
-        >
-          <div
-            style={{ fontWeight: "600", fontSize: "14px", color: "#6B7280" }}
-          >
-            hai, {localStorage.getItem("user")}
-          </div>
-          <AiFillCaretDown style={{ marginTop: "auto" }} color="#6B7280" />
-        </div>
-        {openUser && localStorage.getItem("role") == "superAdmin" && (
-          <div className="user-menu-container">
-            <div
-              className="user-menu-content"
-              onClick={onAddUser}
-              style={{
-                borderBottom: "1px solid #FFFFFF",
-                justifyContent: "center",
-              }}
-            >
-              <div>Add User</div>
-            </div>
-            <div
-              className="user-menu-content"
-              onClick={onChangePassword}
-              style={{ justifyContent: "center" }}
-            >
-              <div>Change Password</div>
-            </div>
-          </div>
-        )}
-        <UserMenuDialog
-          open={openForm}
-          title={title}
-          onClose={() => setOpenForm(false)}
-        />
-      </div>
-      <div className="admin-menu">
-        <ul>
-          <li>
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "200px",
-                color: location.pathname === "/" ? "#FDC232" : "",
-              }}
-              to="/"
-            >
-              <AiOutlineUsergroupAdd
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "70px" }}>Career</div>
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "200px",
-                color: location.pathname === "/admingaleri" ? "#FDC232" : "",
-              }}
-              to="/admingaleri"
-            >
-              <AiFillPicture
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "75px" }}>Galeri</div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "200px",
-                color: location.pathname === "/adminpelatihan" ? "#FDC232" : "",
-              }}
-              to="/adminpelatihan"
-            >
-              <AiOutlineRead
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "52px" }}>Pelatihan</div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "200px",
-                color: location.pathname === "/adminfasilitas" ? "#FDC232" : "",
-              }}
-              to="/adminfasilitas"
-            >
-              <RiBuilding2Line
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "58px" }}>Fasilitas</div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "250px",
-                color: location.pathname === "/adminjasa" ? "#FDC232" : "",
-              }}
-              to="/adminjasa"
-            >
-              <RiServiceLine
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "78px" }}>Jasa Service</div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "200px",
-                color: location.pathname === "/adminpenjualan" ? "#FDC232" : "",
-              }}
-              to="/adminpenjualan"
-            >
-              <FaTruckMonster
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "48px" }}>Penjualan</div>
-            </Link>
-          </li>
-          <li>
-            <a
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "200px",
-                cursor: "pointer",
-              }}
-              onClick={onLogoutAdmin}
-            >
-              <AiOutlineLogout
-                style={{ width: "25px", height: "25px", marginLeft: "50px" }}
-              />
-              <div style={{ marginRight: "65px" }}>Logout</div>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <List
+      sx={navStyle.listContainer}
+      component="nav"
+      aria-labelledby="nested-list-subheader"
+      subheader={
+        <ListSubheader component="div" id="nested-list-subheader">
+          <img alt="#" src={HecLogo} width="140px" />
+        </ListSubheader>
+      }
+    >
+      <NavListItems
+        onClick={() => navigate("/")}
+        itemIcon={<BusinessCenterIcon />}
+        itemTitle="Karir"
+      />
+      <NavListItems
+        onClick={() => navigate("/adminfasilitas")}
+        itemIcon={<FoundationIcon />}
+        itemTitle="Fasilitas"
+      />
+      <NavListItems
+        onClick={handleOpenGallery}
+        itemIcon={<CollectionsIcon />}
+        itemTitle="Galeri"
+        expand={open ? <ExpandLess /> : <ExpandMore />}
+      />
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <NavListItems
+            sx={{ pl: 4 }}
+            itemIcon={<AddHomeIcon />}
+            itemTitle="Beranda Galeri"
+          />
+          <NavListItems
+            sx={{ pl: 4 }}
+            onClick={() => navigate("/admingaleri")}
+            itemIcon={<OnDeviceTrainingIcon />}
+            itemTitle="Pelatihan Galeri"
+          />
+        </List>
+      </Collapse>
+      <NavListItems
+        onClick={() => navigate("/adminpelatihan")}
+        itemIcon={<ModelTrainingIcon />}
+        itemTitle="Pelatihan"
+      />
+      <NavListItems
+        onClick={() => navigate("/adminjasa")}
+        itemIcon={<RoomServiceIcon />}
+        itemTitle="Jasa"
+      />
+      <NavListItems
+        onClick={() => navigate("/adminpenjualan")}
+        itemIcon={<MonetizationOnIcon />}
+        itemTitle="Penjualan"
+      />
+      <NavListItems itemIcon={<LogoutIcon />} itemTitle="Keluar" />
+    </List>
   );
 };
 
