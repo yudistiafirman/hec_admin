@@ -5,7 +5,7 @@ import { apiUrl } from "../../Default";
 import Swal from "sweetalert2";
 import moment from "moment";
 
-const AdminPelatihanDetail = ({ openDetail, closeDetail, careerId }) => {
+const TrainingDetail = ({ openDetail, closeDetail, careerId }) => {
   const [careerDetail, SetCareerDetail] = useState([]);
   useEffect(() => {
     axios.get(`${apiUrl}/pelatihan/detail?id=${careerId}`).then((response) => {
@@ -253,4 +253,4 @@ const AdminPelatihanDetail = ({ openDetail, closeDetail, careerId }) => {
   );
 };
 
-export default AdminPelatihanDetail;
+export default TrainingDetail;

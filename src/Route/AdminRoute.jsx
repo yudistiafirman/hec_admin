@@ -1,23 +1,23 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import AdminCareer from "../pages/Admin/AdminCareer";
-import AdminGaleri from "../pages/AdminGaleri/AdminGaleri";
-import AdminNavbar from "../pages/AdminNavbar/AdminNavbar";
-import AdminPelatihan from "../pages/AdminPelatihan/AdminPelatihan";
-import AdminFasilitas from "../pages/AdminFasilitas";
-import Adminjasa from "../pages/AdminJasa";
-import AdminPenjualan from "../pages/AdminPenjualan";
+import Career from "../pages/Career/Career";
+import Gallery from "../pages/Gallery";
+import Navbar from "../pages/Navbar/Navbar";
+import Training from "../pages/Training";
+import Facility from "../pages/Facility";
+import Adminjasa from "../pages/Services";
+import AdminPenjualan from "../pages/Sale";
 
 const AdminRoute = () => {
   return (
     <Router>
       <div>
-        <AdminNavbar />
+        <Navbar />
         <Routes>
-          <Route exact path="/" element={<AdminCareer />} />
-          <Route path="/adminfasilitas" element={<AdminFasilitas />} />
-          <Route path="/admingaleri" element={<AdminGaleri />} />
-          <Route path="/adminpelatihan" element={<AdminPelatihan />} />
+          <Route exact path="/" element={<Career />} />
+          <Route path="/adminfasilitas" element={<Facility />} />
+          <Route path="/admingaleri" element={<Gallery />} />
+          <Route path="/adminpelatihan" element={<Training />} />
           <Route path="/adminjasa" element={<Adminjasa />} />
           <Route path="/adminpenjualan" element={<AdminPenjualan />} />
         </Routes>

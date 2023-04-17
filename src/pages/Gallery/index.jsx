@@ -33,7 +33,7 @@ import {
 import { AiFillPicture } from "react-icons/ai";
 import axios from "axios";
 import { apiUrl } from "../../Default";
-const AdminGaleri = () => {
+const Gallery = () => {
   const [order, setOrder] = useState("asc");
   const [rows, SetRows] = useState([]);
   const [openForm, SetOpenForm] = useState(false);
@@ -649,4 +649,4 @@ const AdminGaleri = () => {
   );
 };
 
-export default AdminGaleri;
+export default Gallery;

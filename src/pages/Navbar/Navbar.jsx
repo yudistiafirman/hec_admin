@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./AdminNavbar.css";
-// import HecLogo from "../Navbar/assets/heclogo.png";
+import "./Navbar.css";
+import HecLogo from "../../assets/heclogo.png";
 import {
   AiFillPicture,
   AiOutlineLogout,
@@ -34,7 +34,7 @@ const AdminNavbar = () => {
   return (
     <div>
       <div className="admin-navbar">
-        {/* <img style={{ marginLeft: "40px" }} src={HecLogo} width="140px" /> */}
+        <img style={{ marginLeft: "40px" }} src={HecLogo} width="140px" />
         <div
           onClick={() => setOpenuser(!openUser)}
           style={{

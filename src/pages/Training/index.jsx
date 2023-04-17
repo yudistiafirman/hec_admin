@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import "./AdminCareer.css";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -42,9 +41,8 @@ import {
 import axios from "axios";
 import { apiUrl } from "../../Default";
 import { stringSlicer } from "../../utils/funcHelper";
-import AdminCareerDetail from "./AdminCareerDetail";
-
-const AdminCareer = () => {
+import AdminCareerDetail from "./TrainingDetail";
+const Training = () => {
   const [order, setOrder] = useState("asc");
   const [rows, SetRows] = useState([]);
 
@@ -52,23 +50,25 @@ const AdminCareer = () => {
   const [openForm, SetOpenForm] = useState(false);
   const [orderBy, setOrderBy] = useState("Nama Pekerjaan");
   const [selected, setSelected] = useState([]);
+  const [selectedPopular, setSelectedPopular] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openCategory, SetOpenCategory] = useState(false);
   const [kualifikasiForm, SetKualifikasiForm] = useState([
     {
-      label: "Kualifikasi",
+      label: "Nilai Plus",
       kualifikasiValue: "",
     },
   ]);
   const [indexKualifikasi, SetindexKualifikasi] = useState(0);
   const kualifikasiRef = useRef(null);
-  const [jobName, SetJobName] = useState("");
-  const [jobDescription, SetJobDescription] = useState("");
+  const [pelatihanName, SetpelatihanName] = useState("");
+  const [description, Setdescription] = useState("");
   const [optionValue, SetOptionValue] = useState(null);
   const [inputOption, SetInputOption] = useState(null);
   const [startDate, SetStartDate] = useState(new Date());
+  const [endDate, SetEndDate] = useState(new Date());
   const [categoryName, SetCategoryName] = useState("");
   const [searchVacancy, SetOnSearchVacancy] = useState("");
   const [filterDate, SetFilterDate] = useState(new Date());
@@ -89,15 +89,15 @@ const AdminCareer = () => {
       SetCategoryName(e.target.value);
     }
   };
-  const onChangeJobDescription = (e) => {
+  const onChangedescription = (e) => {
     if (e.target.value.length <= 500) {
-      SetJobDescription(e.target.value);
+      Setdescription(e.target.value);
     }
   };
 
-  const onChangeJobName = (e) => {
+  const onChangepelatihanName = (e) => {
     if (e.target.value.length <= 45) {
-      SetJobName(e.target.value);
+      SetpelatihanName(e.target.value);
     }
   };
 
@@ -105,6 +105,45 @@ const AdminCareer = () => {
     getAllvacancies("", "", "");
     getVacanciesCategories();
   }, []);
+
+  const getAllvacancies = (queryValue, date, category) => {
+    axios
+      .get(
+        `${apiUrl}/pelatihan/all?&name=${queryValue}&date=${date}&category=${category}`
+      )
+      .then((response) => {
+        SetRows(response.data.data);
+      });
+  };
+
+  const getVacanciesCategories = () => {
+    axios.get(apiUrl + "/pelatihan/category").then((response) => {
+      SetCategories(response.data.data);
+    });
+  };
+
+  const onDeleteKualifikasiForm = (i) => {
+    SetindexKualifikasi((prev) => prev - 1);
+    const newFormKualifikasi = kualifikasiForm.filter((v, idx) => idx !== i);
+    SetKualifikasiForm(newFormKualifikasi);
+  };
+
+  const onAddKualifikasi = () => {
+    let prevIndex = kualifikasiForm.length - 1;
+    if (kualifikasiForm[prevIndex].kualifikasiValue) {
+      if (kualifikasiForm.length < 10) {
+        SetKualifikasiForm([
+          ...kualifikasiForm,
+          { label: `Nilai Plus`, kualifikasiValue: "" },
+        ]);
+      } else {
+        alert("Penambahan nilai plus telah mencapai batas maksimal");
+      }
+    } else {
+      alert(`Nilai plus ke ${kualifikasiForm.length} tidak boleh kosong`);
+    }
+  };
+
   useEffect(() => {
     if (!selectedFile) {
       setPreview(undefined);
@@ -117,54 +156,6 @@ const AdminCareer = () => {
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
-  const onSelectFile = (e) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setSelectedFile(undefined);
-      return;
-    }
-
-    // I've kept this example simple by using the first image instead of multiple
-    setSelectedFile(e.target.files[0]);
-  };
-  const getAllvacancies = (queryValue, date, category) => {
-    axios
-      .get(
-        `${apiUrl}/vacancies/all?&name=${queryValue}&date=${date}&category=${category}`
-      )
-      .then((response) => {
-        SetRows(response.data.data);
-      });
-  };
-
-  const getVacanciesCategories = () => {
-    axios.get(apiUrl + "/vacancies/category").then((response) => {
-      SetCategories(response.data.data);
-    });
-  };
-
-  const onDeleteKualifikasiForm = (i) => {
-    SetindexKualifikasi((prev) => prev - 1);
-    const newFormKualifikasi = kualifikasiForm.filter((v, idx) => idx !== i);
-    SetKualifikasiForm(newFormKualifikasi);
-  };
-
-  const onAddKualifikasi = () => {
-    let prevIdx = kualifikasiForm.length - 1;
-    if (kualifikasiForm[prevIdx].kualifikasiValue) {
-      if (kualifikasiForm.length < 8) {
-        SetKualifikasiForm([
-          ...kualifikasiForm,
-          { label: `Kualifikasi`, kualifikasiValue: "" },
-        ]);
-      } else {
-        alert("Penambahan kualifkasi telah mencapai batas maksimal");
-      }
-    } else {
-      alert(
-        `Nilai kualifikasi ke ${kualifikasiForm.length} tidak boleh kosong`
-      );
-    }
-  };
 
   const onSearchVacancy = useCallback(
     (e) => {
@@ -211,42 +202,63 @@ const AdminCareer = () => {
     }
     setSelected([]);
   };
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
 
+    // I've kept this example simple by using the first image instead of multiple
+    setSelectedFile(e.target.files[0]);
+  };
   const onAddCareer = () => {
     //semua form harus terisi kecuali tanggal dan kualifikasi hanya satu saja yang terisi
 
-    if (!jobName) {
-      alert("nama pekerjaan harus diisi");
+    if (!pelatihanName) {
+      alert("judul pelatihan harus diisi");
+    } else if (!description) {
+      alert("deskripsi pelatihan harus diisi");
     } else if (!selectedFile) {
       alert("image pelatihan harus diisi");
-    } else if (!jobDescription) {
-      alert("deskripsi pekerjaan harus diisi");
+    } else if (
+      moment(startDate).format("YYYY-MM-DD") >
+      moment(endDate).format("YYYY-MM-DD")
+    ) {
+      alert(
+        "tanggal akhir pelatihan harus lebih besar dari tanggal awal pelatihan"
+      );
+    } else if (
+      moment(startDate).format("YYYY-MM-DD") ===
+      moment(endDate).format("YYYY-MM-DD")
+    ) {
+      alert(
+        "tanggal akhir pelatihan harus lebih besar dari tanggal awal pelatihan "
+      );
     } else if (!optionValue && !categoryName) {
-      alert("categori pekarjaan harus diisi");
+      alert("categori pelatihan harus diisi harus diisi");
     } else if (!kualifikasiForm[0].kualifikasiValue) {
-      alert("paling sedikit 1 kualifikasi harus diisi");
+      alert("paling sedikit 1 nilai plus pelatihan harus diisi");
     } else {
       const newArrKualifikasi = [...kualifikasiForm];
+      const data = new FormData();
       const job_qualifications = newArrKualifikasi
         .filter((value, idx) => value.kualifikasiValue !== "")
         .map((v, i) => {
           return { qualifications: v.kualifikasiValue };
         });
 
-      const data = new FormData();
-
-      data.append("job_name", jobName);
-      data.append("job_description", jobDescription);
-      data.append("last_submission", moment(startDate).format("YYYY-MM-DD"));
+      data.append("name", pelatihanName);
+      data.append("descriptions", description);
+      data.append("image_1", selectedFile);
+      data.append("start_date", moment(startDate).format("YYYY-MM-DD"));
+      data.append("end_date", moment(endDate).format("YYYY-MM-DD"));
       data.append(
         "category_name",
         optionValue ? optionValue.category_name : categoryName
       );
-      data.append("image_1", selectedFile);
-      data.append("job_qualifications", JSON.stringify(job_qualifications));
-
+      data.append("nilai", JSON.stringify(job_qualifications));
       axios
-        .post(apiUrl + "/vacancies/post", data)
+        .post(apiUrl + "/pelatihan/post", data)
         .then((response) => {
           if (response.data.error) {
             SetOpenForm(false);
@@ -255,32 +267,35 @@ const AdminCareer = () => {
               title: "Oops...",
               text: "Something went wrong!",
             });
-            SetJobName("");
-            SetJobDescription("");
+            SetpelatihanName("");
+            setSelectedFile();
+            Setdescription("");
             SetCategoryName("");
             SetOptionValue(null);
             SetInputOption(null);
             SetStartDate(new Date());
-            SetKualifikasiForm([
-              { kualifikasiValue: "", label: "Kualifikasi" },
-            ]);
+            SetEndDate(new Date());
+            SetKualifikasiForm([{ kualifikasiValue: "", label: "Nilai Plus" }]);
+            setPreview();
           } else {
             SetOpenForm(false);
             Swal.fire({
               icon: "success",
-              title: "Penambahan lowongan kerja sukses",
-              text: "Penambahan lowongan kerja terbaru berhasil",
+              title: "Penambahan pelatihan terbaru sukses",
+              text: "Penambahan pelatihan terbaru terbaru berhasil",
             });
-            SetJobName("");
-            SetJobDescription("");
+            SetpelatihanName("");
+            Setdescription("");
             SetCategoryName("");
             SetOptionValue(null);
             SetInputOption(null);
             SetStartDate(new Date());
-            SetKualifikasiForm([
-              { kualifikasiValue: "", label: "Kualifikasi" },
-            ]);
+            SetEndDate(new Date());
+            SetKualifikasiForm([{ kualifikasiValue: "", label: "Nilai Plus" }]);
+            // tambahin get all pelatihan
             getAllvacancies("", "", "");
+            setSelectedFile();
+            setPreview();
           }
         })
         .catch((err) => {
@@ -317,9 +332,43 @@ const AdminCareer = () => {
     setSelected(newSelected);
   };
 
+  const handlePopularClick = (event, name, value) => {
+    let valueToSend;
+    if (value === 0) {
+      valueToSend = 1;
+    } else {
+      valueToSend = 0;
+    }
+    axios
+      .patch(`${apiUrl}/pelatihan/update?id=${name}&value=${valueToSend}`)
+      .then((response) => {
+        console.log(response);
+        getAllvacancies("", "", "");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleSetIsFull = (event, name, value) => {
+    let valueToSend;
+    if (value === 0) {
+      valueToSend = 1;
+    } else {
+      valueToSend = 0;
+    }
+    axios
+      .patch(`${apiUrl}/pelatihan/full?id=${name}&value=${valueToSend}`)
+      .then((response) => {
+        getAllvacancies("", "", "");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const onDeleteList = () => {
     axios
-      .delete(apiUrl + "/vacancies/delete?vacancy_id=" + selected)
+      .delete(apiUrl + "/pelatihan/delete?id=" + selected)
       .then((response) => {
         if (response.data.error) {
           Swal.fire({
@@ -330,8 +379,8 @@ const AdminCareer = () => {
         } else {
           Swal.fire({
             icon: "success",
-            title: "Penghapusan lowongan kerja sukses",
-            text: "Penghapusan lowongan kerja berhasil",
+            title: "Penghapusan pelatihan sukses",
+            text: "Penghapusan pelatihan berhasil",
           });
           setSelected([]);
           getAllvacancies("", "", "");
@@ -353,6 +402,7 @@ const AdminCareer = () => {
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isPopularSelected = (name) => selectedPopular.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -388,12 +438,11 @@ const AdminCareer = () => {
 
   const headCells = [
     {
-      id: "job_name",
+      id: "name",
       numeric: false,
       disablePadding: true,
-      label: "Pekerjaan",
+      label: "Pelatihan",
     },
-
     {
       id: "",
       numeric: false,
@@ -401,16 +450,28 @@ const AdminCareer = () => {
       label: "Image",
     },
     {
-      id: "job_description",
+      id: "start_date",
       numeric: false,
       disablePadding: false,
-      label: "Deskripsi",
+      label: "Start",
     },
     {
-      id: "last_submission",
+      id: "end_date",
       numeric: false,
       disablePadding: false,
-      label: "Last submission",
+      label: "End ",
+    },
+    {
+      id: "",
+      numeric: false,
+      disablePadding: false,
+      label: "Popular",
+    },
+    {
+      id: "",
+      numeric: false,
+      disablePadding: false,
+      label: "Full",
     },
     {
       id: "category_name",
@@ -508,7 +569,7 @@ const AdminCareer = () => {
               fontFamily: `'inter',sans-serif`,
             }}
           >
-            Career
+            Pelatihan
           </Typography>
         )}
 
@@ -535,19 +596,6 @@ const AdminCareer = () => {
           />
         )}
       </div>
-      <Dialog
-        // title={"POST"}
-        scroll={"body"}
-        open={showImage ? true : false}
-        onClose={() => {
-          SetShowImages(null);
-        }}
-        hideActions={true}
-      >
-        <Grid container direction="row" justify="center">
-          <img alt="#" style={{ maxWidth: "100%" }} src={showImage}></img>
-        </Grid>
-      </Dialog>
       <div
         style={{
           display: "flex",
@@ -560,10 +608,23 @@ const AdminCareer = () => {
           borderRadius: "8px",
         }}
       >
+        <Dialog
+          // title={"POST"}
+          scroll={"body"}
+          open={showImage ? true : false}
+          onClose={() => {
+            SetShowImages(null);
+          }}
+          hideActions={true}
+        >
+          <Grid container direction="row" justify="center">
+            <img alt="#" style={{ maxWidth: "100%" }} src={showImage}></img>
+          </Grid>
+        </Dialog>
         <div style={{ marginLeft: "10px" }}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
-              label="last submission"
+              label="start date"
               minDate={new Date("2017-01-01")}
               onChange={(newValue) => {
                 onFilterDate(newValue);
@@ -591,7 +652,7 @@ const AdminCareer = () => {
         </div>
         <div style={{ marginRight: "20px", width: "200px" }}>
           <input
-            placeholder="Cari Lowongan"
+            placeholder="Cari Pelatihan"
             value={searchVacancy}
             onChange={onSearchVacancy}
             style={{
@@ -618,7 +679,7 @@ const AdminCareer = () => {
       </div>
 
       <Dialog open={openForm} onClose={() => SetOpenForm(false)}>
-        <DialogTitle>Tambahkan Pekerjaan</DialogTitle>
+        <DialogTitle>Tambahkan Pelatihan</DialogTitle>
         <DialogContent>
           <Box
             component="form"
@@ -628,32 +689,19 @@ const AdminCareer = () => {
             noValidate
             autoComplete="off"
           >
-            <div style={{ width: "300px" }}>
+            <div style={{ width: "300px", marginLeft: "5px" }}>
               <TextField
                 id="outlined-basic"
                 fullWidth
-                label="Nama Pekerjaan"
-                value={jobName}
-                helperText={`${jobName.length}/45`}
-                onChange={onChangeJobName}
-                variant="outlined"
-              />
-            </div>
-            <div style={{ width: "50ch" }}>
-              <TextField
-                id="filled-multiline-flexible"
-                label="Deskripsi Pekerjaan"
-                multiline
-                fullWidth
-                helperText={`${jobDescription.length}/500`}
-                value={jobDescription}
-                onChange={onChangeJobDescription}
-                maxRows={5}
+                label="judul Pelatihan"
+                value={pelatihanName}
+                helperText={`${pelatihanName.length}/45`}
+                onChange={onChangepelatihanName}
                 variant="outlined"
               />
             </div>
             <div style={{ width: "300px", marginLeft: "10px" }}>
-              <DialogContentText>*Image Career</DialogContentText>
+              <DialogContentText>*Image Pelatihan</DialogContentText>
               <div
                 style={{
                   width: "100%",
@@ -686,6 +734,20 @@ const AdminCareer = () => {
               </div>
               <input type="file" onChange={onSelectFile} accept="image/*" />
             </div>
+
+            <div style={{ width: "50ch" }}>
+              <TextField
+                id="filled-multiline-flexible"
+                label="Deskripsi Pelatihan"
+                multiline
+                fullWidth
+                helperText={`${description.length}/500`}
+                value={description}
+                onChange={onChangedescription}
+                maxRows={5}
+                variant="outlined"
+              />
+            </div>
             <div>
               <Autocomplete
                 disablePortal
@@ -698,7 +760,7 @@ const AdminCareer = () => {
                 }}
                 getOptionLabel={(option) => option.category_name}
                 renderInput={(params) => (
-                  <TextField {...params} label="Kategori Pekerjaan" />
+                  <TextField {...params} label="Kategori Pelatihan" />
                 )}
               />
               <div
@@ -723,17 +785,17 @@ const AdminCareer = () => {
                 )}
 
                 <DialogContentText>
-                  tambahkan kategori pekerjaan
+                  tambahkan kategori pelatihan
                 </DialogContentText>
               </div>
               {openCategory && (
                 <TextField
                   sx={{ width: 300 }}
                   helperText={`${categoryName.length}/45`}
-                  onChange={onChangeCategoryName}
                   value={categoryName}
+                  onChange={onChangeCategoryName}
                   fullWidth
-                  label="Kategori Pekerjaan"
+                  label="Kategori Pelatihan"
                 />
               )}
             </div>
@@ -741,7 +803,7 @@ const AdminCareer = () => {
           <div style={{ width: "300px", marginLeft: "7px" }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DesktopDatePicker
-                label="last submission"
+                label="start date"
                 minDate={new Date("2017-01-01")}
                 onChange={(newValue) => {
                   SetStartDate(newValue);
@@ -757,8 +819,27 @@ const AdminCareer = () => {
               />
             </LocalizationProvider>
           </div>
+          <div style={{ width: "300px", marginLeft: "7px" }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                label="end date"
+                minDate={new Date("2017-01-01")}
+                onChange={(newValue) => {
+                  SetEndDate(newValue);
+                }}
+                value={endDate}
+                renderInput={(params) => (
+                  <TextField
+                    style={{ marginTop: "20px" }}
+                    fullWidth
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </div>
           <div style={{ marginLeft: "5px", marginTop: "20px" }}>
-            <DialogContentText>*Kualifikasi Pekerjaan</DialogContentText>
+            <DialogContentText>*Nilai Plus Pelatihan</DialogContentText>
             {kualifikasiForm.length > 0 &&
               kualifikasiForm.map((v, i) => {
                 return (
@@ -811,15 +892,14 @@ const AdminCareer = () => {
           <Button onClick={onAddCareer}>Tambahkan</Button>
         </DialogActions>
       </Dialog>
-
       <Box sx={{ width: "100%", height: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
             <Table
-              sx={{ minWidth: 750 }}
+              sx={{ minWidth: 1000 }}
               aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
+              size={dense ? "small" : "large"}
             >
               <EnhancedTableHead
                 numSelected={selected.length}
@@ -837,6 +917,7 @@ const AdminCareer = () => {
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.id);
                     const labelId = `enhanced-table-checkbox-${index}`;
+                    const isPopularTagSelected = isPopularSelected(row.id);
 
                     return (
                       <TableRow hover tabIndex={-1} key={index}>
@@ -858,7 +939,7 @@ const AdminCareer = () => {
                           style={{ color: "blue", cursor: "pointer" }}
                           onClick={() => onOpenDetail(row.id)}
                         >
-                          {row.job_name}
+                          {row.name}
                         </TableCell>
                         <TableCell
                           style={{
@@ -894,14 +975,14 @@ const AdminCareer = () => {
                           </div>
                         </TableCell>
                         <TableCell
+                          align="left"
                           style={{
                             fontSize: "15px",
                             fontWeight: "500",
                             color: "#071244",
                           }}
-                          align="left"
                         >
-                          {stringSlicer(row.job_description)}
+                          {moment(row.start_date).format("DD-MM-YYYY")}
                         </TableCell>
                         <TableCell
                           align="left"
@@ -911,7 +992,45 @@ const AdminCareer = () => {
                             color: "#071244",
                           }}
                         >
-                          {moment(row.last_submission).format("DD-MM-YYYY")}
+                          {moment(row.end_date).format("DD-MM-YYYY")}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={{
+                            fontSize: "15px",
+                            fontWeight: "500",
+                            color: "#071244",
+                          }}
+                        >
+                          <Checkbox
+                            onClick={(event) =>
+                              handlePopularClick(event, row.id, row.is_popular)
+                            }
+                            color="primary"
+                            checked={row.is_popular !== 0}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={{
+                            fontSize: "15px",
+                            fontWeight: "500",
+                            color: "#071244",
+                          }}
+                        >
+                          <Checkbox
+                            onClick={(event) =>
+                              handleSetIsFull(event, row.id, row.is_full)
+                            }
+                            color="primary"
+                            checked={row.is_full !== 0}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
                         </TableCell>
                         <TableCell
                           align="left"
@@ -953,4 +1072,4 @@ const AdminCareer = () => {
   );
 };
 
-export default AdminCareer;
+export default Training;
