@@ -1,41 +1,30 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import HecLogo from "../../assets/heclogo.png";
-import "./loginStyle.css";
+import "./style.css";
+import style from "./style";
+
+import { useUserStore } from "../../stores/useUserStore";
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [email, password, setEmail, setPassword, loggedIn] = useUserStore(
+    (state) => [
+      state.email,
+      state.password,
+      state.setEmail,
+      state.setPassword,
+      state.loggedIn,
+    ]
+  );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loggedIn();
   };
-
   return (
     <div className="login-container">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: 400,
-          height: 300,
-          margin: "auto",
-          backgroundColor: "#FFFFFF",
-          padding: 5,
-          boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)",
-          borderRadius: 2,
-        }}
-      >
+      <Box sx={style.boxContainer}>
         <img alt="#" src={HecLogo} width="140px" />
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -45,6 +34,8 @@ export default function Login() {
             id="email"
             label="Email"
             name="email"
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
             autoComplete="email"
             autoFocus
           />
@@ -52,6 +43,8 @@ export default function Login() {
             margin="normal"
             required
             fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
             name="password"
             label="Password"
             type="password"

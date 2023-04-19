@@ -15,6 +15,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
+    "dotenv": "^16.0.3",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.1",
     "prop-types": "^15.8.0",
@@ -33,7 +34,8 @@
     "smoothscroll-polyfill": "^0.4.4",
     "styled-components": "^5.3.3",
     "sweetalert2": "^11.3.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.3.7"
   },
   "scripts": {
     "start": "react-scripts start",
