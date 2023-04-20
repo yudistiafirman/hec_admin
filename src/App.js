@@ -1,8 +1,32 @@
 import "./App.css";
-import Route from "./Route";
+import BackdropLoading from "./components/molecules/BackDrop";
+import SnackBar from "./components/molecules/Snackbar";
+import Route from "./route";
+import { useBackdropStore } from "./stores/useBackdropStore";
+import { useSnackBarStore } from "./stores/useSnackBarStore";
 
 function App() {
-  return <Route />;
+  const [openBackdrop] = useBackdropStore((state) => [state.openBackdrop]);
+  const [openSnackbar, message, type, handleCloseSnackbar] = useSnackBarStore(
+    (state) => [
+      state.openSnackbar,
+      state.message,
+      state.type,
+      state.handleCloseSnackbar,
+    ]
+  );
+  return (
+    <>
+      <Route />
+      <BackdropLoading open={openBackdrop} />
+      <SnackBar
+        open={openSnackbar}
+        message={message}
+        type={type}
+        onClose={handleCloseSnackbar}
+      />
+    </>
+  );
 }
 
 export default App;

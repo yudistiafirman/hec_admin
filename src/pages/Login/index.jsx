@@ -5,23 +5,59 @@ import Box from "@mui/material/Box";
 import HecLogo from "../../assets/heclogo.png";
 import "./style.css";
 import style from "./style";
-
 import { useUserStore } from "../../stores/useUserStore";
+import regex from "../../constant/regex";
+import { loginUser } from "../../asyncActions/AuthActions";
+import { useBackdropStore } from "../../stores/useBackdropStore";
+import { useSnackBarStore } from "../../stores/useSnackBarStore";
 
 export default function Login() {
-  const [email, password, setEmail, setPassword, loggedIn] = useUserStore(
+  const [email, password, setEmail, setPassword, setUserData] = useUserStore(
     (state) => [
       state.email,
       state.password,
       state.setEmail,
       state.setPassword,
-      state.loggedIn,
+      state.setUserData,
     ]
   );
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    loggedIn();
+
+  const [setBackdrop] = useBackdropStore((state) => [state.setBackdrop]);
+  const [setOpenSnackbar] = useSnackBarStore((state) => [
+    state.setOpenSnackbar,
+  ]);
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      setBackdrop(true);
+      const data = {
+        email: email,
+        password: password,
+      };
+      const response = await loginUser(data);
+      if (response.data.success) {
+        setUserData(response.data.data);
+        setBackdrop(false);
+        setOpenSnackbar({
+          openSnackbar: true,
+          type: "success",
+          message: response.data.message,
+        });
+      }
+    } catch (error) {
+      setBackdrop(false);
+      setOpenSnackbar({
+        openSnackbar: true,
+        type: "error",
+        message: error.response.data.message,
+      });
+    }
   };
+
+  const handleDisable = () => {
+    return !regex.email.test(email) || password.length < 6;
+  };
+
   return (
     <div className="login-container">
       <Box sx={style.boxContainer}>
@@ -34,6 +70,7 @@ export default function Login() {
             id="email"
             label="Email"
             name="email"
+            error={!regex.email.test(email)}
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
             autoComplete="email"
@@ -44,6 +81,7 @@ export default function Login() {
             required
             fullWidth
             value={password}
+            error={password.length < 6}
             onChange={(e) => setPassword(e.currentTarget.value)}
             name="password"
             label="Password"
@@ -54,6 +92,7 @@ export default function Login() {
           <Button
             type="submit"
             fullWidth
+            disabled={handleDisable()}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
