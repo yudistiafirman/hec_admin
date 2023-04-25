@@ -19,6 +19,8 @@ import NavListItems from "../../components/molecules/NavListItems";
 
 import AddHomeIcon from "@mui/icons-material/AddHome";
 import navStyle from "./navStyle";
+import "./Navbar.css";
+import { useUserStore } from "../../stores/useUserStore";
 
 const AdminNavbar = () => {
   const location = useLocation();
@@ -28,21 +30,28 @@ const AdminNavbar = () => {
   const [openForm, setOpenForm] = useState(false);
   const [open, setOpen] = React.useState(true);
   const onLogoutAdmin = () => {
-    localStorage.removeItem("user");
-    window.location = "/";
+    setUserData(null);
+    navigate("/");
   };
 
   const handleOpenGallery = () => {
     setOpen(!open);
   };
 
+  const [setUserData] = useUserStore((state) => [state.setUserData]);
+
   return (
     <List
       sx={navStyle.listContainer}
       component="nav"
+      className="navbar-border navbar bg-light"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader
+          className="bg-light"
+          component="div"
+          id="nested-list-subheader"
+        >
           <img alt="#" src={HecLogo} width="140px" />
         </ListSubheader>
       }
@@ -93,7 +102,11 @@ const AdminNavbar = () => {
         itemIcon={<MonetizationOnIcon />}
         itemTitle="Penjualan"
       />
-      <NavListItems itemIcon={<LogoutIcon />} itemTitle="Keluar" />
+      <NavListItems
+        onClick={onLogoutAdmin}
+        itemIcon={<LogoutIcon />}
+        itemTitle="Keluar"
+      />
     </List>
   );
 };

@@ -398,7 +398,7 @@ const Career = () => {
       id: "",
       numeric: false,
       disablePadding: false,
-      label: "Image",
+      label: "Gambar",
     },
     {
       id: "job_description",
@@ -410,13 +410,13 @@ const Career = () => {
       id: "last_submission",
       numeric: false,
       disablePadding: false,
-      label: "Last submission",
+      label: "",
     },
     {
       id: "category_name",
       numeric: false,
       disablePadding: false,
-      label: "Category",
+      label: "Kategori",
     },
   ];
   function EnhancedTableHead(props) {
@@ -435,14 +435,12 @@ const Career = () => {
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox"></TableCell>
           {headCells.map((headCell) => (
             <TableCell
               style={{
-                fontSize: "18px",
+                fontSize: "14px",
                 fontWeight: "800",
                 color: "#6B7280",
-                fontFamily: `'inter',sans-serif`,
               }}
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -486,29 +484,14 @@ const Career = () => {
           }),
         }}
       >
-        {numSelected > 0 ? (
+        {numSelected > 0 && (
           <Typography
             sx={{ flex: "1 1 100%" }}
             color="inherit"
             variant="subtitle1"
             component="div"
           >
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-            style={{
-              fontSize: "20px",
-              fontWeight: "800",
-              color: "#071244",
-              fontFamily: `'inter',sans-serif`,
-            }}
-          >
-            Career
+            {numSelected} Terplilih
           </Typography>
         )}
 
@@ -526,7 +509,7 @@ const Career = () => {
   };
   return (
     <div className="admin-container">
-      <div className="add-new-career-btn">
+      {/* <div className="add-new-career-btn">
         {openDetail && (
           <CareerDetail
             openDetail={openDetail}
@@ -534,8 +517,8 @@ const Career = () => {
             closeDetail={() => SetOpenDetail(false)}
           />
         )}
-      </div>
-      <Dialog
+      </div> */}
+      {/* <Dialog
         // title={"POST"}
         scroll={"body"}
         open={showImage ? true : false}
@@ -547,13 +530,12 @@ const Career = () => {
         <Grid container direction="row" justify="center">
           <img alt="#" style={{ maxWidth: "100%" }} src={showImage}></img>
         </Grid>
-      </Dialog>
+      </Dialog> */}
       <div
         style={{
           display: "flex",
           marginBottom: "20px",
           justifyContent: "space-between",
-          backgroundColor: "#ffffff",
           alignItems: "center",
           paddingTop: "20px",
           paddingBottom: "20px",
@@ -580,6 +562,7 @@ const Career = () => {
             sx={{ width: 300 }}
             options={categories}
             value={filterCategory}
+            size="small"
             onChange={(event, newValue) => {
               onFilterCategory(newValue);
             }}
@@ -616,7 +599,7 @@ const Career = () => {
           add new
         </Button>
       </div>
-
+      {/* 
       <Dialog open={openForm} onClose={() => SetOpenForm(false)}>
         <DialogTitle>Tambahkan Pekerjaan</DialogTitle>
         <DialogContent>
@@ -810,145 +793,9 @@ const Career = () => {
           <Button onClick={() => SetOpenForm(false)}>Cancel</Button>
           <Button onClick={onAddCareer}>Tambahkan</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
-      <Box sx={{ width: "100%", height: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} />
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
-            >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                    return (
-                      <TableRow hover tabIndex={-1} key={index}>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            onClick={(event) => handleClick(event, row.id)}
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                          style={{ color: "blue", cursor: "pointer" }}
-                          onClick={() => onOpenDetail(row.id)}
-                        >
-                          {row.job_name}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            fontSize: "15px",
-                            fontWeight: "500",
-                            color: "#071244",
-                          }}
-                          align="left"
-                        >
-                          <div
-                            onClick={() =>
-                              SetShowImages(`${apiUrl}/${row.image}`)
-                            }
-                            style={{
-                              width: "100px",
-                              height: "100px",
-                              borderRadius: "8px",
-                              overflow: "hidden",
-                              border: "1px solid #C4C4C4",
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                backgroundImage: `url(${apiUrl}/${row.image})`,
-                                backgroundRepeat: "no-repeat",
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            fontSize: "15px",
-                            fontWeight: "500",
-                            color: "#071244",
-                          }}
-                          align="left"
-                        >
-                          {stringSlicer(row.job_description)}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          style={{
-                            fontSize: "15px",
-                            fontWeight: "500",
-                            color: "#071244",
-                          }}
-                        >
-                          {moment(row.last_submission).format("DD-MM-YYYY")}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          style={{
-                            fontSize: "15px",
-                            fontWeight: "500",
-                            color: "#071244",
-                          }}
-                        >
-                          {stringSlicer(row.category_name)}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: (dense ? 33 : 53) * emptyRows,
-                    }}
-                  >
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      </Box>
+      <Box sx={{ width: "100%", height: "100%" }}></Box>
     </div>
   );
 };

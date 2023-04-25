@@ -1,8 +1,9 @@
 .admin-container {
-  padding-left: 220px;
-  padding-bottom: 90px;
-  height: 100%;
-  padding-right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--light);
+  width: 100vw;
 }
 
 .admin-login-container {

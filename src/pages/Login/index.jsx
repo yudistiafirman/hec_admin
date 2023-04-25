@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import HecLogo from "../../assets/heclogo.png";
 import "./style.css";
+import "../../utils/utils.css";
 import style from "./style";
 import { useUserStore } from "../../stores/useUserStore";
 import regex from "../../constant/regex";
@@ -59,7 +60,7 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container bg-light">
       <Box sx={style.boxContainer}>
         <img alt="#" src={HecLogo} width="140px" />
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -70,7 +71,7 @@ export default function Login() {
             id="email"
             label="Email"
             name="email"
-            error={!regex.email.test(email)}
+            error={email !== "" && !regex.email.test(email)}
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
             autoComplete="email"
@@ -81,7 +82,7 @@ export default function Login() {
             required
             fullWidth
             value={password}
-            error={password.length < 6}
+            error={password !== "" && password.length < 6}
             onChange={(e) => setPassword(e.currentTarget.value)}
             name="password"
             label="Password"

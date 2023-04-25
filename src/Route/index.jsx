@@ -8,20 +8,30 @@ import Facility from "../pages/Facility";
 import Services from "../pages/Services";
 import Sale from "../pages/Sale";
 import Login from "../pages/Login";
+import { useUserStore } from "../stores/useUserStore";
+import "./route.css";
 
 const AdminRoute = () => {
+  let [userData] = useUserStore((state) => [state.userData]);
   return (
     <Router>
-      {/* <Navbar /> */}
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/career" element={<Career />} />
-        <Route path="/adminfasilitas" element={<Facility />} />
-        <Route path="/admingaleri" element={<Gallery />} />
-        <Route path="/adminpelatihan" element={<Training />} />
-        <Route path="/adminjasa" element={<Services />} />
-        <Route path="/adminpenjualan" element={<Sale />} />
-      </Routes>
+      {userData ? (
+        <div className="route-container">
+          <Navbar />
+          <Routes>
+            <Route path="/career" element={<Career />} />
+            <Route path="/adminfasilitas" element={<Facility />} />
+            <Route path="/admingaleri" element={<Gallery />} />
+            <Route path="/adminpelatihan" element={<Training />} />
+            <Route path="/adminjasa" element={<Services />} />
+            <Route path="/adminpenjualan" element={<Sale />} />
+          </Routes>
+        </div>
+      ) : (
+        <Routes>
+          <Route path="/" element={<Login />} />
+        </Routes>
+      )}
     </Router>
   );
 };
