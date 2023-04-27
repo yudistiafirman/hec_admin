@@ -2,9 +2,11 @@
   --primary: #7579e7;
   --secondary: #9ab3f5;
   --light: #f8fcfb;
-  --text: #303841;
+  --text: #202020;
   --secondary: #b9fffc;
   --light-grey: #a3d8f4;
+  --off-white: #ffffff;
+  --border: #e6edf6;
 }
 
 .bg-primary {

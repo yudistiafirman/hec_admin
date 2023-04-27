@@ -41,7 +41,7 @@ const AdminNavbar = () => {
     <List
       sx={navStyle.listContainer}
       component="nav"
-      className="navbar-border navbar bg-light"
+      className="navbar-border navbar"
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader
@@ -60,7 +60,7 @@ const AdminNavbar = () => {
           setSelectedIndex(0);
         }}
         itemIcon={<BusinessCenterIcon />}
-        itemTitle="Karir"
+        itemTitle="Lowongan Pekerjaan"
       />
       <NavListItems
         selected={selectedIndex === 1}

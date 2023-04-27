@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./Career.css";
+import CssBaseline from "@mui/material/CssBaseline";
 import { alpha } from "@mui/material/styles";
+import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -21,6 +23,7 @@ import { visuallyHidden } from "@mui/utils";
 import Button from "@mui/material/Button";
 import moment from "moment";
 import Swal from "sweetalert2";
+
 import {
   Autocomplete,
   Dialog,
@@ -28,7 +31,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
   Grid,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
   TextField,
 } from "@mui/material";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -43,6 +52,13 @@ import axios from "axios";
 import { apiUrl } from "../../Default";
 import { stringSlicer } from "../../utils/funcHelper";
 import CareerDetail from "./CareerDetail";
+import HContainer from "../../components/atoms/HContainer";
+import InfoBox from "../../components/organism/InfoBox";
+import HSpacer from "../../components/atoms/HSpacer";
+import HSelect from "../../components/atoms/HSelect";
+import { SearchOffRounded } from "@mui/icons-material";
+import HTextField from "../../components/atoms/HTextField";
+import HButton from "../../components/atoms/HButton";
 
 const Career = () => {
   const [order, setOrder] = useState("asc");
@@ -508,295 +524,330 @@ const Career = () => {
     );
   };
   return (
-    <div className="admin-container">
-      {/* <div className="add-new-career-btn">
-        {openDetail && (
-          <CareerDetail
-            openDetail={openDetail}
-            careerId={careerId}
-            closeDetail={() => SetOpenDetail(false)}
-          />
-        )}
-      </div> */}
-      {/* <Dialog
-        // title={"POST"}
-        scroll={"body"}
-        open={showImage ? true : false}
-        onClose={() => {
-          SetShowImages(null);
-        }}
-        hideActions={true}
-      >
-        <Grid container direction="row" justify="center">
-          <img alt="#" style={{ maxWidth: "100%" }} src={showImage}></img>
-        </Grid>
-      </Dialog> */}
-      <div
-        style={{
-          display: "flex",
-          marginBottom: "20px",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingTop: "20px",
-          paddingBottom: "20px",
-          borderRadius: "8px",
-        }}
-      >
-        <div style={{ marginLeft: "10px" }}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DesktopDatePicker
-              label="last submission"
-              minDate={new Date("2017-01-01")}
-              onChange={(newValue) => {
-                onFilterDate(newValue);
-              }}
-              value={filterDate}
-              renderInput={(params) => <TextField fullWidth {...params} />}
-            />
-          </LocalizationProvider>
-        </div>
-        <div>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            sx={{ width: 300 }}
-            options={categories}
-            value={filterCategory}
-            size="small"
-            onChange={(event, newValue) => {
-              onFilterCategory(newValue);
-            }}
-            getOptionLabel={(option) => option.category_name}
-            renderInput={(params) => (
-              <TextField {...params} label="Filter Category" />
-            )}
-          />
-        </div>
-        <div style={{ marginRight: "20px", width: "200px" }}>
-          <input
-            placeholder="Cari Lowongan"
-            value={searchVacancy}
-            onChange={onSearchVacancy}
-            style={{
-              marginRight: "20px",
-              height: "30px",
-              width: "200px",
-              backgroundColor: "#F4F4F4",
-              borderRadius: "4px",
-              border: "1px solid #C4C4C4",
-              outline: "none",
-              fontSize: "15px",
-            }}
-            fullWidth
-            label="Cari Lowongan"
-          />
-        </div>
-        <Button
-          style={{ marginRight: "10px" }}
-          onClick={() => SetOpenForm(true)}
-          variant="outlined"
+    <HContainer>
+      <Box>
+        <Typography
+          sx={{ fontWeight: "500", color: "var(--text)" }}
+          component="h2"
+          variant="h6"
         >
-          add new
-        </Button>
-      </div>
-      {/* 
-      <Dialog open={openForm} onClose={() => SetOpenForm(false)}>
-        <DialogTitle>Tambahkan Pekerjaan</DialogTitle>
-        <DialogContent>
-          <Box
-            component="form"
-            sx={{
-              "& .MuiTextField-root": { m: 1 },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <div style={{ width: "300px" }}>
-              <TextField
-                id="outlined-basic"
-                fullWidth
-                label="Nama Pekerjaan"
-                value={jobName}
-                helperText={`${jobName.length}/45`}
-                onChange={onChangeJobName}
-                variant="outlined"
-              />
-            </div>
-            <div style={{ width: "50ch" }}>
-              <TextField
-                id="filled-multiline-flexible"
-                label="Deskripsi Pekerjaan"
-                multiline
-                fullWidth
-                helperText={`${jobDescription.length}/500`}
-                value={jobDescription}
-                onChange={onChangeJobDescription}
-                maxRows={5}
-                variant="outlined"
-              />
-            </div>
-            <div style={{ width: "300px", marginLeft: "10px" }}>
-              <DialogContentText>*Image Career</DialogContentText>
-              <div
-                style={{
-                  width: "100%",
-                  height: "300px",
-                  borderRadius: "8px",
-                  border: "1px solid #ECECEC",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  overflow: "hidden",
-                  marginBottom: "10px",
-                }}
-              >
-                {selectedFile ? (
-                  <div
-                    onClick={() => SetShowImages(preview)}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      backgroundImage: `url(${preview})`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                      cursor: "pointer",
-                    }}
-                  />
-                ) : (
-                  <AiFillPicture style={{ color: "#C4C4C4" }} size="large" />
-                )}
-              </div>
-              <input type="file" onChange={onSelectFile} accept="image/*" />
-            </div>
-            <div>
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                sx={{ width: 300 }}
-                options={categories}
-                value={optionValue}
-                onChange={(event, newValue) => {
-                  SetOptionValue(newValue);
-                }}
-                getOptionLabel={(option) => option.category_name}
-                renderInput={(params) => (
-                  <TextField {...params} label="Kategori Pekerjaan" />
-                )}
-              />
-              <div
-                style={{
-                  marginLeft: "7px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                {openCategory ? (
-                  <AiOutlineMinusSquare
-                    onClick={() => SetOpenCategory(false)}
-                    color="#29b6f6"
-                    style={{ width: "25px", height: "25px", cursor: "pointer" }}
-                  />
-                ) : (
-                  <AiOutlinePlusSquare
-                    onClick={() => SetOpenCategory(true)}
-                    color="#29b6f6"
-                    style={{ width: "25px", height: "25px", cursor: "pointer" }}
-                  />
-                )}
-
-                <DialogContentText>
-                  tambahkan kategori pekerjaan
-                </DialogContentText>
-              </div>
-              {openCategory && (
-                <TextField
-                  sx={{ width: 300 }}
-                  helperText={`${categoryName.length}/45`}
-                  onChange={onChangeCategoryName}
-                  value={categoryName}
-                  fullWidth
-                  label="Kategori Pekerjaan"
-                />
-              )}
-            </div>
+          LOWONGAN PEKERJAAN
+        </Typography>
+        <HSpacer size="extraLarge" />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <InfoBox title="Jumlah Lowongan" total="11" />
+          <HSpacer size="large" />
+          <Box sx={{ flex: 0.3, alignSelf: "flex-end" }}>
+            <HSelect label="Filter Lowongan" items={["None", "Security"]} />
           </Box>
-          <div style={{ width: "300px", marginLeft: "7px" }}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDatePicker
-                label="last submission"
-                minDate={new Date("2017-01-01")}
-                onChange={(newValue) => {
-                  SetStartDate(newValue);
-                }}
-                value={startDate}
-                renderInput={(params) => (
-                  <TextField
-                    style={{ marginTop: "20px" }}
-                    fullWidth
-                    {...params}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          </div>
-          <div style={{ marginLeft: "5px", marginTop: "20px" }}>
-            <DialogContentText>*Kualifikasi Pekerjaan</DialogContentText>
-            {kualifikasiForm.length > 0 &&
-              kualifikasiForm.map((v, i) => {
-                return (
-                  <div style={{ width: "50ch", marginTop: "20px" }}>
-                    <TextField
-                      id="filled-multiline-flexible"
-                      label={v.label}
-                      multiline
-                      fullWidth
-                      maxRows={4}
-                      variant="outlined"
-                      value={kualifikasiForm[i].kualifikasiValue}
-                      onChange={(e) => onChangeKualifikasiForm(e, i)}
-                      helperText={`${kualifikasiForm[i].kualifikasiValue.length}/255`}
-                      ref={kualifikasiRef}
-                    />
-                    <div
-                      style={{
-                        marginTop: "10px",
-                        display: "flex",
-                        width: "100%",
-                      }}
-                    >
-                      {i > 0 && (
-                        <AiOutlineMinusSquare
-                          onClick={() => onDeleteKualifikasiForm(i)}
-                          color="#ffa726"
-                          style={{
-                            width: "25px",
-                            height: "25px",
-                            cursor: "pointer",
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            <div>
-              <AiOutlinePlusSquare
-                onClick={() => onAddKualifikasi()}
-                color="#29b6f6"
-                style={{ width: "25px", height: "25px", cursor: "pointer" }}
-              />
-            </div>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => SetOpenForm(false)}>Cancel</Button>
-          <Button onClick={onAddCareer}>Tambahkan</Button>
-        </DialogActions>
-      </Dialog> */}
+          <HSpacer size="large" />
+          <Box sx={{ alignSelf: "flex-end", flex: 0.5 }}>
+            <HTextField label="Cari Lowongan" needSearchicon />
+          </Box>
+          <Box
+            sx={{
+              alignSelf: "flex-end",
+              flex: 0.2,
+            }}
+          >
+            <HButton variant="contained" title="Tambah Lowongan" />
+          </Box>
+        </Box>
+      </Box>
+    </HContainer>
 
-      <Box sx={{ width: "100%", height: "100%" }}></Box>
-    </div>
+    // // <div className="admin-container">
+    //   {/* <Autocomplete
+    //     disablePortal
+    //     id="combo-box-demo"
+    //     sx={{ width: 300 }}
+    //     options={categories}
+    //     value={filterCategory}
+    //     size="small"
+    //     onChange={(event, newValue) => {
+    //       onFilterCategory(newValue);
+    //     }}
+    //     getOptionLabel={(option) => option.category_name}
+    //     renderInput={(params) => (
+    //       <TextField {...params} label="Filter Category" />
+    //     )}
+    //   /> */}
+    //   {/* <div className="add-new-career-btn">
+    //     {openDetail && (
+    //       <CareerDetail
+    //         openDetail={openDetail}
+    //         careerId={careerId}
+    //         closeDetail={() => SetOpenDetail(false)}
+    //       />
+    //     )}
+    //   </div> */}
+    //   {/* <Dialog
+    //     // title={"POST"}
+    //     scroll={"body"}
+    //     open={showImage ? true : false}
+    //     onClose={() => {
+    //       SetShowImages(null);
+    //     }}
+    //     hideActions={true}
+    //   >
+    //     <Grid container direction="row" justify="center">
+    //       <img alt="#" style={{ maxWidth: "100%" }} src={showImage}></img>
+    //     </Grid>
+    //   </Dialog> */}
+    //   {/* <div
+    //     style={{
+    //       display: "flex",
+    //       marginBottom: "20px",
+    //       justifyContent: "space-between",
+    //       alignItems: "center",
+    //       paddingTop: "20px",
+    //       paddingBottom: "20px",
+    //       borderRadius: "8px",
+    //     }}
+    //   > */}
+    //   {/* <div style={{ marginLeft: "10px" }}>
+    //       <LocalizationProvider dateAdapter={AdapterDateFns}>
+    //         <DesktopDatePicker
+    //           label="last submission"
+    //           minDate={new Date("2017-01-01")}
+    //           onChange={(newValue) => {
+    //             onFilterDate(newValue);
+    //           }}
+    //           value={filterDate}
+    //           renderInput={(params) => <TextField fullWidth {...params} />}
+    //         />
+    //       </LocalizationProvider>
+    //     </div> */}
+    //   {/* <div style={{ marginRight: "20px", width: "200px" }}>
+    //       <input
+    //         placeholder="Cari Lowongan"
+    //         value={searchVacancy}
+    //         onChange={onSearchVacancy}
+    //         style={{
+    //           marginRight: "20px",
+    //           height: "30px",
+    //           width: "200px",
+    //           backgroundColor: "#F4F4F4",
+    //           borderRadius: "4px",
+    //           border: "1px solid #C4C4C4",
+    //           outline: "none",
+    //           fontSize: "15px",
+    //         }}
+    //         fullWidth
+    //         label="Cari Lowongan"
+    //       />
+    //     </div>
+    //     <Button
+    //       style={{ marginRight: "10px" }}
+    //       onClick={() => SetOpenForm(true)}
+    //       variant="outlined"
+    //     >
+    //       add new
+    //     </Button> */}
+    //   {/* </div> */}
+    //   {/*
+    //   <Dialog open={openForm} onClose={() => SetOpenForm(false)}>
+    //     <DialogTitle>Tambahkan Pekerjaan</DialogTitle>
+    //     <DialogContent>
+    //       <Box
+    //         component="form"
+    //         sx={{
+    //           "& .MuiTextField-root": { m: 1 },
+    //         }}
+    //         noValidate
+    //         autoComplete="off"
+    //       >
+    //         <div style={{ width: "300px" }}>
+    //           <TextField
+    //             id="outlined-basic"
+    //             fullWidth
+    //             label="Nama Pekerjaan"
+    //             value={jobName}
+    //             helperText={`${jobName.length}/45`}
+    //             onChange={onChangeJobName}
+    //             variant="outlined"
+    //           />
+    //         </div>
+    //         <div style={{ width: "50ch" }}>
+    //           <TextField
+    //             id="filled-multiline-flexible"
+    //             label="Deskripsi Pekerjaan"
+    //             multiline
+    //             fullWidth
+    //             helperText={`${jobDescription.length}/500`}
+    //             value={jobDescription}
+    //             onChange={onChangeJobDescription}
+    //             maxRows={5}
+    //             variant="outlined"
+    //           />
+    //         </div>
+    //         <div style={{ width: "300px", marginLeft: "10px" }}>
+    //           <DialogContentText>*Image Career</DialogContentText>
+    //           <div
+    //             style={{
+    //               width: "100%",
+    //               height: "300px",
+    //               borderRadius: "8px",
+    //               border: "1px solid #ECECEC",
+    //               display: "flex",
+    //               justifyContent: "center",
+    //               alignItems: "center",
+    //               overflow: "hidden",
+    //               marginBottom: "10px",
+    //             }}
+    //           >
+    //             {selectedFile ? (
+    //               <div
+    //                 onClick={() => SetShowImages(preview)}
+    //                 style={{
+    //                   width: "100%",
+    //                   height: "100%",
+    //                   backgroundImage: `url(${preview})`,
+    //                   backgroundRepeat: "no-repeat",
+    //                   backgroundSize: "contain",
+    //                   backgroundPosition: "center",
+    //                   cursor: "pointer",
+    //                 }}
+    //               />
+    //             ) : (
+    //               <AiFillPicture style={{ color: "#C4C4C4" }} size="large" />
+    //             )}
+    //           </div>
+    //           <input type="file" onChange={onSelectFile} accept="image/*" />
+    //         </div>
+    //         <div>
+    //           <Autocomplete
+    //             disablePortal
+    //             id="combo-box-demo"
+    //             sx={{ width: 300 }}
+    //             options={categories}
+    //             value={optionValue}
+    //             onChange={(event, newValue) => {
+    //               SetOptionValue(newValue);
+    //             }}
+    //             getOptionLabel={(option) => option.category_name}
+    //             renderInput={(params) => (
+    //               <TextField {...params} label="Kategori Pekerjaan" />
+    //             )}
+    //           />
+    //           <div
+    //             style={{
+    //               marginLeft: "7px",
+    //               display: "flex",
+    //               alignItems: "center",
+    //             }}
+    //           >
+    //             {openCategory ? (
+    //               <AiOutlineMinusSquare
+    //                 onClick={() => SetOpenCategory(false)}
+    //                 color="#29b6f6"
+    //                 style={{ width: "25px", height: "25px", cursor: "pointer" }}
+    //               />
+    //             ) : (
+    //               <AiOutlinePlusSquare
+    //                 onClick={() => SetOpenCategory(true)}
+    //                 color="#29b6f6"
+    //                 style={{ width: "25px", height: "25px", cursor: "pointer" }}
+    //               />
+    //             )}
+
+    //             <DialogContentText>
+    //               tambahkan kategori pekerjaan
+    //             </DialogContentText>
+    //           </div>
+    //           {openCategory && (
+    //             <TextField
+    //               sx={{ width: 300 }}
+    //               helperText={`${categoryName.length}/45`}
+    //               onChange={onChangeCategoryName}
+    //               value={categoryName}
+    //               fullWidth
+    //               label="Kategori Pekerjaan"
+    //             />
+    //           )}
+    //         </div>
+    //       </Box>
+    //       <div style={{ width: "300px", marginLeft: "7px" }}>
+    //         <LocalizationProvider dateAdapter={AdapterDateFns}>
+    //           <DesktopDatePicker
+    //             label="last submission"
+    //             minDate={new Date("2017-01-01")}
+    //             onChange={(newValue) => {
+    //               SetStartDate(newValue);
+    //             }}
+    //             value={startDate}
+    //             renderInput={(params) => (
+    //               <TextField
+    //                 style={{ marginTop: "20px" }}
+    //                 fullWidth
+    //                 {...params}
+    //               />
+    //             )}
+    //           />
+    //         </LocalizationProvider>
+    //       </div>
+    //       <div style={{ marginLeft: "5px", marginTop: "20px" }}>
+    //         <DialogContentText>*Kualifikasi Pekerjaan</DialogContentText>
+    //         {kualifikasiForm.length > 0 &&
+    //           kualifikasiForm.map((v, i) => {
+    //             return (
+    //               <div style={{ width: "50ch", marginTop: "20px" }}>
+    //                 <TextField
+    //                   id="filled-multiline-flexible"
+    //                   label={v.label}
+    //                   multiline
+    //                   fullWidth
+    //                   maxRows={4}
+    //                   variant="outlined"
+    //                   value={kualifikasiForm[i].kualifikasiValue}
+    //                   onChange={(e) => onChangeKualifikasiForm(e, i)}
+    //                   helperText={`${kualifikasiForm[i].kualifikasiValue.length}/255`}
+    //                   ref={kualifikasiRef}
+    //                 />
+    //                 <div
+    //                   style={{
+    //                     marginTop: "10px",
+    //                     display: "flex",
+    //                     width: "100%",
+    //                   }}
+    //                 >
+    //                   {i > 0 && (
+    //                     <AiOutlineMinusSquare
+    //                       onClick={() => onDeleteKualifikasiForm(i)}
+    //                       color="#ffa726"
+    //                       style={{
+    //                         width: "25px",
+    //                         height: "25px",
+    //                         cursor: "pointer",
+    //                       }}
+    //                     />
+    //                   )}
+    //                 </div>
+    //               </div>
+    //             );
+    //           })}
+    //         <div>
+    //           <AiOutlinePlusSquare
+    //             onClick={() => onAddKualifikasi()}
+    //             color="#29b6f6"
+    //             style={{ width: "25px", height: "25px", cursor: "pointer" }}
+    //           />
+    //         </div>
+    //       </div>
+    //     </DialogContent>
+    //     <DialogActions>
+    //       <Button onClick={() => SetOpenForm(false)}>Cancel</Button>
+    //       <Button onClick={onAddCareer}>Tambahkan</Button>
+    //     </DialogActions>
+    //   </Dialog> */}
+
+    //   <Box sx={{ width: "100%", height: "100%" }}></Box>
+    // // </div>
   );
 };
 

@@ -17,7 +17,9 @@ const NavListItems = ({
         {itemIcon}
       </ListItemIcon>
       <ListItemText
-        style={{ color: selected ? "var(--primary)" : "" }}
+        style={{
+          color: selected ? "var(--primary)" : "",
+        }}
         primary={itemTitle}
       />
       {expand}
