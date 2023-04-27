@@ -14,7 +14,7 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import OnDeviceTrainingIcon from "@mui/icons-material/OnDeviceTraining";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavListItems from "../../components/molecules/NavListItems";
 
 import AddHomeIcon from "@mui/icons-material/AddHome";
@@ -23,12 +23,9 @@ import "./Navbar.css";
 import { useUserStore } from "../../stores/useUserStore";
 
 const AdminNavbar = () => {
-  const location = useLocation();
-  const [openUser, setOpenuser] = useState(false);
-  const [title, setTitle] = useState("");
   const navigate = useNavigate();
-  const [openForm, setOpenForm] = useState(false);
   const [open, setOpen] = React.useState(true);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const onLogoutAdmin = () => {
     setUserData(null);
     navigate("/");
@@ -57,16 +54,25 @@ const AdminNavbar = () => {
       }
     >
       <NavListItems
-        onClick={() => navigate("/career")}
+        selected={selectedIndex === 0}
+        onClick={() => {
+          navigate("/career");
+          setSelectedIndex(0);
+        }}
         itemIcon={<BusinessCenterIcon />}
         itemTitle="Karir"
       />
       <NavListItems
-        onClick={() => navigate("/adminfasilitas")}
+        selected={selectedIndex === 1}
+        onClick={() => {
+          navigate("/adminfasilitas");
+          setSelectedIndex(1);
+        }}
         itemIcon={<FoundationIcon />}
         itemTitle="Fasilitas"
       />
       <NavListItems
+        selected={selectedIndex === 2}
         onClick={handleOpenGallery}
         itemIcon={<CollectionsIcon />}
         itemTitle="Galeri"
@@ -75,30 +81,50 @@ const AdminNavbar = () => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <NavListItems
+            selected={selectedIndex === 3}
+            onClick={() => {
+              setSelectedIndex(3);
+            }}
             sx={{ pl: 4 }}
             itemIcon={<AddHomeIcon />}
             itemTitle="Beranda Galeri"
           />
           <NavListItems
+            selected={selectedIndex === 4}
             sx={{ pl: 4 }}
-            onClick={() => navigate("/admingaleri")}
+            onClick={() => {
+              navigate("/admingaleri");
+              setSelectedIndex(4);
+            }}
             itemIcon={<OnDeviceTrainingIcon />}
             itemTitle="Pelatihan Galeri"
           />
         </List>
       </Collapse>
       <NavListItems
-        onClick={() => navigate("/adminpelatihan")}
+        selected={selectedIndex === 5}
+        onClick={() => {
+          navigate("/adminpelatihan");
+          setSelectedIndex(5);
+        }}
         itemIcon={<ModelTrainingIcon />}
         itemTitle="Pelatihan"
       />
       <NavListItems
-        onClick={() => navigate("/adminjasa")}
+        selected={selectedIndex === 6}
+        onClick={() => {
+          navigate("/adminjasa");
+          setSelectedIndex(6);
+        }}
         itemIcon={<RoomServiceIcon />}
         itemTitle="Jasa"
       />
       <NavListItems
-        onClick={() => navigate("/adminpenjualan")}
+        selected={selectedIndex === 7}
+        onClick={() => {
+          navigate("/adminpenjualan");
+          setSelectedIndex(7);
+        }}
         itemIcon={<MonetizationOnIcon />}
         itemTitle="Penjualan"
       />
