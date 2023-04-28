@@ -13,13 +13,14 @@ const HSelect = ({ label, value, onChange, items }) => {
           backgroundColor: "var(--off-white)",
         }}
       >
-        {items.map((v, i) => {
-          return (
-            <MenuItem key={i} value={10}>
-              {v}
-            </MenuItem>
-          );
-        })}
+        {items &&
+          items.map((v, i) => {
+            return (
+              <MenuItem key={i} value={10}>
+                {v}
+              </MenuItem>
+            );
+          })}
       </Select>
     </FormControl>
   );

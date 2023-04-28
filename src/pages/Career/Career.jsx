@@ -53,12 +53,13 @@ import { apiUrl } from "../../Default";
 import { stringSlicer } from "../../utils/funcHelper";
 import CareerDetail from "./CareerDetail";
 import HContainer from "../../components/atoms/HContainer";
-import InfoBox from "../../components/organism/InfoBox";
+import InfoBox from "../../components/molecules/InfoBox";
 import HSpacer from "../../components/atoms/HSpacer";
 import HSelect from "../../components/atoms/HSelect";
 import { SearchOffRounded } from "@mui/icons-material";
 import HTextField from "../../components/atoms/HTextField";
 import HButton from "../../components/atoms/HButton";
+import HCommonContent from "../../components/templates/HCommonContent";
 
 const Career = () => {
   const [order, setOrder] = useState("asc");
@@ -525,40 +526,14 @@ const Career = () => {
   };
   return (
     <HContainer>
-      <Box>
-        <Typography
-          sx={{ fontWeight: "500", color: "var(--text)" }}
-          component="h2"
-          variant="h6"
-        >
-          LOWONGAN PEKERJAAN
-        </Typography>
-        <HSpacer size="extraLarge" />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <InfoBox title="Jumlah Lowongan" total="11" />
-          <HSpacer size="large" />
-          <Box sx={{ flex: 0.3, alignSelf: "flex-end" }}>
-            <HSelect label="Filter Lowongan" items={["None", "Security"]} />
-          </Box>
-          <HSpacer size="large" />
-          <Box sx={{ alignSelf: "flex-end", flex: 0.5 }}>
-            <HTextField label="Cari Lowongan" needSearchicon />
-          </Box>
-          <Box
-            sx={{
-              alignSelf: "flex-end",
-              flex: 0.2,
-            }}
-          >
-            <HButton variant="contained" title="Tambah Lowongan" />
-          </Box>
-        </Box>
-      </Box>
+      <HCommonContent
+        headerTitle="Lowongan Pekerjaan"
+        infoTitle="Total Lowongan"
+        total="11"
+        selectTitle="Filter Berdasar Kategori"
+        searchLabel="Cari Lowongan"
+        buttonTitle="Tambah"
+      />
     </HContainer>
 
     // // <div className="admin-container">
