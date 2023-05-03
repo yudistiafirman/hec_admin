@@ -1,224 +1,163 @@
-import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  ImageListItem,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { apiUrl } from "../../Default";
 import Swal from "sweetalert2";
 import moment from "moment";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import HecContainer from "../../components/atoms/HContainer";
+import HSpacer from "../../components/atoms/HSpacer";
+import HDetailText from "../../components/molecules/HDetailText";
 
-const AdminCareerDetail = ({ openDetail, closeDetail, careerId }) => {
-  const [careerDetail, SetCareerDetail] = useState([]);
-  useEffect(() => {
-    axios.get(`${apiUrl}/vacancies/detail?id=${careerId}`).then((response) => {
-      if (response.data.error) {
-        closeDetail();
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
-      } else {
-        SetCareerDetail(response.data.data);
-      }
-    });
-    return () => {
-      SetCareerDetail([]);
-    };
-  }, []);
+const CareerDetail = ({ openDetail, closeDetail, careerId }) => {
   return (
-    <div>
-      <Dialog open={openDetail} onClose={closeDetail}>
-        <DialogContent style={{ minWidth: "500px" }}>
-          {careerDetail.length > 0 && (
-            <div className="detailContentContainer">
-              <div className="detailTitleContainer">
-                <div className="detailTitle">{careerDetail[0].job_name}</div>
-              </div>
-              <div style={{ width: "30%" }} className="titleCategory">
-                <div>
-                  {moment(careerDetail[0].last_submission).format(
-                    "Do MMMM YYYY"
-                  )}
-                </div>
-              </div>
-              <div style={{ justifyContent: "center" }} className="detailDesc">
-                {careerDetail[0].job_description}
-              </div>
-              <div className="advantagesPelatihanContainer">
-                <div className="advantagesPelatihanInnerContainer">
-                  <div className="nilaiPlusContainer">
-                    <div className="nilaiPlustitle">Kualifikasi</div>
-                    {careerDetail[0].qualifications[0].qualifications_1 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_1}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_2 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_2}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_3 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_3}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_4 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_4}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_5 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_5}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_6 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_6}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_7 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_7}
-                        </div>
-                      </div>
-                    )}
-                    {careerDetail[0].qualifications[0].qualifications_8 !==
-                      null && (
-                      <div
-                        style={{ alignItems: "center" }}
-                        className="checkListContainer"
-                      >
-                        {/* <img
-                          src={CheckIcon}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginLeft: "7px",
-                            marginRight: "5px",
-                          }}
-                        /> */}
-                        <div className="checkDesc">
-                          {careerDetail[0].qualifications[0].qualifications_8}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDetail}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <HecContainer>
+      <Typography sx={{ color: "var(--text)" }} component="h2" variant="h3">
+        Security
+      </Typography>
+      <HSpacer size="small" />
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box
+          sx={{
+            backgroundColor: "var(--light)",
+            flex: 0.7,
+            padding: 2,
+            borderRadius: 2,
+            border: "1px solid var(--border)",
+          }}
+        >
+          <img
+            style={{
+              borderRadius: "5px",
+              border: "1px solid var(--light-grey)",
+            }}
+            width="100%"
+            height={400}
+            src={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format`}
+            srcSet={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+            loading="lazy"
+            alt="#"
+          />
+          <HSpacer size="large" />
+          <Typography
+            sx={{ fontWeight: "500", color: "var(--secondary-text)" }}
+            component="h2"
+            variant="subtitle1"
+          >
+            Deskripsi Pekerjaan
+          </Typography>
+          <Typography
+            sx={{ fontWeight: "500", color: "var(--text)", fontSize: 14 }}
+            component="h2"
+            variant="subtitle1"
+          >
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum,
+            dicta minus itaque expedita voluptatum illum cumque! Velit, nesciunt
+            obcaecati hic, aut voluptatum beatae ducimus fuga ex voluptas
+            commodi quod fugit?
+          </Typography>
+          <HSpacer size="large" />
+          <Typography
+            sx={{ fontWeight: "500", color: "var(--secondary-text)" }}
+            component="h2"
+            variant="subtitle1"
+          >
+            Tanggung Jawab
+          </Typography>
+          <Box sx={{ display: "flex" }}>
+            <RadioButtonUncheckedIcon
+              sx={{ fontSize: 12, marginTop: 0.6 }}
+              color="var(--text)"
+            />
+            <HSpacer size="extraSmall" />
+            <Typography
+              sx={{ fontWeight: "500", color: "var(--text)", fontSize: 14 }}
+              component="h2"
+              variant="subtitle1"
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
+              quaerat ipsa iusto minima blanditiis fugit alias nisi obcaecati
+              vero! Libero voluptates voluptate alias perspiciatis obcaecati nam
+              praesentium, modi maxime perferendis.
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <RadioButtonUncheckedIcon
+              sx={{ fontSize: 12, marginTop: 0.6 }}
+              color="var(--text)"
+            />
+            <HSpacer size="extraSmall" />
+            <Typography
+              sx={{ fontWeight: "500", color: "var(--text)", fontSize: 14 }}
+              component="h2"
+              variant="subtitle1"
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
+              quaerat ipsa iusto minima blanditiis fugit alias nisi obcaecati
+              vero! Libero voluptates voluptate alias perspiciatis obcaecati nam
+              praesentium, modi maxime perferendis.
+            </Typography>
+          </Box>
+          <HSpacer size="large" />
+          <Typography
+            sx={{ fontWeight: "500", color: "var(--secondary-text)" }}
+            component="h2"
+            variant="subtitle1"
+          >
+            Persyaratan
+          </Typography>
+          <Box sx={{ display: "flex" }}>
+            <RadioButtonUncheckedIcon
+              sx={{ fontSize: 12, marginTop: 0.6 }}
+              color="var(--text)"
+            />
+            <HSpacer size="extraSmall" />
+            <Typography
+              sx={{ fontWeight: "500", color: "var(--text)", fontSize: 14 }}
+              component="h2"
+              variant="subtitle1"
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
+              quaerat ipsa iusto minima blanditiis fugit alias nisi obcaecati
+              vero! Libero voluptates voluptate alias perspiciatis obcaecati nam
+              praesentium, modi maxime perferendis.
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <RadioButtonUncheckedIcon
+              sx={{ fontSize: 12, marginTop: 0.6 }}
+              color="var(--text)"
+            />
+            <HSpacer size="extraSmall" />
+            <Typography
+              sx={{ fontWeight: "500", color: "var(--text)", fontSize: 14 }}
+              component="h2"
+              variant="subtitle1"
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
+              quaerat ipsa iusto minima blanditiis fugit alias nisi obcaecati
+              vero! Libero voluptates voluptate alias perspiciatis obcaecati nam
+              praesentium, modi maxime perferendis.
+            </Typography>
+          </Box>
+        </Box>
+        <HSpacer size="extraLarge" />
+      </Box>
+    </HecContainer>
   );
 };
 
-export default AdminCareerDetail;
+export default CareerDetail;

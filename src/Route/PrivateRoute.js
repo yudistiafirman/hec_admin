@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useUserStore } from "../stores/useUserStore";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
-  let [userData] = useUserStore((state) => [state.userData]);
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
 
-  if (!userData) {
-    return <Navigate to="/login" />;
-  }
+    if (!userData || userData === "undefined") {
+      setIsLoggedIn(false);
 
-  return children;
+      return navigate("/login");
+    }
+    setIsLoggedIn(true);
+  }, [isLoggedIn]);
+  return <>{isLoggedIn ? children : null}</>;
 };
 
 export default PrivateRoute;

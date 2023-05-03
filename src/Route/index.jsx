@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -17,29 +17,29 @@ import Login from "../pages/Login";
 import { useUserStore } from "../stores/useUserStore";
 import "./route.css";
 import PrivateRoute from "./PrivateRoute";
+import CareerDetail from "../pages/Career/CareerDetail";
 
 const AdminRoute = () => {
-  let [userData, setUserData] = useUserStore((state) => [
-    state.userData,
-    state.setUserData,
-  ]);
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
-    if (userData) {
-      setUserData(userData);
-      navigate("/");
+
+    if (!userData || userData === "undefined") {
+      setIsLoggedIn(false);
+
+      return navigate("/login");
     }
-  }, []);
+    setIsLoggedIn(true);
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className="route-container">
-      {location.pathname !== "/login" && userData && <Navbar />}
+      {location.pathname !== "/login" && isLoggedIn && <Navbar />}
       <Routes>
-        <Route path="/login" element={<Login />} />
-
         <Route
+          exact
           path="/"
           element={
             <PrivateRoute>
@@ -47,7 +47,16 @@ const AdminRoute = () => {
             </PrivateRoute>
           }
         />
-
+        <Route
+          exact
+          path="/career/detail/:careerId"
+          element={
+            <PrivateRoute>
+              <CareerDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/fasilitas"
           element={

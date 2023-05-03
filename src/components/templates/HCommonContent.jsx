@@ -69,7 +69,7 @@ const HCommonContent = ({
       <HSpacer size="extraLarge" />
       <HTable
         selected={selected}
-        onClickDetail={onClickDetail}
+        onClickDetail={() => onClickDetail(selected)}
         onDelete={onDelete}
         onSelectAllClick={handleSelectAllClick}
         headCells={headCells}

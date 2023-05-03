@@ -14,7 +14,7 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import OnDeviceTrainingIcon from "@mui/icons-material/OnDeviceTraining";
-import { BrowserRouter, useNavigate } from "react-router-dom";
+import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
 import NavListItems from "../../components/molecules/NavListItems";
 
 import AddHomeIcon from "@mui/icons-material/AddHome";
@@ -25,11 +25,11 @@ import { useUserStore } from "../../stores/useUserStore";
 const AdminNavbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const location = useLocation();
   const onLogoutAdmin = () => {
     localStorage.clear();
     setUserData(null);
-    navigate("/");
+    navigate("/login");
   };
 
   const handleOpenGallery = () => {
@@ -55,25 +55,23 @@ const AdminNavbar = () => {
       }
     >
       <NavListItems
-        selected={selectedIndex === 0}
+        selected={location.pathname === "/"}
         onClick={() => {
           navigate("/");
-          setSelectedIndex(0);
         }}
         itemIcon={<BusinessCenterIcon />}
         itemTitle="Lowongan Pekerjaan"
       />
       <NavListItems
-        selected={selectedIndex === 1}
+        selected={location.pathname === "/fasilitas"}
         onClick={() => {
           navigate("/fasilitas");
-          setSelectedIndex(1);
         }}
         itemIcon={<FoundationIcon />}
         itemTitle="Fasilitas"
       />
       <NavListItems
-        selected={selectedIndex === 2}
+        selected={location.pathname === "/galeri"}
         onClick={handleOpenGallery}
         itemIcon={<CollectionsIcon />}
         itemTitle="Galeri"
@@ -82,20 +80,16 @@ const AdminNavbar = () => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <NavListItems
-            selected={selectedIndex === 3}
-            onClick={() => {
-              setSelectedIndex(3);
-            }}
+            selected={location.pathname === "/galeri"}
             sx={{ pl: 4 }}
             itemIcon={<AddHomeIcon />}
             itemTitle="Beranda Galeri"
           />
           <NavListItems
-            selected={selectedIndex === 4}
+            selected={location.pathname === "/galeri"}
             sx={{ pl: 4 }}
             onClick={() => {
               navigate("/galeri");
-              setSelectedIndex(4);
             }}
             itemIcon={<OnDeviceTrainingIcon />}
             itemTitle="Pelatihan Galeri"
@@ -103,28 +97,25 @@ const AdminNavbar = () => {
         </List>
       </Collapse>
       <NavListItems
-        selected={selectedIndex === 5}
+        selected={location.pathname === "/pelatihan"}
         onClick={() => {
           navigate("/pelatihan");
-          setSelectedIndex(5);
         }}
         itemIcon={<ModelTrainingIcon />}
         itemTitle="Pelatihan"
       />
       <NavListItems
-        selected={selectedIndex === 6}
+        selected={location.pathname === "/jasa"}
         onClick={() => {
           navigate("/jasa");
-          setSelectedIndex(6);
         }}
         itemIcon={<RoomServiceIcon />}
         itemTitle="Jasa"
       />
       <NavListItems
-        selected={selectedIndex === 7}
+        selected={location.pathname === "/penjualan"}
         onClick={() => {
           navigate("/penjualan");
-          setSelectedIndex(7);
         }}
         itemIcon={<MonetizationOnIcon />}
         itemTitle="Penjualan"
