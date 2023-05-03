@@ -60,10 +60,10 @@ import { SearchOffRounded } from "@mui/icons-material";
 import HTextField from "../../components/atoms/HTextField";
 import HButton from "../../components/atoms/HButton";
 import HCommonContent from "../../components/templates/HCommonContent";
+import HTable from "../../components/organism/HTable";
 
 const Career = () => {
   const [order, setOrder] = useState("asc");
-  const [rows, SetRows] = useState([]);
 
   const [categories, SetCategories] = useState([]);
   const [openForm, SetOpenForm] = useState(false);
@@ -118,22 +118,22 @@ const Career = () => {
     }
   };
 
-  useEffect(() => {
-    getAllvacancies("", "", "");
-    getVacanciesCategories();
-  }, []);
-  useEffect(() => {
-    if (!selectedFile) {
-      setPreview(undefined);
-      return;
-    }
+  // useEffect(() => {
+  //   getAllvacancies("", "", "");
+  //   getVacanciesCategories();
+  // }, []);
+  // useEffect(() => {
+  //   if (!selectedFile) {
+  //     setPreview(undefined);
+  //     return;
+  //   }
 
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreview(objectUrl);
+  //   const objectUrl = URL.createObjectURL(selectedFile);
+  //   setPreview(objectUrl);
 
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  //   // free memory when ever this component is unmounted
+  //   return () => URL.revokeObjectURL(objectUrl);
+  // }, [selectedFile]);
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
@@ -143,15 +143,15 @@ const Career = () => {
     // I've kept this example simple by using the first image instead of multiple
     setSelectedFile(e.target.files[0]);
   };
-  const getAllvacancies = (queryValue, date, category) => {
-    axios
-      .get(
-        `${apiUrl}/vacancies/all?&name=${queryValue}&date=${date}&category=${category}`
-      )
-      .then((response) => {
-        SetRows(response.data.data);
-      });
-  };
+  // const getAllvacancies = (queryValue, date, category) => {
+  //   axios
+  //     .get(
+  //       `${apiUrl}/vacancies/all?&name=${queryValue}&date=${date}&category=${category}`
+  //     )
+  //     .then((response) => {
+  //       SetRows(response.data.data);
+  //     });
+  // };
 
   const getVacanciesCategories = () => {
     axios.get(apiUrl + "/vacancies/category").then((response) => {
@@ -183,37 +183,37 @@ const Career = () => {
     }
   };
 
-  const onSearchVacancy = useCallback(
-    (e) => {
-      SetOnSearchVacancy(e.target.value);
-      getAllvacancies(
-        searchVacancy,
-        moment(filterDate).format("YYYY-MM-DD"),
-        filterCategory !== null ? filterCategory.category_name : ""
-      );
-    },
-    [searchVacancy, filterDate, filterCategory]
-  );
+  // const onSearchVacancy = useCallback(
+  //   (e) => {
+  //     SetOnSearchVacancy(e.target.value);
+  //     getAllvacancies(
+  //       searchVacancy,
+  //       moment(filterDate).format("YYYY-MM-DD"),
+  //       filterCategory !== null ? filterCategory.category_name : ""
+  //     );
+  //   },
+  //   [searchVacancy, filterDate, filterCategory]
+  // );
 
-  const onFilterDate = useCallback(
-    (valueDate) => {
-      SetFilterDate(valueDate);
-      getAllvacancies(
-        searchVacancy,
-        moment(valueDate).format("YYYY-MM-DD"),
-        filterCategory !== null ? filterCategory.category_name : ""
-      );
-    },
-    [filterDate, searchVacancy, filterCategory]
-  );
+  // const onFilterDate = useCallback(
+  //   (valueDate) => {
+  //     SetFilterDate(valueDate);
+  //     getAllvacancies(
+  //       searchVacancy,
+  //       moment(valueDate).format("YYYY-MM-DD"),
+  //       filterCategory !== null ? filterCategory.category_name : ""
+  //     );
+  //   },
+  //   [filterDate, searchVacancy, filterCategory]
+  // );
 
-  const onFilterCategory = useCallback(
-    (value) => {
-      SetFilterCategory(value);
-      getAllvacancies(searchVacancy, "", value.category_name);
-    },
-    [filterCategory, searchVacancy, filterDate]
-  );
+  // const onFilterCategory = useCallback(
+  //   (value) => {
+  //     SetFilterCategory(value);
+  //     getAllvacancies(searchVacancy, "", value.category_name);
+  //   },
+  //   [filterCategory, searchVacancy, filterDate]
+  // );
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -229,82 +229,82 @@ const Career = () => {
     setSelected([]);
   };
 
-  const onAddCareer = () => {
-    //semua form harus terisi kecuali tanggal dan kualifikasi hanya satu saja yang terisi
+  // const onAddCareer = () => {
+  //   //semua form harus terisi kecuali tanggal dan kualifikasi hanya satu saja yang terisi
 
-    if (!jobName) {
-      alert("nama pekerjaan harus diisi");
-    } else if (!selectedFile) {
-      alert("image pelatihan harus diisi");
-    } else if (!jobDescription) {
-      alert("deskripsi pekerjaan harus diisi");
-    } else if (!optionValue && !categoryName) {
-      alert("categori pekarjaan harus diisi");
-    } else if (!kualifikasiForm[0].kualifikasiValue) {
-      alert("paling sedikit 1 kualifikasi harus diisi");
-    } else {
-      const newArrKualifikasi = [...kualifikasiForm];
-      const job_qualifications = newArrKualifikasi
-        .filter((value, idx) => value.kualifikasiValue !== "")
-        .map((v, i) => {
-          return { qualifications: v.kualifikasiValue };
-        });
+  //   if (!jobName) {
+  //     alert("nama pekerjaan harus diisi");
+  //   } else if (!selectedFile) {
+  //     alert("image pelatihan harus diisi");
+  //   } else if (!jobDescription) {
+  //     alert("deskripsi pekerjaan harus diisi");
+  //   } else if (!optionValue && !categoryName) {
+  //     alert("categori pekarjaan harus diisi");
+  //   } else if (!kualifikasiForm[0].kualifikasiValue) {
+  //     alert("paling sedikit 1 kualifikasi harus diisi");
+  //   } else {
+  //     const newArrKualifikasi = [...kualifikasiForm];
+  //     const job_qualifications = newArrKualifikasi
+  //       .filter((value, idx) => value.kualifikasiValue !== "")
+  //       .map((v, i) => {
+  //         return { qualifications: v.kualifikasiValue };
+  //       });
 
-      const data = new FormData();
+  //     const data = new FormData();
 
-      data.append("job_name", jobName);
-      data.append("job_description", jobDescription);
-      data.append("last_submission", moment(startDate).format("YYYY-MM-DD"));
-      data.append(
-        "category_name",
-        optionValue ? optionValue.category_name : categoryName
-      );
-      data.append("image_1", selectedFile);
-      data.append("job_qualifications", JSON.stringify(job_qualifications));
+  //     data.append("job_name", jobName);
+  //     data.append("job_description", jobDescription);
+  //     data.append("last_submission", moment(startDate).format("YYYY-MM-DD"));
+  //     data.append(
+  //       "category_name",
+  //       optionValue ? optionValue.category_name : categoryName
+  //     );
+  //     data.append("image_1", selectedFile);
+  //     data.append("job_qualifications", JSON.stringify(job_qualifications));
 
-      axios
-        .post(apiUrl + "/vacancies/post", data)
-        .then((response) => {
-          if (response.data.error) {
-            SetOpenForm(false);
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong!",
-            });
-            SetJobName("");
-            SetJobDescription("");
-            SetCategoryName("");
-            SetOptionValue(null);
-            SetInputOption(null);
-            SetStartDate(new Date());
-            SetKualifikasiForm([
-              { kualifikasiValue: "", label: "Kualifikasi" },
-            ]);
-          } else {
-            SetOpenForm(false);
-            Swal.fire({
-              icon: "success",
-              title: "Penambahan lowongan kerja sukses",
-              text: "Penambahan lowongan kerja terbaru berhasil",
-            });
-            SetJobName("");
-            SetJobDescription("");
-            SetCategoryName("");
-            SetOptionValue(null);
-            SetInputOption(null);
-            SetStartDate(new Date());
-            SetKualifikasiForm([
-              { kualifikasiValue: "", label: "Kualifikasi" },
-            ]);
-            getAllvacancies("", "", "");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+  //     axios
+  //       .post(apiUrl + "/vacancies/post", data)
+  //       .then((response) => {
+  //         if (response.data.error) {
+  //           SetOpenForm(false);
+  //           Swal.fire({
+  //             icon: "error",
+  //             title: "Oops...",
+  //             text: "Something went wrong!",
+  //           });
+  //           SetJobName("");
+  //           SetJobDescription("");
+  //           SetCategoryName("");
+  //           SetOptionValue(null);
+  //           SetInputOption(null);
+  //           SetStartDate(new Date());
+  //           SetKualifikasiForm([
+  //             { kualifikasiValue: "", label: "Kualifikasi" },
+  //           ]);
+  //         } else {
+  //           SetOpenForm(false);
+  //           Swal.fire({
+  //             icon: "success",
+  //             title: "Penambahan lowongan kerja sukses",
+  //             text: "Penambahan lowongan kerja terbaru berhasil",
+  //           });
+  //           SetJobName("");
+  //           SetJobDescription("");
+  //           SetCategoryName("");
+  //           SetOptionValue(null);
+  //           SetInputOption(null);
+  //           SetStartDate(new Date());
+  //           SetKualifikasiForm([
+  //             { kualifikasiValue: "", label: "Kualifikasi" },
+  //           ]);
+  //           getAllvacancies("", "", "");
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // };
 
   const onChangeKualifikasiForm = (e, i) => {
     if (e.target.value.length <= 255) {
@@ -334,196 +334,64 @@ const Career = () => {
     setSelected(newSelected);
   };
 
-  const onDeleteList = () => {
-    axios
-      .delete(apiUrl + "/vacancies/delete?vacancy_id=" + selected)
-      .then((response) => {
-        if (response.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "Penghapusan lowongan kerja sukses",
-            text: "Penghapusan lowongan kerja berhasil",
-          });
-          setSelected([]);
-          getAllvacancies("", "", "");
-        }
-      });
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function getComparator(order, orderBy) {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) {
-        return order;
-      }
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
+  // const onDeleteList = () => {
+  //   axios
+  //     .delete(apiUrl + "/vacancies/delete?vacancy_id=" + selected)
+  //     .then((response) => {
+  //       if (response.data.error) {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Oops...",
+  //           text: "Something went wrong!",
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "Penghapusan lowongan kerja sukses",
+  //           text: "Penghapusan lowongan kerja berhasil",
+  //         });
+  //         setSelected([]);
+  //         getAllvacancies("", "", "");
+  //       }
+  //     });
+  // };
 
   const headCells = [
     {
       id: "job_name",
-      numeric: false,
-      disablePadding: true,
-      label: "Pekerjaan",
-    },
-
-    {
-      id: "",
-      numeric: false,
-      disablePadding: false,
-      label: "Gambar",
-    },
-    {
-      id: "job_description",
-      numeric: false,
-      disablePadding: false,
-      label: "Deskripsi",
+      label: "Nama Pekerjaan",
     },
     {
       id: "last_submission",
-      numeric: false,
-      disablePadding: false,
-      label: "",
+      label: "Tanggal Penyerahan Terakhir",
     },
     {
       id: "category_name",
-      numeric: false,
-      disablePadding: false,
-      label: "Kategori",
+      label: "Kategori Pekerjaan",
+    },
+    {
+      id: "status",
+      label: "Status",
     },
   ];
-  function EnhancedTableHead(props) {
-    const {
-      onSelectAllClick,
-      order,
-      orderBy,
-      numSelected,
-      rowCount,
-      onRequestSort,
-    } = props;
-    const createSortHandler = (property) => (event) => {
-      onRequestSort(event, property);
-    };
 
-    return (
-      <TableHead>
-        <TableRow>
-          {headCells.map((headCell) => (
-            <TableCell
-              style={{
-                fontSize: "14px",
-                fontWeight: "800",
-                color: "#6B7280",
-              }}
-              key={headCell.id}
-              align={headCell.numeric ? "right" : "left"}
-              padding={headCell.disablePadding ? "none" : "normal"}
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-  const EnhancedTableToolbar = (props) => {
-    const { numSelected } = props;
+  const rows = [
+    {
+      id: "1",
+      name: "Security",
+      last_submission: "12-12-2023",
+      category: "Security",
+      status: "DRAFT",
+    },
+    {
+      id: "2",
+      name: "OB",
+      last_submission: "12-12-2023",
+      category: "Kebersihan",
+      status: "PUBLISHED",
+    },
+  ];
 
-    return (
-      <Toolbar
-        sx={{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-          ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.primary.main,
-                theme.palette.action.activatedOpacity
-              ),
-          }),
-        }}
-      >
-        {numSelected > 0 && (
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
-            {numSelected} Terplilih
-          </Typography>
-        )}
-
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton onClick={onDeleteList}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <div />
-        )}
-      </Toolbar>
-    );
-  };
   return (
     <HContainer>
       <HCommonContent
@@ -533,6 +401,8 @@ const Career = () => {
         selectTitle="Filter Berdasar Kategori"
         searchLabel="Cari Lowongan"
         buttonTitle="Tambah"
+        headCells={headCells}
+        rows={rows}
       />
     </HContainer>
 

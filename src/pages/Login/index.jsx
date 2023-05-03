@@ -11,8 +11,10 @@ import regex from "../../constant/regex";
 import { loginUser } from "../../asyncActions/AuthActions";
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  let navigate = useNavigate();
   const [email, password, setEmail, setPassword, setUserData] = useUserStore(
     (state) => [
       state.email,
@@ -37,8 +39,10 @@ export default function Login() {
       };
       const response = await loginUser(data);
       if (response.data.success) {
+        localStorage.setItem("userData", JSON.stringify(response.data.data));
         setUserData(response.data.data);
         setBackdrop(false);
+        navigate("/");
         setOpenSnackbar({
           openSnackbar: true,
           type: "success",

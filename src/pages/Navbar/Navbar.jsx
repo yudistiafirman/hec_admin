@@ -14,7 +14,7 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import OnDeviceTrainingIcon from "@mui/icons-material/OnDeviceTraining";
-import { useNavigate } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import NavListItems from "../../components/molecules/NavListItems";
 
 import AddHomeIcon from "@mui/icons-material/AddHome";
@@ -27,6 +27,7 @@ const AdminNavbar = () => {
   const [open, setOpen] = React.useState(true);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const onLogoutAdmin = () => {
+    localStorage.clear();
     setUserData(null);
     navigate("/");
   };
@@ -56,7 +57,7 @@ const AdminNavbar = () => {
       <NavListItems
         selected={selectedIndex === 0}
         onClick={() => {
-          navigate("/career");
+          navigate("/");
           setSelectedIndex(0);
         }}
         itemIcon={<BusinessCenterIcon />}
@@ -65,7 +66,7 @@ const AdminNavbar = () => {
       <NavListItems
         selected={selectedIndex === 1}
         onClick={() => {
-          navigate("/adminfasilitas");
+          navigate("/fasilitas");
           setSelectedIndex(1);
         }}
         itemIcon={<FoundationIcon />}
@@ -93,7 +94,7 @@ const AdminNavbar = () => {
             selected={selectedIndex === 4}
             sx={{ pl: 4 }}
             onClick={() => {
-              navigate("/admingaleri");
+              navigate("/galeri");
               setSelectedIndex(4);
             }}
             itemIcon={<OnDeviceTrainingIcon />}
@@ -104,7 +105,7 @@ const AdminNavbar = () => {
       <NavListItems
         selected={selectedIndex === 5}
         onClick={() => {
-          navigate("/adminpelatihan");
+          navigate("/pelatihan");
           setSelectedIndex(5);
         }}
         itemIcon={<ModelTrainingIcon />}
@@ -113,7 +114,7 @@ const AdminNavbar = () => {
       <NavListItems
         selected={selectedIndex === 6}
         onClick={() => {
-          navigate("/adminjasa");
+          navigate("/jasa");
           setSelectedIndex(6);
         }}
         itemIcon={<RoomServiceIcon />}
@@ -122,7 +123,7 @@ const AdminNavbar = () => {
       <NavListItems
         selected={selectedIndex === 7}
         onClick={() => {
-          navigate("/adminpenjualan");
+          navigate("/penjualan");
           setSelectedIndex(7);
         }}
         itemIcon={<MonetizationOnIcon />}

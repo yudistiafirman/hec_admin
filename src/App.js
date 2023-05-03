@@ -1,3 +1,4 @@
+import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import BackdropLoading from "./components/molecules/BackDrop";
 import SnackBar from "./components/molecules/Snackbar";
@@ -17,7 +18,10 @@ function App() {
   );
   return (
     <>
-      <Route />
+      <BrowserRouter>
+        <Route />
+      </BrowserRouter>
+
       <BackdropLoading open={openBackdrop} />
       <SnackBar
         open={openSnackbar}

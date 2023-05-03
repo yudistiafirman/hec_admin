@@ -1,8 +1,10 @@
-import { IconButton, Toolbar, Tooltip, Typography, alpha } from "@mui/material";
+import { Box, Chip, Toolbar, Tooltip, Typography, alpha } from "@mui/material";
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
+import HSpacer from "../atoms/HSpacer";
 
-const HTableToolbar = ({ numSelected }) => {
+const HTableToolbar = ({ numSelected, onClickDetail, onDelete }) => {
   return (
     <Toolbar
       sx={{
@@ -24,16 +26,33 @@ const HTableToolbar = ({ numSelected }) => {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} terpilih
         </Typography>
       )}
 
       {numSelected > 0 && (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <Box sx={{ display: "flex" }}>
+          {numSelected === 1 && (
+            <Tooltip title="Lihat Detail">
+              <Chip
+                icon={<FindInPageIcon />}
+                label="Lihat Detail"
+                color="info"
+                onClick={onClickDetail}
+              />
+            </Tooltip>
+          )}
+
+          <HSpacer size="small" />
+          <Tooltip title="Hapus">
+            <Chip
+              onClick={onDelete}
+              icon={<DeleteIcon />}
+              label="Hapus"
+              color="error"
+            />
+          </Tooltip>
+        </Box>
       )}
     </Toolbar>
   );

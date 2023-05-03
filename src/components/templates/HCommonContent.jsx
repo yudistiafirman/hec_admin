@@ -1,5 +1,7 @@
 import React from "react";
-import HCommonHeader from "../organism/HCommonHeader";
+import HTableToolbar from "../organism/HToolbarHeader";
+import HTable from "../organism/HTable";
+import HSpacer from "../atoms/HSpacer";
 
 const HCommonContent = ({
   headerTitle,
@@ -13,10 +15,45 @@ const HCommonContent = ({
   selectItems,
   onAdd,
   buttonTitle,
+  headCells,
+  rows,
+  onClickDetail,
+  onDelete,
 }) => {
+  const [selected, setSelected] = React.useState([]);
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+  const isSelected = (id) => selected.indexOf(id) !== -1;
   return (
     <>
-      <HCommonHeader
+      <HTableToolbar
         headerTitle={headerTitle}
         selectTitle={selectTitle}
         infoTitle={infoTitle}
@@ -28,6 +65,17 @@ const HCommonContent = ({
         selectItems={selectItems}
         onAdd={onAdd}
         buttonTitle={buttonTitle}
+      />
+      <HSpacer size="extraLarge" />
+      <HTable
+        selected={selected}
+        onClickDetail={onClickDetail}
+        onDelete={onDelete}
+        onSelectAllClick={handleSelectAllClick}
+        headCells={headCells}
+        rows={rows}
+        isSelected={isSelected}
+        handleClick={handleClick}
       />
     </>
   );

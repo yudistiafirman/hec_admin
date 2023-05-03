@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import Career from "../pages/Career/Career";
 import Gallery from "../pages/Gallery";
 import Navbar from "../pages/Navbar/Navbar";
@@ -10,29 +16,84 @@ import Sale from "../pages/Sale";
 import Login from "../pages/Login";
 import { useUserStore } from "../stores/useUserStore";
 import "./route.css";
+import PrivateRoute from "./PrivateRoute";
 
 const AdminRoute = () => {
-  let [userData] = useUserStore((state) => [state.userData]);
+  let [userData, setUserData] = useUserStore((state) => [
+    state.userData,
+    state.setUserData,
+  ]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if (userData) {
+      setUserData(userData);
+      navigate("/");
+    }
+  }, []);
+
   return (
-    <Router>
-      {userData ? (
-        <div className="route-container">
-          <Navbar />
-          <Routes>
-            <Route path="/career" element={<Career />} />
-            <Route path="/adminfasilitas" element={<Facility />} />
-            <Route path="/admingaleri" element={<Gallery />} />
-            <Route path="/adminpelatihan" element={<Training />} />
-            <Route path="/adminjasa" element={<Services />} />
-            <Route path="/adminpenjualan" element={<Sale />} />
-          </Routes>
-        </div>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Login />} />
-        </Routes>
-      )}
-    </Router>
+    <div className="route-container">
+      {location.pathname !== "/login" && userData && <Navbar />}
+      <Routes>
+        <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Career />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/fasilitas"
+          element={
+            <PrivateRoute>
+              <Facility />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/galeri"
+          element={
+            <PrivateRoute>
+              <Gallery />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/pelatihan"
+          element={
+            <PrivateRoute>
+              <Training />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/jasa"
+          element={
+            <PrivateRoute>
+              <Services />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/penjualan"
+          element={
+            <PrivateRoute>
+              <Sale />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </div>
   );
 };
 
