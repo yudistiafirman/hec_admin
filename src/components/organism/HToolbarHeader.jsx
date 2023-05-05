@@ -6,6 +6,7 @@ import HSelect from "../atoms/HSelect";
 import HTextField from "../atoms/HTextField";
 import HButton from "../atoms/HButton";
 import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 const HCommonHeaders = ({
   headerTitle,
   selectTitle,
@@ -50,7 +51,7 @@ const HCommonHeaders = ({
             onChange={onChangeSearch}
             value={searchValue}
             label={searchLabel}
-            needSearchicon
+            icon={<SearchIcon />}
           />
         </Box>
         <Box

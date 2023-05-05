@@ -1,0 +1,71 @@
+import React from "react";
+import HecContainer from "../atoms/HContainer";
+import { Typography } from "@mui/material";
+import HSpacer from "../atoms/HSpacer";
+import { Box } from "@mui/system";
+import HDetailsDecs from "../organism/HDetailsDesc";
+import HDetailsPage from "../organism/HDetailsPage";
+
+const HCommmonDetails = ({
+  detailsTitle,
+  createdAt,
+  createdAtTitle,
+  lastSubmission,
+  lastSubmissionTitle,
+  category,
+  categoryTitle,
+  type,
+  typeTitle,
+  salaryRange,
+  salaryRangeTitle,
+  location,
+  locationTitle,
+  status,
+  statusTitle,
+  desc,
+  descTitle,
+  image,
+  responsibilities,
+  responsibilitiesTitle,
+  requirements,
+  requirementsTitle,
+}) => {
+  return (
+    <HecContainer>
+      <Typography sx={{ color: "var(--text)" }} component="h2" variant="h3">
+        {detailsTitle}
+      </Typography>
+      <HSpacer size="small" />
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <HDetailsDecs
+          desc={desc}
+          descTitle={descTitle}
+          image={image}
+          responsibilities={responsibilities}
+          responsibilitiesTitle={responsibilitiesTitle}
+          requirements={requirements}
+          requirementsTitle={requirementsTitle}
+        />
+        <HSpacer size="extraLarge" />
+        <HDetailsPage
+          createdAt={createdAt}
+          createdAtTitle={createdAtTitle}
+          lastSubmission={lastSubmission}
+          lastSubmissionTitle={lastSubmissionTitle}
+          category={category}
+          categoryTitle={categoryTitle}
+          type={type}
+          typeTitle={typeTitle}
+          salaryRange={salaryRange}
+          salaryRangeTitle={salaryRangeTitle}
+          location={location}
+          locationTitle={locationTitle}
+          status={status}
+          statusTitle={statusTitle}
+        />
+      </Box>
+    </HecContainer>
+  );
+};
+
+export default HCommmonDetails;

@@ -55,9 +55,9 @@ const AdminNavbar = () => {
       }
     >
       <NavListItems
-        selected={location.pathname === "/"}
+        selected={location.pathname.includes("career")}
         onClick={() => {
-          navigate("/");
+          navigate("/career");
         }}
         itemIcon={<BusinessCenterIcon />}
         itemTitle="Lowongan Pekerjaan"

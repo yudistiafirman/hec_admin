@@ -18,6 +18,7 @@ import { useUserStore } from "../stores/useUserStore";
 import "./route.css";
 import PrivateRoute from "./PrivateRoute";
 import CareerDetail from "../pages/Career/CareerDetail";
+import AddCareer from "../pages/Career/AddCareer";
 
 const AdminRoute = () => {
   const navigate = useNavigate();
@@ -38,9 +39,10 @@ const AdminRoute = () => {
     <div className="route-container">
       {location.pathname !== "/login" && isLoggedIn && <Navbar />}
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route
           exact
-          path="/"
+          path="/career"
           element={
             <PrivateRoute>
               <Career />
@@ -56,7 +58,16 @@ const AdminRoute = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          exact
+          path="/career/add"
+          element={
+            <PrivateRoute>
+              <AddCareer />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/fasilitas"
           element={

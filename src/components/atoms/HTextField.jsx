@@ -1,23 +1,35 @@
 import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
-import SearchIcon from "@mui/icons-material/Search";
 
-const HTextField = ({ label, needSearchicon, value, onChange }) => {
+const HTextField = ({
+  label,
+  value,
+  onChange,
+  multiline,
+  rows,
+  required,
+  sx,
+  inputMode,
+  icon,
+  placeHolder,
+}) => {
   return (
     <TextField
       label={label}
       value={value}
+      sx={sx}
+      multiline={multiline}
+      rows={rows}
+      inputMode={inputMode}
+      required={required}
       onChange={onChange}
       id="standard-start-adornment"
-      InputProps={
-        needSearchicon && {
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }
-      }
+      placeholder={placeHolder}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">{icon}</InputAdornment>
+        ),
+      }}
       variant="outlined"
     />
   );

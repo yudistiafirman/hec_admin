@@ -1,22 +1,21 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React from "react";
 
-const HSelect = ({ label, value, onChange, items }) => {
+const HSelect = ({ label, value, onChange, items, required, sx }) => {
   return (
     <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select
         label={label}
         value={value}
+        required={required}
         onChange={onChange}
-        sx={{
-          backgroundColor: "var(--off-white)",
-        }}
+        sx={sx}
       >
         {items &&
           items.map((v, i) => {
             return (
-              <MenuItem key={i} value={10}>
+              <MenuItem key={i} value={v}>
                 {v}
               </MenuItem>
             );

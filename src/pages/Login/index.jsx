@@ -42,7 +42,7 @@ export default function Login() {
         localStorage.setItem("userData", JSON.stringify(response.data.data));
         setUserData(response.data.data);
         setBackdrop(false);
-        navigate("/");
+        navigate("/career");
         setOpenSnackbar({
           openSnackbar: true,
           type: "success",
