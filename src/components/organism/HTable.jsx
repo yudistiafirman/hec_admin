@@ -13,6 +13,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import HTableToolbar from "../molecules/HTableToolbar";
 import HTableHead from "../molecules/HTableHead";
+import dayjs from "dayjs";
 
 const HTable = ({
   selected,
@@ -24,6 +25,7 @@ const HTable = ({
   onClickDetail,
   onDelete,
   page,
+  count,
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
@@ -74,16 +76,37 @@ const HTable = ({
                       {row.name && <TableCell>{row.name}</TableCell>}
 
                       {row.last_submission && (
-                        <TableCell>{row.last_submission}</TableCell>
+                        <TableCell>
+                          {dayjs(row.last_submission).format("MM/DD/YYYY")}
+                        </TableCell>
                       )}
-                      {row.category && <TableCell>{row.category}</TableCell>}
-                      {row.status && (
+                      {row.category_name && (
+                        <TableCell>{row.category_name}</TableCell>
+                      )}
+                      {row.type_name && (
+                        <TableCell>
+                          {" "}
+                          <Chip
+                            color={
+                              row.type_name === "FULL_TIME"
+                                ? "info"
+                                : row.type_name === "PART_TIME"
+                                ? "secondary"
+                                : "error"
+                            }
+                            label={row.type_name}
+                          />
+                        </TableCell>
+                      )}
+                      {row.status_name && (
                         <TableCell>
                           <Chip
                             color={
-                              row.status === "DRAFT" ? "primary" : "success"
+                              row.status_name === "DRAFT"
+                                ? "primary"
+                                : "success"
                             }
-                            label={row.status}
+                            label={row.status_name}
                           />
                         </TableCell>
                       )}
@@ -94,9 +117,9 @@ const HTable = ({
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10]}
           component="div"
-          count={rows.length}
+          count={count}
           labelRowsPerPage="Baris Setiap Halaman"
           rowsPerPage={rowsPerPage}
           page={page}

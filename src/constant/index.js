@@ -14,6 +14,10 @@ export const CAREER_TABLE_HEAD_CELLS = [
     label: "Kategori Pekerjaan",
   },
   {
+    id: "job_type",
+    label: "Tipe Pekerjaan",
+  },
+  {
     id: "status",
     label: "Status",
   },
@@ -28,4 +32,4 @@ export const SALARY_RANGE = [
 
 export const CAREER_TYPE = ["PENUH WAKTU", "PARUH WAKTU", "KONTRAK"];
 
-export const STATUS = ["DRAFT", "PUBLISHED"];
+export const STATUS = ["DRAFT", "PUBLISHED", "DELETED"];

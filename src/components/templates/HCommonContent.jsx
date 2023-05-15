@@ -19,6 +19,10 @@ const HCommonContent = ({
   rows,
   onClickDetail,
   onDelete,
+  rowsPerPage,
+  handleChangePage,
+  page,
+  count,
 }) => {
   const [selected, setSelected] = React.useState([]);
 
@@ -74,6 +78,10 @@ const HCommonContent = ({
         onSelectAllClick={handleSelectAllClick}
         headCells={headCells}
         rows={rows}
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
         isSelected={isSelected}
         handleClick={handleClick}
       />

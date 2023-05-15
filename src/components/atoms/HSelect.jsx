@@ -15,8 +15,8 @@ const HSelect = ({ label, value, onChange, items, required, sx }) => {
         {items &&
           items.map((v, i) => {
             return (
-              <MenuItem key={i} value={v}>
-                {v}
+              <MenuItem key={i} value={v.id}>
+                {v.category_name}
               </MenuItem>
             );
           })}
