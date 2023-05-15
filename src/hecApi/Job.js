@@ -42,4 +42,9 @@ export default class JobApi {
     const url = new URL(`${API_URL_JOB}/update/${id}`);
     return url.toString();
   };
+
+  static deleteJob = () => {
+    const url = new URL(`${API_URL_JOB}/delete`);
+    return url.toString();
+  };
 }

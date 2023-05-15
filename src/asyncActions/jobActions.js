@@ -20,3 +20,7 @@ export const getCategories = async () => {
 export const updateJobStatus = async (id, data) => {
   return apiRequest(JobApi.updateJobStatus(id), "PUT", data);
 };
+
+export const deleteJob = async (data) => {
+  return apiRequest(JobApi.deleteJob(), "PUT", data);
+};

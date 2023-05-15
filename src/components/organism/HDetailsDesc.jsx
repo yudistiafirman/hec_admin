@@ -5,6 +5,11 @@ import HDetailText from "../molecules/HDetailText";
 import HDetailUnorderedList from "../molecules/HDetailUnorderedList";
 import HImage from "../atoms/Himage";
 
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_API_URL_PROD
+    : process.env.REACT_APP_API_URL_DEV;
+
 const HDetailsDecs = ({
   desc,
   descTitle,
@@ -14,6 +19,7 @@ const HDetailsDecs = ({
   requirements,
   requirementsTitle,
 }) => {
+  console.log("ini base", BASE_URL);
   return (
     <Box
       sx={{
@@ -24,7 +30,7 @@ const HDetailsDecs = ({
         border: "1px solid var(--border)",
       }}
     >
-      <HImage image={image} />
+      <HImage image={`${BASE_URL}/${image}`} />
       <HSpacer size="large" />
       {desc && <HDetailText title={descTitle} detail={desc} />}
       <HSpacer size="large" />

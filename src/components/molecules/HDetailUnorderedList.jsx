@@ -10,7 +10,7 @@ const HDetailUnorderedList = ({ listTitle, listData }) => {
         component="h2"
         variant="subtitle1"
       >
-        Tanggung Jawab
+        {listTitle}
       </Typography>
       {listData &&
         listData.map((v, i) => {

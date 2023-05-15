@@ -1,26 +1,29 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import "./Career.css";
 
 import HContainer from "../../components/atoms/HContainer";
 import HCommonContent from "../../components/templates/HCommonContent";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CAREER_TABLE_HEAD_CELLS } from "../../constant";
 import { useCareerStore } from "../../stores/useCareerStore";
-import { getAllJob, getCategories } from "../../asyncActions/jobActions";
+import {
+  deleteJob,
+  getAllJob,
+  getCategories,
+} from "../../asyncActions/jobActions";
 import { CircularProgress } from "@mui/material";
+import { useBackdropStore } from "../../stores/useBackdropStore";
+import { useSnackBarStore } from "../../stores/useSnackBarStore";
 
 const Career = () => {
   const navigate = useNavigate();
-  const params = useParams();
 
   const [
     page,
     limit,
     searchQuery,
-    filterBy,
     loading,
     totalItems,
-    totalPage,
     categories,
     selectedCategories,
     data,
@@ -35,10 +38,8 @@ const Career = () => {
     state.page,
     state.limit,
     state.searchQuery,
-    state.filterBy,
     state.loading,
     state.totalItems,
-    state.totalPage,
     state.categories,
     state.selectedCategories,
     state.data,
@@ -50,7 +51,10 @@ const Career = () => {
     state.enableLoading,
     state.disableLoading,
   ]);
-  console.log("ini total page", totalPage);
+  const [setBackdrop] = useBackdropStore((state) => [state.setBackdrop]);
+  const [setOpenSnackbar] = useSnackBarStore((state) => [
+    state.setOpenSnackbar,
+  ]);
   const goToCareerDetail = (selectedCareer) => {
     const careerId = selectedCareer[0];
     navigate(`/career/detail/${careerId}`);
@@ -78,7 +82,11 @@ const Career = () => {
       disableLoading();
     } catch (error) {
       disableLoading();
-      console.log("ini error", error);
+      setOpenSnackbar({
+        openSnackbar: true,
+        type: "error",
+        message: error.response.data.message,
+      });
     }
   };
 
@@ -87,7 +95,11 @@ const Career = () => {
       const response = await getCategories();
       setCategories(response.data.data);
     } catch (error) {
-      console.log("ini error", error);
+      setOpenSnackbar({
+        openSnackbar: true,
+        type: "error",
+        message: error.response.data.message,
+      });
     }
   };
 
@@ -102,6 +114,32 @@ const Career = () => {
     increasePage(0);
   };
 
+  const onDelete = async (selected) => {
+    try {
+      setBackdrop(true);
+      const payload = {
+        idToDelete: selected,
+      };
+      const response = await deleteJob(payload);
+      if (response.data.success) {
+        setBackdrop(false);
+        setOpenSnackbar({
+          openSnackbar: true,
+          type: "success",
+          message: response.data.message,
+        });
+        getAllJobData();
+      }
+    } catch (error) {
+      setBackdrop(false);
+      setOpenSnackbar({
+        openSnackbar: true,
+        type: "error",
+        message: error.response.data.message,
+      });
+    }
+  };
+
   if (loading) {
     return <CircularProgress size={50} sx={{ margin: "auto" }} />;
   }
@@ -114,6 +152,7 @@ const Career = () => {
         total={totalItems}
         selectTitle="Filter Berdasar Kategori"
         searchLabel="Cari Lowongan"
+        onDelete={onDelete}
         onChangeSearch={onChangeSearch}
         onSelect={onChangeCategories}
         selectItems={categories}

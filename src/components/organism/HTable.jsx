@@ -35,7 +35,7 @@ const HTable = ({
       <Paper sx={{ width: "100%", mb: 2 }}>
         <HTableToolbar
           onClickDetail={onClickDetail}
-          onDelete={onDelete}
+          onDelete={() => onDelete(selected)}
           numSelected={selected && selected.length}
         />
         <TableContainer>
