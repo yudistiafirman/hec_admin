@@ -24,12 +24,46 @@ export const CAREER_TABLE_HEAD_CELLS = [
 ];
 
 export const SALARY_RANGE = [
-  "3.000.000 - 5.000.000",
-  "5.000.000 - 7.000.000",
-  "7.000.000 - 9.000.000",
-  "diatas 10.000.000",
+  {
+    id: "1",
+    category_name: "3.000.000 - 5.000.000",
+  },
+  {
+    id: "2",
+    category_name: "5.000.000 - 7.000.000",
+  },
+  {
+    id: "3",
+    category_name: "7.000.000 - 9.000.000",
+  },
+  {
+    id: "4",
+    category_name: "diatas 10.000.000",
+  },
 ];
 
-export const CAREER_TYPE = ["PENUH WAKTU", "PARUH WAKTU", "KONTRAK"];
+export const CAREER_TYPE = [
+  {
+    id: "1",
+    category_name: "FULL_TIME",
+  },
+  {
+    id: "2",
+    category_name: "PART_TIME",
+  },
+  {
+    id: "3",
+    category_name: "CONTRACT",
+  },
+];
 
-export const STATUS = ["DRAFT", "PUBLISHED", "DELETED"];
+export const STATUS = [
+  {
+    id: "1",
+    category_name: "PUBLISHED",
+  },
+  {
+    id: "2",
+    category_name: "DRAFT",
+  },
+];
