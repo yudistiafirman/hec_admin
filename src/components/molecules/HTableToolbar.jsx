@@ -4,7 +4,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import HSpacer from "../atoms/HSpacer";
 
-const HTableToolbar = ({ numSelected, onClickDetail, onDelete }) => {
+const HTableToolbar = ({
+  numSelected,
+  onClickDetail,
+  onDelete,
+  status,
+  onChangeStatus,
+}) => {
+  console.log("ini status", status);
   return (
     <Toolbar
       sx={{
@@ -32,6 +39,20 @@ const HTableToolbar = ({ numSelected, onClickDetail, onDelete }) => {
 
       {numSelected > 0 && (
         <Box sx={{ display: "flex" }}>
+          {numSelected === 1 && (
+            <Tooltip title="Lihat Detail">
+              <Chip
+                label="Ganti Status"
+                color={
+                  status.length > 0 && status[0].status_name === "DRAFT"
+                    ? "success"
+                    : "primary"
+                }
+                onClick={onChangeStatus}
+              />
+            </Tooltip>
+          )}
+          <HSpacer size="small" />
           {numSelected === 1 && (
             <Tooltip title="Lihat Detail">
               <Chip

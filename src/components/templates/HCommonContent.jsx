@@ -2,6 +2,7 @@ import React from "react";
 import HTableToolbar from "../organism/HToolbarHeader";
 import HTable from "../organism/HTable";
 import HSpacer from "../atoms/HSpacer";
+import { CircularProgress } from "@mui/material";
 
 const HCommonContent = ({
   headerTitle,
@@ -23,6 +24,7 @@ const HCommonContent = ({
   handleChangePage,
   page,
   count,
+  isLoading,
 }) => {
   const [selected, setSelected] = React.useState([]);
 
@@ -71,20 +73,24 @@ const HCommonContent = ({
         buttonTitle={buttonTitle}
       />
       <HSpacer size="extraLarge" />
-      <HTable
-        selected={selected}
-        onClickDetail={() => onClickDetail(selected)}
-        onDelete={onDelete}
-        onSelectAllClick={handleSelectAllClick}
-        headCells={headCells}
-        rows={rows}
-        count={count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        handleChangePage={handleChangePage}
-        isSelected={isSelected}
-        handleClick={handleClick}
-      />
+      {isLoading ? (
+        <CircularProgress size={50} sx={{ margin: "auto" }} />
+      ) : (
+        <HTable
+          selected={selected}
+          onClickDetail={() => onClickDetail(selected)}
+          onDelete={onDelete}
+          onSelectAllClick={handleSelectAllClick}
+          headCells={headCells}
+          rows={rows}
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          isSelected={isSelected}
+          handleClick={handleClick}
+        />
+      )}
     </>
   );
 };

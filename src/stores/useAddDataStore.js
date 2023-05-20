@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
 import { create } from "zustand";
 
-export const useAddDataStore = create((set, get) => ({
+const initialState = {
   step: 0,
   image: null,
+  name: "",
   description: "",
   firstSection: [
     {
@@ -18,12 +19,19 @@ export const useAddDataStore = create((set, get) => ({
     },
   ],
   dateValue: dayjs(),
+  jobCategoryData: [],
   employmentType: "",
   salaryRange: "",
   jobCategory: "",
   status: "",
+  textCategory: "",
   jobStatus: "",
   jobLocation: "",
+};
+
+export const useAddDataStore = create((set, get) => ({
+  ...initialState,
+  onChangeName: (e) => set(() => ({ name: e.target.value })),
   increaseStep: () => set((state) => ({ step: state.step + 1 })),
   decreaseStep: () => set((state) => ({ step: state.step - 1 })),
   onChangeFile: (e) => set(() => ({ image: e.target.files[0] })),
@@ -32,9 +40,15 @@ export const useAddDataStore = create((set, get) => ({
   onChangeEmploymentType: (e) => {
     set(() => ({ employmentType: e.target.value }));
   },
+  onChangeTextCategory: (e) =>
+    set(() => ({ textCategory: e.target.value, jobCategory: "" })),
+
+  onChangeJobCategoryData: (newJobCategoryData) =>
+    set(() => ({ jobCategoryData: newJobCategoryData })),
 
   onChangeSalaryRange: (e) => set(() => ({ salaryRange: e.target.value })),
-  onChangeJobCategory: (e) => set(() => ({ jobCategory: e.target.value })),
+  onChangeJobCategory: (e) =>
+    set(() => ({ jobCategory: e.target.value, textCategory: "" })),
   onChangeStatus: (e) => set(() => ({ status: e.target.value })),
   onChangeJobStatus: (e) => set(() => ({ jobStatus: e.target.value })),
   onChangeJobLocation: (e) => set(() => ({ jobLocation: e.target.value })),
@@ -85,5 +99,8 @@ export const useAddDataStore = create((set, get) => ({
       }
     });
     set(() => ({ secondSection: newSecondSectionValue }));
+  },
+  reset: () => {
+    set(initialState);
   },
 }));

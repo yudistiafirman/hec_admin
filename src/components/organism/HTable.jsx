@@ -36,6 +36,11 @@ const HTable = ({
         <HTableToolbar
           onClickDetail={onClickDetail}
           onDelete={() => onDelete(selected)}
+          status={
+            rows.length > 0 &&
+            selected.length > 0 &&
+            rows.filter((v) => v.id === selected[0])
+          }
           numSelected={selected && selected.length}
         />
         <TableContainer>

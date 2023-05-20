@@ -62,7 +62,7 @@ const Career = () => {
 
   useEffect(() => {
     fetchDataCareer();
-  }, [page, selectedCategories]);
+  }, [page, selectedCategories, searchQuery]);
 
   const fetchDataCareer = () => {
     getAllJobData();
@@ -93,7 +93,10 @@ const Career = () => {
   const getCategoriesData = async () => {
     try {
       const response = await getCategories();
-      setCategories(response.data.data);
+      const categories = [{ id: "", category_name: "Semua" }];
+      categories.push(...response.data.data);
+
+      setCategories(categories);
     } catch (error) {
       setOpenSnackbar({
         openSnackbar: true,
@@ -140,9 +143,9 @@ const Career = () => {
     }
   };
 
-  if (loading) {
-    return <CircularProgress size={50} sx={{ margin: "auto" }} />;
-  }
+  // if (loading) {
+  //   return <CircularProgress size={50} sx={{ margin: "auto" }} />;
+  // }
 
   return (
     <HContainer>
@@ -163,6 +166,7 @@ const Career = () => {
         page={page}
         count={totalItems}
         handleChangePage={handleChangePage}
+        isLoading={loading}
         onClickDetail={(selectedCareer) => goToCareerDetail(selectedCareer)}
         rows={data}
       />

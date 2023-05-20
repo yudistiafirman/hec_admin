@@ -29,9 +29,19 @@ const HAddDetail = ({
   onChangeDate,
   dateValue,
   dateLabel,
+  categoryTextValue,
+  categoryTextLabel,
+  onChangeCategoryText,
+  name,
+  nameLabel,
+  onChangeName,
 }) => {
   return (
     <Box sx={{ flex: 0.4 }}>
+      <Box>
+        <HTextField value={name} label={nameLabel} onChange={onChangeName} />
+      </Box>
+      <HSpacer size="extraLarge" />
       <Box>
         <HDatePicker
           label={dateLabel}
@@ -62,6 +72,14 @@ const HAddDetail = ({
           label={categoryLabel}
           onChange={onChangeCategory}
           items={categoryItems}
+        />
+      </Box>
+      <HSpacer size="extraLarge" />
+      <Box>
+        <HTextField
+          value={categoryTextValue}
+          label={categoryTextLabel}
+          onChange={onChangeCategoryText}
         />
       </Box>
       <HSpacer size="extraLarge" />
