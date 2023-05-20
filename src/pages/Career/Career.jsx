@@ -10,10 +10,12 @@ import {
   deleteJob,
   getAllJob,
   getCategories,
+  updateJobStatus,
 } from "../../asyncActions/jobActions";
 import { CircularProgress } from "@mui/material";
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
+import useSelected from "../../hooks/useSelected";
 
 const Career = () => {
   const navigate = useNavigate();
@@ -55,6 +57,8 @@ const Career = () => {
   const [setOpenSnackbar] = useSnackBarStore((state) => [
     state.setOpenSnackbar,
   ]);
+  const [selected, setSelected] = React.useState([]);
+
   const goToCareerDetail = (selectedCareer) => {
     const careerId = selectedCareer[0];
     navigate(`/career/detail/${careerId}`);
@@ -131,6 +135,7 @@ const Career = () => {
           type: "success",
           message: response.data.message,
         });
+        setSelected([]);
         getAllJobData();
       }
     } catch (error) {
@@ -143,9 +148,63 @@ const Career = () => {
     }
   };
 
-  // if (loading) {
-  //   return <CircularProgress size={50} sx={{ margin: "auto" }} />;
-  // }
+  const onChangeStatus = async (selected) => {
+    try {
+      setBackdrop(true);
+      const jobId = selected[0];
+      const statusValue = data.filter((v) => v.id === jobId);
+      const statusToUpdate =
+        statusValue[0].status_name === "DRAFT" ? "PUBLISHED" : "DRAFT";
+      const response = await updateJobStatus(jobId, { status: statusToUpdate });
+      if (response.data.success) {
+        setBackdrop(false);
+        setOpenSnackbar({
+          openSnackbar: true,
+          type: "success",
+          message: response.data.message,
+        });
+        setSelected([]);
+        getAllJobData();
+      }
+    } catch (error) {
+      setBackdrop(false);
+      setOpenSnackbar({
+        openSnackbar: true,
+        type: "error",
+        message: error.response.data.message,
+      });
+    }
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+  };
+
+  const handleSelectAllClick = (event, rows) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   return (
     <HContainer>
@@ -167,6 +226,11 @@ const Career = () => {
         count={totalItems}
         handleChangePage={handleChangePage}
         isLoading={loading}
+        selected={selected}
+        handleSelectAllClick={handleSelectAllClick}
+        isSelected={isSelected}
+        handleClick={handleClick}
+        onChangeStatus={onChangeStatus}
         onClickDetail={(selectedCareer) => goToCareerDetail(selectedCareer)}
         rows={data}
       />

@@ -11,7 +11,6 @@ const HTableToolbar = ({
   status,
   onChangeStatus,
 }) => {
-  console.log("ini status", status);
   return (
     <Toolbar
       sx={{

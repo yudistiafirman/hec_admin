@@ -29,6 +29,7 @@ const HTable = ({
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
+  onChangeStatus,
 }) => {
   return (
     <Box sx={{ minWidth: "100%" }}>
@@ -41,12 +42,13 @@ const HTable = ({
             selected.length > 0 &&
             rows.filter((v) => v.id === selected[0])
           }
+          onChangeStatus={() => onChangeStatus(selected)}
           numSelected={selected && selected.length}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <HTableHead
-              onSelectAllClick={onSelectAllClick}
+              onSelectAllClick={(e) => onSelectAllClick(e, rows)}
               headCells={headCells && headCells}
               rowCount={rows && rows.length}
               numSelected={selected && selected.length}

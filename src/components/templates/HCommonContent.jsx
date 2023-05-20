@@ -25,38 +25,12 @@ const HCommonContent = ({
   page,
   count,
   isLoading,
+  selected,
+  handleSelectAllClick,
+  isSelected,
+  handleClick,
+  onChangeStatus,
 }) => {
-  const [selected, setSelected] = React.useState([]);
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-  const isSelected = (id) => selected.indexOf(id) !== -1;
   return (
     <>
       <HTableToolbar
@@ -80,6 +54,7 @@ const HCommonContent = ({
           selected={selected}
           onClickDetail={() => onClickDetail(selected)}
           onDelete={onDelete}
+          onChangeStatus={onChangeStatus}
           onSelectAllClick={handleSelectAllClick}
           headCells={headCells}
           rows={rows}
