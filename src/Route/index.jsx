@@ -39,79 +39,84 @@ const AdminRoute = () => {
     <div className="route-container">
       {location.pathname !== "/login" && isLoggedIn && <Navbar />}
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          exact
-          path="/career"
-          element={
-            <PrivateRoute>
-              <Career />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          exact
-          path="/career/detail/:careerId"
-          element={
-            <PrivateRoute>
-              <CareerDetail />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          exact
-          path="/career/add"
-          element={
-            <PrivateRoute>
-              <AddCareer />
-            </PrivateRoute>
-          }
-        />
+        {isLoggedIn ? (
+          <>
+            <Route
+              exact
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Career />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              exact
+              path="/career/detail/:careerId"
+              element={
+                <PrivateRoute>
+                  <CareerDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              exact
+              path="/career/add"
+              element={
+                <PrivateRoute>
+                  <AddCareer />
+                </PrivateRoute>
+              }
+            />
 
-        <Route
-          path="/fasilitas"
-          element={
-            <PrivateRoute>
-              <Facility />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/fasilitas"
+              element={
+                <PrivateRoute>
+                  <Facility />
+                </PrivateRoute>
+              }
+            />
 
-        <Route
-          path="/galeri"
-          element={
-            <PrivateRoute>
-              <Gallery />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/galeri"
+              element={
+                <PrivateRoute>
+                  <Gallery />
+                </PrivateRoute>
+              }
+            />
 
-        <Route
-          path="/pelatihan"
-          element={
-            <PrivateRoute>
-              <Training />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/pelatihan"
+              element={
+                <PrivateRoute>
+                  <Training />
+                </PrivateRoute>
+              }
+            />
 
-        <Route
-          path="/jasa"
-          element={
-            <PrivateRoute>
-              <Services />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/jasa"
+              element={
+                <PrivateRoute>
+                  <Services />
+                </PrivateRoute>
+              }
+            />
 
-        <Route
-          path="/penjualan"
-          element={
-            <PrivateRoute>
-              <Sale />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/penjualan"
+              element={
+                <PrivateRoute>
+                  <Sale />
+                </PrivateRoute>
+              }
+            />
+          </>
+        ) : (
+          <Route path="/login" element={<Login />} />
+        )}
       </Routes>
     </div>
   );

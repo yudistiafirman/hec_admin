@@ -14,6 +14,9 @@ const HAddImageDesc = ({
   onChangeDesc,
   rows,
   descValue,
+  name,
+  nameLabel,
+  onChangeName,
 }) => {
   const [preview, setPreview] = useState(undefined);
 
@@ -30,6 +33,10 @@ const HAddImageDesc = ({
   }, [imageFile]);
   return (
     <>
+      <Box>
+        <HTextField value={name} label={nameLabel} onChange={onChangeName} />
+      </Box>
+      <HSpacer size="extraLarge" />
       <Box>
         {imageFile ? <HAddedImage image={preview} /> : <HEmptyImage />}
 

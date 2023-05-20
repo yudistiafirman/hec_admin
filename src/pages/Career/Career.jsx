@@ -12,10 +12,9 @@ import {
   getCategories,
   updateJobStatus,
 } from "../../asyncActions/jobActions";
-import { CircularProgress } from "@mui/material";
+
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
-import useSelected from "../../hooks/useSelected";
 
 const Career = () => {
   const navigate = useNavigate();

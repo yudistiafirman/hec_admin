@@ -29,7 +29,7 @@ const AdminNavbar = () => {
   const onLogoutAdmin = () => {
     localStorage.clear();
     setUserData(null);
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   const handleOpenGallery = () => {
@@ -57,7 +57,7 @@ const AdminNavbar = () => {
       <NavListItems
         selected={location.pathname.includes("career")}
         onClick={() => {
-          navigate("/career");
+          navigate("/");
         }}
         itemIcon={<BusinessCenterIcon />}
         itemTitle="Lowongan Pekerjaan"

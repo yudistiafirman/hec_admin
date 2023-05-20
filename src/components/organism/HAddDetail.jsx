@@ -32,15 +32,9 @@ const HAddDetail = ({
   categoryTextValue,
   categoryTextLabel,
   onChangeCategoryText,
-  name,
-  nameLabel,
-  onChangeName,
 }) => {
   return (
     <Box sx={{ flex: 0.4 }}>
-      <Box>
-        <HTextField value={name} label={nameLabel} onChange={onChangeName} />
-      </Box>
       <HSpacer size="extraLarge" />
       <Box>
         <HDatePicker

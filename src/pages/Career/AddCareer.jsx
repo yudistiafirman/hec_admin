@@ -160,7 +160,7 @@ const AddCareer = () => {
           message: response.data.message,
         });
         reset();
-        navigate("/career");
+        navigate("/");
       }
     } catch (error) {
       setBackdrop(false);
@@ -190,7 +190,7 @@ const AddCareer = () => {
 
   const handleDisabled = () => {
     if (step === 0) {
-      return image === null || description.length === 0;
+      return image === null || description.length === 0 || name === "";
     } else if (step === 1) {
       const firstSectionHasNoValue = firstSection.filter((v) => v.value === "");
       const secondSectionHasNoValue = secondSection.filter(
@@ -201,10 +201,6 @@ const AddCareer = () => {
         return true;
       }
       if (secondSectionHasNoValue.length > 0) {
-        return true;
-      }
-
-      if (name === "") {
         return true;
       }
 
@@ -244,6 +240,9 @@ const AddCareer = () => {
       multiline
       descValue={description}
       rows={5}
+      name={name}
+      nameLabel="Nama Pekerjaan"
+      onChangeName={onChangeName}
       onChangeDesc={onChangeDesc}
     />,
     <HCommonAddDetail

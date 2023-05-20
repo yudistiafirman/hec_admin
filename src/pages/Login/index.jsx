@@ -29,6 +29,7 @@ export default function Login() {
   const [setOpenSnackbar] = useSnackBarStore((state) => [
     state.setOpenSnackbar,
   ]);
+
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -42,7 +43,7 @@ export default function Login() {
         localStorage.setItem("userData", JSON.stringify(response.data.data));
         setUserData(response.data.data);
         setBackdrop(false);
-        navigate("/career");
+        navigate("/", { replace: true });
         setOpenSnackbar({
           openSnackbar: true,
           type: "success",
