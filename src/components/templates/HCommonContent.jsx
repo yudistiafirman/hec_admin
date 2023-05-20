@@ -30,6 +30,8 @@ const HCommonContent = ({
   isSelected,
   handleClick,
   onChangeStatus,
+  isFull,
+  onChangeIsFull,
 }) => {
   return (
     <>
@@ -54,9 +56,11 @@ const HCommonContent = ({
           selected={selected}
           onClickDetail={() => onClickDetail(selected)}
           onDelete={onDelete}
+          onChangeIsFull={onChangeIsFull}
           onChangeStatus={onChangeStatus}
           onSelectAllClick={handleSelectAllClick}
           headCells={headCells}
+          isFull={isFull}
           rows={rows}
           count={count}
           rowsPerPage={rowsPerPage}

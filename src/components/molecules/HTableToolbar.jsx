@@ -10,6 +10,8 @@ const HTableToolbar = ({
   onDelete,
   status,
   onChangeStatus,
+  isFull,
+  onChangeIsFull,
 }) => {
   return (
     <Toolbar
@@ -35,11 +37,24 @@ const HTableToolbar = ({
           {numSelected} terpilih
         </Typography>
       )}
+      {numSelected === 1 && isFull && (
+        <Tooltip title="Ganti Ketersediaan">
+          <Chip
+            label="Ganti Ketersediaan"
+            color={
+              isFull.length > 0 && isFull[0].isFull === 1 ? "info" : "error"
+            }
+            onClick={onChangeIsFull}
+          />
+        </Tooltip>
+      )}
+
+      <HSpacer size="small" />
 
       {numSelected > 0 && (
         <Box sx={{ display: "flex" }}>
           {numSelected === 1 && (
-            <Tooltip title="Lihat Detail">
+            <Tooltip title="Ganti Status">
               <Chip
                 label="Ganti Status"
                 color={

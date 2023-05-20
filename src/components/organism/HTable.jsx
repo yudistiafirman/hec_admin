@@ -30,6 +30,8 @@ const HTable = ({
   handleChangePage,
   handleChangeRowsPerPage,
   onChangeStatus,
+  isFull,
+  onChangeIsFull,
 }) => {
   return (
     <Box sx={{ minWidth: "100%" }}>
@@ -42,6 +44,13 @@ const HTable = ({
             selected.length > 0 &&
             rows.filter((v) => v.id === selected[0])
           }
+          isFull={
+            isFull &&
+            rows.length > 0 &&
+            selected.length > 0 &&
+            rows.filter((v) => v.id === selected[0])
+          }
+          onChangeIsFull={() => onChangeIsFull(selected)}
           onChangeStatus={() => onChangeStatus(selected)}
           numSelected={selected && selected.length}
         />
@@ -81,6 +90,16 @@ const HTable = ({
                         />
                       </TableCell>
                       {row.name && <TableCell>{row.name}</TableCell>}
+                      {row.start_date && (
+                        <TableCell>
+                          {dayjs(row.last_submission).format("MM/DD/YYYY")}
+                        </TableCell>
+                      )}
+                      {row.end_date && (
+                        <TableCell>
+                          {dayjs(row.end_date).format("MM/DD/YYYY")}
+                        </TableCell>
+                      )}
 
                       {row.last_submission && (
                         <TableCell>
@@ -89,6 +108,16 @@ const HTable = ({
                       )}
                       {row.category_name && (
                         <TableCell>{row.category_name}</TableCell>
+                      )}
+                      {row.isFull === 0 && (
+                        <TableCell>
+                          <Chip color="info" label="Lowong" />
+                        </TableCell>
+                      )}
+                      {row.isFull === 1 && (
+                        <TableCell>
+                          <Chip color="error" label="Penuh" />
+                        </TableCell>
                       )}
                       {row.type_name && (
                         <TableCell>

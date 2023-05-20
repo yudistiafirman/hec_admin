@@ -23,6 +23,34 @@ export const CAREER_TABLE_HEAD_CELLS = [
   },
 ];
 
+export const TRAINING_TABLE_HEAD_CELLS = [
+  {
+    id: "training_name",
+    label: "Nama Pelatihan",
+  },
+  {
+    id: "start_date",
+    label: "Tanggal Dimulai Pelatihan",
+  },
+  {
+    id: "end_date",
+    label: "Tanggal Berakhir Pelatihan",
+  },
+  {
+    id: "category",
+    label: "Kategori Pelatihan",
+  },
+
+  {
+    id: "availble",
+    label: "Ketersediaan",
+  },
+  {
+    id: "status",
+    label: "Status",
+  },
+];
+
 export const SALARY_RANGE = [
   {
     id: "1",

@@ -5,7 +5,7 @@ import HContainer from "../../components/atoms/HContainer";
 import HCommonContent from "../../components/templates/HCommonContent";
 import { useNavigate } from "react-router-dom";
 import { CAREER_TABLE_HEAD_CELLS } from "../../constant";
-import { useCareerStore } from "../../stores/useCareerStore";
+import { useReadStore } from "../../stores/useReadStore";
 import {
   deleteJob,
   getAllJob,
@@ -31,11 +31,11 @@ const Career = () => {
     setCategories,
     setSelectedCategories,
     onChangeSearch,
-    setJobData,
+    setData,
     increasePage,
     enableLoading,
     disableLoading,
-  ] = useCareerStore((state) => [
+  ] = useReadStore((state) => [
     state.page,
     state.limit,
     state.searchQuery,
@@ -47,7 +47,7 @@ const Career = () => {
     state.setCategories,
     state.setSelectedCategories,
     state.onChangeSearch,
-    state.setJobData,
+    state.setData,
     state.increasePage,
     state.enableLoading,
     state.disableLoading,
@@ -81,7 +81,7 @@ const Career = () => {
         limit,
         selectedCategories
       );
-      setJobData(response.data);
+      setData(response.data);
       disableLoading();
     } catch (error) {
       disableLoading();

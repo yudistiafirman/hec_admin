@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const useCareerStore = create((set, get) => ({
+export const useReadStore = create((set, get) => ({
   page: 0,
   limit: 10,
   searchQuery: "",
@@ -16,7 +16,7 @@ export const useCareerStore = create((set, get) => ({
     set(() => ({ selectedCategories: newCategory }));
   },
   onChangeSearch: (e) => set(() => ({ searchQuery: e.target.value })),
-  setJobData: (data) =>
+  setData: (data) =>
     set(() => ({
       limit: data.limit,
       totalItems: data.totalItems,
