@@ -19,6 +19,8 @@ import "./route.css";
 import PrivateRoute from "./PrivateRoute";
 import CareerDetail from "../pages/Career/CareerDetail";
 import AddCareer from "../pages/Career/AddCareer";
+import TrainingDetail from "../pages/Training/TrainingDetail";
+import AddTraining from "../pages/Training/AddTraining";
 
 const AdminRoute = () => {
   const navigate = useNavigate();
@@ -92,6 +94,22 @@ const AdminRoute = () => {
               element={
                 <PrivateRoute>
                   <Training />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/pelatihan/detail/:trainingId"
+              element={
+                <PrivateRoute>
+                  <TrainingDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/pelatihan/add"
+              element={
+                <PrivateRoute>
+                  <AddTraining />
                 </PrivateRoute>
               }
             />

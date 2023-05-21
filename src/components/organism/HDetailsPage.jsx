@@ -4,6 +4,7 @@ import HSpacer from "../atoms/HSpacer";
 import HDetailText from "../molecules/HDetailText";
 import HDetailLocationText from "../molecules/HDetailLocationText";
 import HDetailStatus from "../molecules/HDetailStatus";
+import HDetailAvail from "../molecules/HDetailAvail";
 
 const HDetailsPage = ({
   createdAt,
@@ -20,6 +21,8 @@ const HDetailsPage = ({
   locationTitle,
   status,
   statusTitle,
+  isFull,
+  isFullTitle,
 }) => {
   return (
     <Box
@@ -33,6 +36,13 @@ const HDetailsPage = ({
     >
       <HSpacer size="large" />
       {status && <HDetailStatus title={statusTitle} detail={status} />}
+      <HSpacer size="large" />
+      {isFull === 0 && (
+        <HDetailAvail title={isFullTitle} color="info" detail="Lowong" />
+      )}
+      {isFull === 1 && (
+        <HDetailAvail title={isFullTitle} color="error" detail="Penuh" />
+      )}
       <HSpacer size="large" />
       {createdAt && <HDetailText title={createdAtTitle} detail={createdAt} />}
       <HSpacer size="large" />

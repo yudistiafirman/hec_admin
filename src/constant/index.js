@@ -1,5 +1,10 @@
 export const CAREER_STEPPER_LABEL = ["Gambar & Deskripsi", "Detail Lowongan"];
 
+export const TRAINING_STEPPER_LABEL = [
+  "Gambar & Deskripsi",
+  "Detail Pelatihan",
+];
+
 export const CAREER_TABLE_HEAD_CELLS = [
   {
     id: "job_name",

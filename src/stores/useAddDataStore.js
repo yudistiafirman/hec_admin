@@ -18,14 +18,20 @@ const initialState = {
       value: "",
     },
   ],
+  plusValues: [
+    {
+      label: "Nilai Plus Pelatihan",
+      value: "",
+    },
+  ],
   dateValue: dayjs(),
-  jobCategoryData: [],
+  endDateValue: dayjs(),
+  categoryData: [],
   employmentType: "",
   salaryRange: "",
-  jobCategory: "",
+  category: "",
   status: "",
   textCategory: "",
-  jobStatus: "",
   jobLocation: "",
 };
 
@@ -37,20 +43,20 @@ export const useAddDataStore = create((set, get) => ({
   onChangeFile: (e) => set(() => ({ image: e.target.files[0] })),
   onChangeDesc: (e) => set(() => ({ description: e.target.value })),
   onChangeDate: (dateValue) => set(() => ({ dateValue: dateValue })),
+  onChangeEndDate: (dateValue) => set(() => ({ endDateValue: dateValue })),
   onChangeEmploymentType: (e) => {
     set(() => ({ employmentType: e.target.value }));
   },
   onChangeTextCategory: (e) =>
     set(() => ({ textCategory: e.target.value, jobCategory: "" })),
 
-  onChangeJobCategoryData: (newJobCategoryData) =>
-    set(() => ({ jobCategoryData: newJobCategoryData })),
+  onChangeCategoryData: (newCategoryData) =>
+    set(() => ({ categoryData: newCategoryData })),
 
   onChangeSalaryRange: (e) => set(() => ({ salaryRange: e.target.value })),
-  onChangeJobCategory: (e) =>
-    set(() => ({ jobCategory: e.target.value, textCategory: "" })),
+  onChangeCategory: (e) =>
+    set(() => ({ category: e.target.value, textCategory: "" })),
   onChangeStatus: (e) => set(() => ({ status: e.target.value })),
-  onChangeJobStatus: (e) => set(() => ({ jobStatus: e.target.value })),
   onChangeJobLocation: (e) => set(() => ({ jobLocation: e.target.value })),
   onAddFirstSection: () => {
     const newFirstSection = [
@@ -99,6 +105,30 @@ export const useAddDataStore = create((set, get) => ({
       }
     });
     set(() => ({ secondSection: newSecondSectionValue }));
+  },
+  onAddPlusValues: () => {
+    const newPlusValues = [
+      ...get().plusValues,
+      { label: "Nilai Plus Pelatiah", value: "" },
+    ];
+    set(() => ({ plusValues: newPlusValues }));
+  },
+  onRemovePlusValues: () => {
+    const newPlusValues = [...get().plusValues].filter(
+      (v, i) => i !== get().plusValues.length - 1
+    );
+
+    set(() => ({ plusValues: newPlusValues }));
+  },
+  onChangePlusValues: (e, i) => {
+    const newPlusValues = [...get().plusValues].map((v, idx) => {
+      if (idx === i) {
+        return { ...v, value: e.target.value };
+      } else {
+        return { ...v };
+      }
+    });
+    set(() => ({ plusValues: newPlusValues }));
   },
   reset: () => {
     set(initialState);

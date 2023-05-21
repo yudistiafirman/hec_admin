@@ -30,6 +30,8 @@ const HCommmonDetails = ({
   responsibilitiesTitle,
   requirements,
   requirementsTitle,
+  isFull,
+  isFullTitle,
 }) => {
   return (
     <HecContainer>
@@ -58,6 +60,8 @@ const HCommmonDetails = ({
           type={type}
           typeTitle={typeTitle}
           salaryRange={salaryRange}
+          isFull={isFull}
+          isFullTitle={isFullTitle}
           salaryRangeTitle={salaryRangeTitle}
           location={location}
           locationTitle={locationTitle}

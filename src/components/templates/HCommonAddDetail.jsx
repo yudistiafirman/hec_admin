@@ -37,6 +37,9 @@ const HCommonAddDetail = ({
   categoryTextValue,
   categoryTextLabel,
   onChangeCategoryText,
+  onChangeEndDate,
+  endDateValue,
+  endDateLabel,
 }) => {
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -73,6 +76,9 @@ const HCommonAddDetail = ({
         onChangeDate={onChangeDate}
         dateValue={dateValue}
         dateLabel={dateLabel}
+        onChangeEndDate={onChangeEndDate}
+        endDateLabel={endDateLabel}
+        endDateValue={endDateValue}
         categoryTextValue={categoryTextValue}
         categoryTextLabel={categoryTextLabel}
         onChangeCategoryText={onChangeCategoryText}

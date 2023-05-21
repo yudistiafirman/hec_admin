@@ -7,35 +7,34 @@ import HBackContinueButton from "../../components/molecules/HBackContinueButton"
 import { useAddDataStore } from "../../stores/useAddDataStore";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import {
-  CAREER_STEPPER_LABEL,
-  CAREER_TYPE,
-  SALARY_RANGE,
-  STATUS,
-} from "../../constant";
+import { STATUS, TRAINING_STEPPER_LABEL } from "../../constant";
 import HCommonAddDetail from "../../components/templates/HCommonAddDetail";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
-import { getCategories } from "../../asyncActions/jobActions";
+import {
+  getTrainingCategories,
+  postTraining,
+} from "../../asyncActions/TrainingActions";
 import { postJob } from "../../asyncActions/jobActions";
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import dayjs from "dayjs";
 
-const AddCareer = () => {
+const AddTraining = () => {
   const [
     step,
     image,
     description,
-    firstSection,
-    secondSection,
     dateValue,
-    employmentType,
-    salaryRange,
     category,
     status,
-    jobLocation,
     categoryData,
     textCategory,
     name,
+    plusValues,
+    endDateValue,
+    onChangeEndDate,
+    onAddPlusValues,
+    onRemovePlusValues,
+    onChangePlusValues,
     onChangeName,
     onChangeCategoryData,
     onChangeTextCategory,
@@ -43,34 +42,26 @@ const AddCareer = () => {
     decreaseStep,
     onChangeFile,
     onChangeDesc,
-    onAddFirstSection,
-    onRemoveFirstSection,
-    onAddSecondSection,
-    onRemoveSecondSection,
-    onChangeFirstSection,
-    onChangeSecondSection,
     onChangeDate,
-    onChangeEmploymentType,
-    onChangeSalaryRange,
     onChangeCategory,
     onChangeStatus,
-    onChangeJobLocation,
     reset,
   ] = useAddDataStore((state) => [
     state.step,
     state.image,
     state.description,
-    state.firstSection,
-    state.secondSection,
     state.dateValue,
-    state.employmentType,
-    state.salaryRange,
     state.category,
     state.status,
-    state.jobLocation,
     state.categoryData,
     state.textCategory,
     state.name,
+    state.plusValues,
+    state.endDateValue,
+    state.onChangeEndDate,
+    state.onAddPlusValues,
+    state.onRemovePlusValues,
+    state.onChangePlusValues,
     state.onChangeName,
     state.onChangeCategoryData,
     state.onChangeTextCategory,
@@ -78,18 +69,9 @@ const AddCareer = () => {
     state.decreaseStep,
     state.onChangeFile,
     state.onChangeDesc,
-    state.onAddFirstSection,
-    state.onRemoveFirstSection,
-    state.onAddSecondSection,
-    state.onRemoveSecondSection,
-    state.onChangeFirstSection,
-    state.onChangeSecondSection,
     state.onChangeDate,
-    state.onChangeEmploymentType,
-    state.onChangeSalaryRange,
     state.onChangeCategory,
     state.onChangeStatus,
-    state.onChangeJobLocation,
     state.reset,
   ]);
 
@@ -97,15 +79,16 @@ const AddCareer = () => {
     state.setOpenSnackbar,
   ]);
   const [setBackdrop] = useBackdropStore((state) => [state.setBackdrop]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    getJobCategoryData();
+    getTrainingCategoryData();
   }, []);
 
-  const getJobCategoryData = async () => {
+  const getTrainingCategoryData = async () => {
     try {
-      const response = await getCategories();
+      const response = await getTrainingCategories();
       onChangeCategoryData(response.data.data);
     } catch (error) {
       setOpenSnackbar({
@@ -116,36 +99,32 @@ const AddCareer = () => {
     }
   };
 
-  const postNewJob = async () => {
+  const postNewTraining = async () => {
     try {
       setBackdrop(true);
       const data = new FormData();
-
-      const responsibility = firstSection.map((v) => v.value);
-      const requirement = secondSection.map((v) => v.value);
-      const salaryRangeToPost = SALARY_RANGE.filter(
-        (v) => v.id === salaryRange
-      );
-      const jobType = CAREER_TYPE.filter((v) => v.id === employmentType);
+      const plusValue = plusValues.map((v) => v.value);
       const statusToPost = STATUS.filter((v) => v.id === status);
-      const jobCategoryToPost = categoryData.filter((v) => v.id === category);
-      data.append("jobName", name);
+      const trainingCategoryToPost = categoryData.filter(
+        (v) => v.id === category
+      );
+      data.append("trainingName", name);
       data.append("file", image);
-      data.append("description", description);
-      data.append("location", jobLocation);
-      data.append("salaryRange", salaryRangeToPost[0].category_name);
+      data.append("descriptions", description);
       data.append("status", statusToPost[0].category_name);
-      data.append("last_submission", dayjs(dateValue).format());
-      data.append("jobType", jobType[0].category_name);
-      data.append("requirement[]", requirement);
-      data.append("responsibility[]", responsibility);
+      data.append("startDate", dayjs(dateValue).format());
+      data.append("endDate", dayjs(endDateValue).format());
+      data.append("plusValue[]", plusValue);
       if (category !== "") {
-        data.append("jobCategory", jobCategoryToPost[0].category_name);
+        data.append(
+          "trainingCategory",
+          trainingCategoryToPost[0].category_name
+        );
       } else {
-        data.append("jobCategory", textCategory);
+        data.append("trainingCategory", textCategory);
       }
 
-      const response = await postJob(data);
+      const response = await postTraining(data);
       if (response.data.success) {
         setBackdrop(false);
         setOpenSnackbar({
@@ -154,10 +133,9 @@ const AddCareer = () => {
           message: response.data.message,
         });
         reset();
-        navigate("/");
+        navigate("/pelatihan");
       }
     } catch (error) {
-      console.log("ini error", error);
       setBackdrop(false);
       setOpenSnackbar({
         openSnackbar: true,
@@ -169,7 +147,7 @@ const AddCareer = () => {
 
   const handleNext = () => {
     if (step === stepsToRender.length - 1) {
-      postNewJob();
+      postNewTraining();
     } else {
       increaseStep();
     }
@@ -177,7 +155,7 @@ const AddCareer = () => {
 
   const handleBack = () => {
     if (step === 0) {
-      navigate("/career");
+      navigate("/pelatihan");
     } else {
       decreaseStep();
     }
@@ -187,26 +165,14 @@ const AddCareer = () => {
     if (step === 0) {
       return image === null || description.length === 0 || name === "";
     } else if (step === 1) {
-      const firstSectionHasNoValue = firstSection.filter((v) => v.value === "");
-      const secondSectionHasNoValue = secondSection.filter(
-        (v) => v.value === ""
-      );
-
-      if (firstSectionHasNoValue.length > 0) {
+      const plusValuesHasNoValue = plusValues.filter((v) => v.value === "");
+      if (plusValuesHasNoValue.length > 0) {
         return true;
       }
-      if (secondSectionHasNoValue.length > 0) {
-        return true;
-      }
-
       if (dateValue === "") {
         return true;
       }
-
-      if (employmentType === "") {
-        return true;
-      }
-      if (salaryRange === "") {
+      if (endDateValue === "") {
         return true;
       }
 
@@ -214,9 +180,6 @@ const AddCareer = () => {
         return true;
       }
       if (status === "") {
-        return true;
-      }
-      if (jobLocation === "") {
         return true;
       }
     }
@@ -227,40 +190,22 @@ const AddCareer = () => {
     <HAddImageDesc
       imageFile={image}
       onChangeFile={onChangeFile}
-      descLabel="Deskripsi Pekerjaan"
+      descLabel="Deskripsi Pelatihan"
       multiline
       descValue={description}
       rows={5}
       name={name}
-      nameLabel="Nama Pekerjaan"
+      nameLabel="Nama Pelatihan"
       onChangeName={onChangeName}
       onChangeDesc={onChangeDesc}
     />,
     <HCommonAddDetail
-      firstSectionList={firstSection}
-      secondSectionList={secondSection}
-      onAddFirstSection={onAddFirstSection}
-      onRemoveFirstSection={onRemoveFirstSection}
-      onAddSecondSection={onAddSecondSection}
-      onRemoveSecondSection={onRemoveSecondSection}
-      onChangeFirst={onChangeFirstSection}
-      onChangeSecond={onChangeSecondSection}
-      dateValue={dateValue}
-      dateLabel="Tanggal Penyerahan Terakhir"
-      onChangeDate={onChangeDate}
-      typeItems={CAREER_TYPE}
-      typeValue={employmentType}
-      onChangeType={onChangeEmploymentType}
-      typeTitle="Tipe Pekerjaan"
-      salaryLabel="Kisaran Gaji"
-      salaryValue={salaryRange}
-      salaryItems={SALARY_RANGE}
-      onChangeSalary={onChangeSalaryRange}
-      locationValue={jobLocation}
-      onChangeLocation={onChangeJobLocation}
-      locationLabel="Lokasi Pekerjaan"
-      categoryLabel="Kategori Pekerjaan"
-      categoryTextLabel="Tambah Kategori Pekerjaan"
+      firstSectionList={plusValues}
+      onAddFirstSection={onAddPlusValues}
+      onRemoveFirstSection={onRemovePlusValues}
+      onChangeFirst={onChangePlusValues}
+      categoryLabel="Kategori Pelatihan"
+      categoryTextLabel="Tambah Kategori Pelatihan"
       categoryValue={category}
       categoryItems={categoryData}
       categoryTextValue={textCategory}
@@ -270,12 +215,18 @@ const AddCareer = () => {
       statusValue={status}
       onChangeStatus={onChangeStatus}
       statusLabel="Status"
+      dateValue={dateValue}
+      endDateValue={endDateValue}
+      onChangeEndDate={onChangeEndDate}
+      endDateLabel="Tanggal Berakhir Pelatihan"
+      dateLabel="Tanggal Mulai Pelatihan"
+      onChangeDate={onChangeDate}
     />,
   ];
 
   return (
     <HecContainer>
-      <HStepper steps={CAREER_STEPPER_LABEL} activeStep={step} />
+      <HStepper steps={TRAINING_STEPPER_LABEL} activeStep={step} />
       <HSpacer size="extraLarge" />
 
       {stepsToRender[step]}
@@ -291,4 +242,4 @@ const AddCareer = () => {
   );
 };
 
-export default AddCareer;
+export default AddTraining;

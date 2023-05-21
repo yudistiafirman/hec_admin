@@ -29,6 +29,9 @@ const HAddDetail = ({
   onChangeDate,
   dateValue,
   dateLabel,
+  onChangeEndDate,
+  endDateValue,
+  endDateLabel,
   categoryTextValue,
   categoryTextLabel,
   onChangeCategoryText,
@@ -36,30 +39,57 @@ const HAddDetail = ({
   return (
     <Box sx={{ flex: 0.4 }}>
       <HSpacer size="extraLarge" />
-      <Box>
-        <HDatePicker
-          label={dateLabel}
-          dateValue={dateValue}
-          onChangeDate={onChangeDate}
-        />
-      </Box>
-      <HSpacer size="extraLarge" />
-      <HSelect
-        value={typeValue}
-        label={typeTitle}
-        onChange={onChangeType}
-        items={typeItems}
-      />
-      <HSpacer size="extraLarge" />
-      <Box>
-        <HSelect
-          value={salaryValue}
-          label={salaryLabel}
-          onChange={onChangeSalary}
-          items={salaryItems}
-        />
-      </Box>
-      <HSpacer size="extraLarge" />
+      {dateValue && (
+        <>
+          <Box>
+            <HDatePicker
+              label={dateLabel}
+              dateValue={dateValue}
+              onChangeDate={onChangeDate}
+            />
+          </Box>
+          <HSpacer size="extraLarge" />
+        </>
+      )}
+      {endDateValue && (
+        <>
+          <Box>
+            <HDatePicker
+              label={endDateLabel}
+              dateValue={endDateValue}
+              onChangeDate={onChangeEndDate}
+            />
+          </Box>
+          <HSpacer size="extraLarge" />
+        </>
+      )}
+
+      {typeValue && (
+        <>
+          <HSelect
+            value={typeValue}
+            label={typeTitle}
+            onChange={onChangeType}
+            items={typeItems}
+          />
+          <HSpacer size="extraLarge" />
+        </>
+      )}
+
+      {salaryValue && (
+        <>
+          <Box>
+            <HSelect
+              value={salaryValue}
+              label={salaryLabel}
+              onChange={onChangeSalary}
+              items={salaryItems}
+            />
+          </Box>
+          <HSpacer size="extraLarge" />
+        </>
+      )}
+
       <Box>
         <HSelect
           value={categoryValue}
@@ -86,17 +116,19 @@ const HAddDetail = ({
         />
       </Box>
       <HSpacer size="extraLarge" />
-      <Box>
-        <HTextField
-          value={locationValue}
-          sx={{ width: "100%" }}
-          onChange={onChangeLocation}
-          required
-          placeHolder="Contoh: Bandung, Jawa Barat"
-          icon={<LocationOnIcon color="error" />}
-          label={locationLabel}
-        />
-      </Box>
+      {locationValue && (
+        <Box>
+          <HTextField
+            value={locationValue}
+            sx={{ width: "100%" }}
+            onChange={onChangeLocation}
+            required
+            placeHolder="Contoh: Bandung, Jawa Barat"
+            icon={<LocationOnIcon color="error" />}
+            label={locationLabel}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

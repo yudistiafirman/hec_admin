@@ -57,16 +57,16 @@ const Training = () => {
   ]);
   const [selected, setSelected] = React.useState([]);
 
-  const goToCareerDetail = (selectedCareer) => {
-    const careerId = selectedCareer[0];
-    navigate(`/career/detail/${careerId}`);
+  const goToTrainingDetail = (selectedTraining) => {
+    const trainingId = selectedTraining[0];
+    navigate(`/pelatihan/detail/${trainingId}`);
   };
 
   useEffect(() => {
-    fetchDataCareer();
+    fetchDataTraining();
   }, [page, selectedCategories, searchQuery, selected]);
 
-  const fetchDataCareer = () => {
+  const fetchDataTraining = () => {
     getAllTrainingData();
     getCategoriesData();
   };
@@ -80,7 +80,6 @@ const Training = () => {
         limit,
         selectedCategories
       );
-      console.log(response.data);
       setData(response.data);
       disableLoading();
     } catch (error) {
@@ -182,7 +181,6 @@ const Training = () => {
       const trainingId = selected[0];
       const isFullValue = data.filter((v) => v.id === trainingId);
       const isFullToUpdate = isFullValue[0].isFull === 1 ? 0 : 1;
-      console.log(isFullToUpdate);
       const response = await updateFullTraining(trainingId, {
         isFull: isFullToUpdate.toString(),
       });
@@ -249,7 +247,7 @@ const Training = () => {
         onSelect={onChangeCategories}
         selectItems={categories}
         buttonTitle="Tambah"
-        onAdd={() => navigate("/career/add")}
+        onAdd={() => navigate("/pelatihan/add")}
         headCells={TRAINING_TABLE_HEAD_CELLS}
         rowsPerPage={limit}
         page={page}
@@ -262,7 +260,9 @@ const Training = () => {
         handleClick={handleClick}
         onChangeStatus={onChangeStatus}
         onChangeIsFull={onChangeIsFull}
-        onClickDetail={(selectedCareer) => goToCareerDetail(selectedCareer)}
+        onClickDetail={(selectedTraining) =>
+          goToTrainingDetail(selectedTraining)
+        }
         rows={data}
       />
     </HContainer>
