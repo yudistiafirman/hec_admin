@@ -38,13 +38,18 @@ const HCommonHeaders = ({
       >
         <InfoBox title={infoTitle} total={total} />
         <HSpacer size="large" />
-        <Box sx={{ flex: 0.3, alignSelf: "flex-end" }}>
-          <HSelect
-            onChange={onSelect}
-            label={selectTitle}
-            items={selectItems}
-          />
-        </Box>
+        {selectItems ? (
+          <Box sx={{ flex: 0.3, alignSelf: "flex-end" }}>
+            <HSelect
+              onChange={onSelect}
+              label={selectTitle}
+              items={selectItems}
+            />
+          </Box>
+        ) : (
+          <Box sx={{ flex: 1, alignSelf: "flex-end" }} />
+        )}
+
         <HSpacer size="large" />
         <Box sx={{ alignSelf: "flex-end", flex: 0.5 }}>
           <HTextField

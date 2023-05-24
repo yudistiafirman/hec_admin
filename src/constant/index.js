@@ -5,6 +5,43 @@ export const TRAINING_STEPPER_LABEL = [
   "Detail Pelatihan",
 ];
 
+export const FACILITY_TABLE_HEAD_CELLS = [
+  {
+    id: "facility_name",
+    label: "Nama Fasilitas",
+  },
+  {
+    id: "created_at",
+    label: "Tanggal Dibuat",
+  },
+  {
+    id: "image",
+    label: "Gambar",
+  },
+  {
+    id: "status",
+    label: "Status",
+  },
+];
+
+export const GALLERY_TABLE_HEAD_CELLS = [
+  {
+    id: "facility_name",
+    label: "Nama Gambar",
+  },
+  {
+    id: "created_at",
+    label: "Tanggal Dibuat",
+  },
+  {
+    id: "image",
+    label: "Gambar",
+  },
+  {
+    id: "status",
+    label: "Status",
+  },
+];
 export const CAREER_TABLE_HEAD_CELLS = [
   {
     id: "job_name",

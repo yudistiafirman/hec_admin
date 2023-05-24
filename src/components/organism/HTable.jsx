@@ -14,6 +14,12 @@ import React from "react";
 import HTableToolbar from "../molecules/HTableToolbar";
 import HTableHead from "../molecules/HTableHead";
 import dayjs from "dayjs";
+import HTableImage from "../atoms/HTableImage";
+
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_API_URL_PROD
+    : process.env.REACT_APP_API_URL_DEV;
 
 const HTable = ({
   selected,
@@ -92,12 +98,17 @@ const HTable = ({
                       {row.name && <TableCell>{row.name}</TableCell>}
                       {row.start_date && (
                         <TableCell>
-                          {dayjs(row.last_submission).format("MM/DD/YYYY")}
+                          {dayjs(row.start_date).format("MM/DD/YYYY")}
                         </TableCell>
                       )}
                       {row.end_date && (
                         <TableCell>
                           {dayjs(row.end_date).format("MM/DD/YYYY")}
+                        </TableCell>
+                      )}
+                      {row.file_url && (
+                        <TableCell>
+                          <HTableImage image={`${BASE_URL}/${row.file_url}`} />
                         </TableCell>
                       )}
 

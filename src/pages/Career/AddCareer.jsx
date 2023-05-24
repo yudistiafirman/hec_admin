@@ -272,7 +272,7 @@ const AddCareer = () => {
       statusLabel="Status"
     />,
   ];
-
+  console.log(jobLocation);
   return (
     <HecContainer>
       <HStepper steps={CAREER_STEPPER_LABEL} activeStep={step} />

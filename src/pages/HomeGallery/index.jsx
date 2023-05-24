@@ -3,18 +3,20 @@ import React, { useEffect } from "react";
 import HContainer from "../../components/atoms/HContainer";
 import HCommonContent from "../../components/templates/HCommonContent";
 import { useNavigate } from "react-router-dom";
-import { FACILITY_TABLE_HEAD_CELLS } from "../../constant";
+import {
+  FACILITY_TABLE_HEAD_CELLS,
+  GALLERY_TABLE_HEAD_CELLS,
+} from "../../constant";
 import { useReadStore } from "../../stores/useReadStore";
-
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
 import {
-  deleteFacility,
-  getAllFacility,
-  updateFacilityStatus,
-} from "../../asyncActions/FacilityActions";
+  deleteHomeGallery,
+  getAllHomeGallery,
+  updateHomeGalleryStatus,
+} from "../../asyncActions/HomeGalleryActions";
 
-const Facility = () => {
+const HomeGallery = () => {
   const navigate = useNavigate();
 
   const [
@@ -50,31 +52,33 @@ const Facility = () => {
   ]);
   const [selected, setSelected] = React.useState([]);
 
-  const goToFacilityDetail = (selectedFacility) => {
-    const facilityId = selectedFacility[0];
-    navigate(`/facility/detail/${facilityId}`);
+  const goToHomeGalleryDetail = (selectedTrainingGallery) => {
+    const homeGalleryId = selectedTrainingGallery[0];
+    navigate(`/home-gallery/detail/${homeGalleryId}`);
   };
 
   useEffect(() => {
-    fetchDataFacility();
+    fetchDataHomeGallery();
   }, [page, searchQuery]);
 
-  const fetchDataFacility = () => {
-    getAllFacilityData();
+  const fetchDataHomeGallery = () => {
+    getAllHomeGalleryData();
   };
 
-  const getAllFacilityData = async () => {
+  const getAllHomeGalleryData = async () => {
     try {
       enableLoading();
-      const response = await getAllFacility(
+      const response = await getAllHomeGallery(
         searchQuery,
         page === 0 ? 1 : page + 1,
         limit,
         selectedCategories
       );
+      console.log(response.data);
       setData(response.data);
       disableLoading();
     } catch (error) {
+      console.log(error);
       disableLoading();
       setOpenSnackbar({
         openSnackbar: true,
@@ -96,7 +100,7 @@ const Facility = () => {
       const payload = {
         idToDelete: selected,
       };
-      const response = await deleteFacility(payload);
+      const response = await deleteHomeGallery(payload);
       if (response.data.success) {
         setBackdrop(false);
         setOpenSnackbar({
@@ -105,7 +109,7 @@ const Facility = () => {
           message: response.data.message,
         });
         setSelected([]);
-        getAllFacilityData();
+        getAllHomeGalleryData();
       }
     } catch (error) {
       setBackdrop(false);
@@ -120,11 +124,11 @@ const Facility = () => {
   const onChangeStatus = async (selected) => {
     try {
       setBackdrop(true);
-      const facilityId = selected[0];
-      const statusValue = data.filter((v) => v.id === facilityId);
+      const trainingGalleryId = selected[0];
+      const statusValue = data.filter((v) => v.id === trainingGalleryId);
       const statusToUpdate =
         statusValue[0].status_name === "DRAFT" ? "PUBLISHED" : "DRAFT";
-      const response = await updateFacilityStatus(facilityId, {
+      const response = await updateHomeGalleryStatus(trainingGalleryId, {
         status: statusToUpdate,
       });
       if (response.data.success) {
@@ -135,7 +139,7 @@ const Facility = () => {
           message: response.data.message,
         });
         setSelected([]);
-        getAllFacilityData();
+        getAllHomeGalleryData();
       }
     } catch (error) {
       setBackdrop(false);
@@ -180,15 +184,15 @@ const Facility = () => {
   return (
     <HContainer>
       <HCommonContent
-        headerTitle="Fasilitas Pelatihan"
-        infoTitle="Total Fasilitas"
+        headerTitle="Galeri Beranda"
+        infoTitle="Total Gambar"
         total={totalItems}
-        searchLabel="Cari Fasilitas"
+        searchLabel="Cari Nama Gambar Beranda"
         onDelete={onDelete}
         onChangeSearch={onChangeSearch}
         buttonTitle="Tambah"
-        onAdd={() => navigate("/facility/add")}
-        headCells={FACILITY_TABLE_HEAD_CELLS}
+        onAdd={() => navigate("/home-gallery/add")}
+        headCells={GALLERY_TABLE_HEAD_CELLS}
         rowsPerPage={limit}
         page={page}
         count={totalItems}
@@ -199,8 +203,8 @@ const Facility = () => {
         isSelected={isSelected}
         handleClick={handleClick}
         onChangeStatus={onChangeStatus}
-        onClickDetail={(selectedFacility) =>
-          goToFacilityDetail(selectedFacility)
+        onClickDetail={(selectedGallery) =>
+          goToHomeGalleryDetail(selectedGallery)
         }
         rows={data}
       />
@@ -208,4 +212,4 @@ const Facility = () => {
   );
 };
 
-export default Facility;
+export default HomeGallery;

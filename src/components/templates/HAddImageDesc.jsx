@@ -5,6 +5,7 @@ import HSpacer from "../atoms/HSpacer";
 import HUploadButton from "../atoms/HUploadButton";
 import HEmptyImage from "../atoms/HEmptyImage";
 import HAddedImage from "../atoms/HAddedImage";
+import HSelect from "../atoms/HSelect";
 
 const HAddImageDesc = ({
   imageFile,
@@ -17,6 +18,10 @@ const HAddImageDesc = ({
   name,
   nameLabel,
   onChangeName,
+  statusValue,
+  statusLabel,
+  onChangeStatus,
+  statusItems,
 }) => {
   const [preview, setPreview] = useState(undefined);
 
@@ -48,16 +53,30 @@ const HAddImageDesc = ({
         />
       </Box>
       <HSpacer size="extraLarge" />
-
-      <HTextField
-        label={descLabel}
-        multiline={multiline}
-        required
-        value={descValue}
-        onChange={onChangeDesc}
-        rows={rows}
-        sx={{ width: "100%" }}
-      />
+      {statusItems && (
+        <>
+          <Box sx={{ width: "20%" }}>
+            <HSelect
+              value={statusValue}
+              label="Status"
+              onChange={onChangeStatus}
+              items={statusItems}
+            />
+          </Box>
+          <HSpacer size="extraLarge" />
+        </>
+      )}
+      {descLabel && (
+        <HTextField
+          label={descLabel}
+          multiline={multiline}
+          required
+          value={descValue}
+          onChange={onChangeDesc}
+          rows={rows}
+          sx={{ width: "100%" }}
+        />
+      )}
     </>
   );
 };

@@ -7,20 +7,30 @@ import {
   useLocation,
 } from "react-router-dom";
 import Career from "../pages/Career/Career";
-import Gallery from "../pages/Gallery";
+import Gallery from "../pages/TrainingGallery";
 import Navbar from "../pages/Navbar/Navbar";
 import Training from "../pages/Training";
 import Facility from "../pages/Facility";
 import Services from "../pages/Services";
 import Sale from "../pages/Sale";
 import Login from "../pages/Login";
-import { useUserStore } from "../stores/useUserStore";
 import "./route.css";
 import PrivateRoute from "./PrivateRoute";
 import CareerDetail from "../pages/Career/CareerDetail";
 import AddCareer from "../pages/Career/AddCareer";
 import TrainingDetail from "../pages/Training/TrainingDetail";
 import AddTraining from "../pages/Training/AddTraining";
+import AddFacility from "../pages/Facility/AddFacility";
+import FacilityDetail from "../pages/Facility/FacilityDetail";
+import TrainingGallery from "../pages/TrainingGallery";
+import AddTrainingGallery from "../pages/TrainingGallery/AddTrainingGallery";
+import TrainingGalleryDetail from "../pages/TrainingGallery/TrainingGalleryDetail";
+import HomeGallery from "../pages/HomeGallery";
+import AddHomeGallery from "../pages/HomeGallery/AddHomeGallery";
+import HomeGalleryDetail from "../pages/HomeGallery/HomeGalleryDetail";
+import PartnershipGallery from "../pages/PartnershipGallery";
+import AddPartnershipGallery from "../pages/PartnershipGallery/AddPartnershipGallery";
+import PartnershipGalleryDetail from "../pages/PartnershipGallery/DetailPartnershipGallery";
 
 const AdminRoute = () => {
   const navigate = useNavigate();
@@ -45,7 +55,7 @@ const AdminRoute = () => {
           <>
             <Route
               exact
-              path="/"
+              path="/career"
               element={
                 <PrivateRoute>
                   <Career />
@@ -72,23 +82,103 @@ const AdminRoute = () => {
             />
 
             <Route
-              path="/fasilitas"
+              path="/facility"
               element={
                 <PrivateRoute>
                   <Facility />
                 </PrivateRoute>
               }
             />
-
             <Route
-              path="/galeri"
+              path="/facility/add"
               element={
                 <PrivateRoute>
-                  <Gallery />
+                  <AddFacility />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/facility/detail/:facilityId"
+              element={
+                <PrivateRoute>
+                  <FacilityDetail />
                 </PrivateRoute>
               }
             />
 
+            <Route
+              path="/training-gallery"
+              element={
+                <PrivateRoute>
+                  <TrainingGallery />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/training-gallery/add"
+              element={
+                <PrivateRoute>
+                  <AddTrainingGallery />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/training-gallery/detail/:trainingGalleryId"
+              element={
+                <PrivateRoute>
+                  <TrainingGalleryDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/home-gallery"
+              element={
+                <PrivateRoute>
+                  <HomeGallery />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/home-gallery/add"
+              element={
+                <PrivateRoute>
+                  <AddHomeGallery />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/home-gallery/detail/:homeGalleryId"
+              element={
+                <PrivateRoute>
+                  <HomeGalleryDetail />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/partnership-gallery"
+              element={
+                <PrivateRoute>
+                  <PartnershipGallery />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/partnership-gallery/add"
+              element={
+                <PrivateRoute>
+                  <AddPartnershipGallery />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/partnership-gallery/detail/:partnershipGalleryId"
+              element={
+                <PrivateRoute>
+                  <PartnershipGalleryDetail />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/pelatihan"
               element={

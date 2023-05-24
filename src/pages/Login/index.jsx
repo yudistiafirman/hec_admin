@@ -43,7 +43,7 @@ export default function Login() {
         localStorage.setItem("userData", JSON.stringify(response.data.data));
         setUserData(response.data.data);
         setBackdrop(false);
-        navigate("/", { replace: true });
+        navigate("/career", { replace: true });
         setOpenSnackbar({
           openSnackbar: true,
           type: "success",

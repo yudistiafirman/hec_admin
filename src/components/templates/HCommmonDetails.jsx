@@ -5,7 +5,6 @@ import HSpacer from "../atoms/HSpacer";
 import { Box } from "@mui/system";
 import HDetailsDecs from "../organism/HDetailsDesc";
 import HDetailsPage from "../organism/HDetailsPage";
-import dayjs from "dayjs";
 
 const HCommmonDetails = ({
   detailsTitle,
@@ -51,9 +50,9 @@ const HCommmonDetails = ({
         />
         <HSpacer size="extraLarge" />
         <HDetailsPage
-          createdAt={dayjs(createdAt).format("MM/DD/YYYY")}
+          createdAt={createdAt}
           createdAtTitle={createdAtTitle}
-          lastSubmission={dayjs(lastSubmission).format("MM/DD/YYYY")}
+          lastSubmission={lastSubmission}
           lastSubmissionTitle={lastSubmissionTitle}
           category={category}
           categoryTitle={categoryTitle}

@@ -14,7 +14,8 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import OnDeviceTrainingIcon from "@mui/icons-material/OnDeviceTraining";
-import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import { useLocation, useNavigate } from "react-router-dom";
 import NavListItems from "../../components/molecules/NavListItems";
 
 import AddHomeIcon from "@mui/icons-material/AddHome";
@@ -57,21 +58,21 @@ const AdminNavbar = () => {
       <NavListItems
         selected={location.pathname.includes("career")}
         onClick={() => {
-          navigate("/");
+          navigate("/career");
         }}
         itemIcon={<BusinessCenterIcon />}
         itemTitle="Lowongan Pekerjaan"
       />
       <NavListItems
-        selected={location.pathname === "/fasilitas"}
+        selected={location.pathname.includes("facility")}
         onClick={() => {
-          navigate("/fasilitas");
+          navigate("/facility");
         }}
         itemIcon={<FoundationIcon />}
         itemTitle="Fasilitas"
       />
       <NavListItems
-        selected={location.pathname === "/galeri"}
+        selected={location.pathname.includes("gallery")}
         onClick={handleOpenGallery}
         itemIcon={<CollectionsIcon />}
         itemTitle="Galeri"
@@ -80,19 +81,31 @@ const AdminNavbar = () => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <NavListItems
-            selected={location.pathname === "/galeri"}
-            sx={{ pl: 4 }}
-            itemIcon={<AddHomeIcon />}
-            itemTitle="Beranda Galeri"
-          />
-          <NavListItems
-            selected={location.pathname === "/galeri"}
+            selected={location.pathname.includes("training-gallery")}
             sx={{ pl: 4 }}
             onClick={() => {
-              navigate("/galeri");
+              navigate("/training-gallery");
+            }}
+            itemIcon={<AddHomeIcon />}
+            itemTitle="Pelatihan"
+          />
+          <NavListItems
+            selected={location.pathname.includes("home-gallery")}
+            sx={{ pl: 4 }}
+            onClick={() => {
+              navigate("/home-gallery");
             }}
             itemIcon={<OnDeviceTrainingIcon />}
-            itemTitle="Pelatihan Galeri"
+            itemTitle="Beranda"
+          />
+          <NavListItems
+            selected={location.pathname.includes("partnership-gallery")}
+            sx={{ pl: 4 }}
+            onClick={() => {
+              navigate("/partnership-gallery");
+            }}
+            itemIcon={<HandshakeIcon />}
+            itemTitle="Partnership"
           />
         </List>
       </Collapse>

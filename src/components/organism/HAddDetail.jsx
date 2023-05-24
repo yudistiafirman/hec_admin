@@ -64,7 +64,7 @@ const HAddDetail = ({
         </>
       )}
 
-      {typeValue && (
+      {typeItems && (
         <>
           <HSelect
             value={typeValue}
@@ -76,7 +76,7 @@ const HAddDetail = ({
         </>
       )}
 
-      {salaryValue && (
+      {salaryItems && (
         <>
           <Box>
             <HSelect
@@ -116,7 +116,7 @@ const HAddDetail = ({
         />
       </Box>
       <HSpacer size="extraLarge" />
-      {locationValue && (
+      {locationLabel && (
         <Box>
           <HTextField
             value={locationValue}
