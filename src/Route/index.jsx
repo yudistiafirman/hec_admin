@@ -7,7 +7,6 @@ import {
   useLocation,
 } from "react-router-dom";
 import Career from "../pages/Career/Career";
-import Gallery from "../pages/TrainingGallery";
 import Navbar from "../pages/Navbar/Navbar";
 import Training from "../pages/Training";
 import Facility from "../pages/Facility";
