@@ -12,6 +12,8 @@ const HTableToolbar = ({
   onChangeStatus,
   isFull,
   onChangeIsFull,
+  onChangeIsPopular,
+  isPopular,
 }) => {
   return (
     <Toolbar
@@ -37,6 +39,26 @@ const HTableToolbar = ({
           {numSelected} terpilih
         </Typography>
       )}
+      {numSelected === 1 && isPopular && (
+        <Tooltip
+          title={
+            isPopular.length > 0 && isPopular[0].isPopular === 0
+              ? "Jadikan Pelatihan Populer"
+              : "Jadikan Pelatihan Biasa "
+          }
+        >
+          <Chip
+            label={
+              isPopular.length > 0 && isPopular[0].isPopular === 0
+                ? "Jadikan Pelatihan Populer"
+                : "Jadikan Pelatihan Biasa "
+            }
+            color="default"
+            onClick={onChangeIsPopular}
+          />
+        </Tooltip>
+      )}
+      <HSpacer size="small" />
       {numSelected === 1 && isFull && (
         <Tooltip title="Ganti Ketersediaan">
           <Chip

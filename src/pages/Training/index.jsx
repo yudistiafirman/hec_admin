@@ -10,10 +10,12 @@ import {
   getAllTraining,
   getTrainingCategories,
   updateFullTraining,
+  updatePopularTraining,
   updateTrainingStatus,
 } from "../../asyncActions/TrainingActions";
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
+import dayjs from "dayjs";
 
 const Training = () => {
   const navigate = useNavigate();
@@ -25,10 +27,12 @@ const Training = () => {
     loading,
     totalItems,
     categories,
+    selectedDate,
     selectedCategories,
     data,
     setCategories,
     setSelectedCategories,
+    onChangeDate,
     onChangeSearch,
     setData,
     increasePage,
@@ -41,10 +45,12 @@ const Training = () => {
     state.loading,
     state.totalItems,
     state.categories,
+    state.selectedDate,
     state.selectedCategories,
     state.data,
     state.setCategories,
     state.setSelectedCategories,
+    state.onChangeDate,
     state.onChangeSearch,
     state.setData,
     state.increasePage,
@@ -64,7 +70,7 @@ const Training = () => {
 
   useEffect(() => {
     fetchDataTraining();
-  }, [page, selectedCategories, searchQuery, selected]);
+  }, [page, selectedCategories, searchQuery, selected, selectedDate]);
 
   const fetchDataTraining = () => {
     getAllTrainingData();
@@ -78,7 +84,8 @@ const Training = () => {
         searchQuery,
         page === 0 ? 1 : page + 1,
         limit,
-        selectedCategories
+        selectedCategories,
+        selectedDate ? dayjs(selectedDate).format() : selectedDate
       );
       setData(response.data);
       disableLoading();
@@ -203,6 +210,34 @@ const Training = () => {
     }
   };
 
+  const onChangeIsPopular = async (selected) => {
+    try {
+      setBackdrop(true);
+      const trainingId = selected[0];
+      const isPopularValue = data.filter((v) => v.id === trainingId);
+      const isPopularToUpdate = isPopularValue[0].isPopular === 1 ? 0 : 1;
+      const response = await updatePopularTraining(trainingId, {
+        isPopular: isPopularToUpdate.toString(),
+      });
+      if (response.data.success) {
+        setBackdrop(false);
+        setOpenSnackbar({
+          openSnackbar: true,
+          type: "success",
+          message: response.data.message,
+        });
+        setSelected([]);
+      }
+    } catch (error) {
+      setBackdrop(false);
+      setOpenSnackbar({
+        openSnackbar: true,
+        type: "error",
+        message: error.response.data.message,
+      });
+    }
+  };
+
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -238,10 +273,14 @@ const Training = () => {
       <HCommonContent
         headerTitle="Pelatihan"
         isFull
+        isPopular
         infoTitle="Total Pelatihan"
         total={totalItems}
-        selectTitle="Filter Berdasar Kategori"
+        selectTitle="Filter Kategori"
         searchLabel="Cari Pelatihan"
+        dateFilterLabel="Filter Tanggal Dimulai"
+        dateFilterValue={selectedDate}
+        onChangeFilterDate={onChangeDate}
         onDelete={onDelete}
         onChangeSearch={onChangeSearch}
         onSelect={onChangeCategories}
@@ -263,6 +302,7 @@ const Training = () => {
         onClickDetail={(selectedTraining) =>
           goToTrainingDetail(selectedTraining)
         }
+        onChangeIsPopular={onChangeIsPopular}
         rows={data}
       />
     </HContainer>

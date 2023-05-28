@@ -191,7 +191,7 @@ const HomeGallery = () => {
         onDelete={onDelete}
         onChangeSearch={onChangeSearch}
         buttonTitle="Tambah"
-        onAdd={() => navigate("/home-gallery/add")}
+        onAdd={data.length < 5 ? () => navigate("/home-gallery/add") : null}
         headCells={GALLERY_TABLE_HEAD_CELLS}
         rowsPerPage={limit}
         page={page}

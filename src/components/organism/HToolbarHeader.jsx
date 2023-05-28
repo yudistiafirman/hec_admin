@@ -7,6 +7,7 @@ import HTextField from "../atoms/HTextField";
 import HButton from "../atoms/HButton";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
+import HDatePicker from "../atoms/HDatePicker";
 const HCommonHeaders = ({
   headerTitle,
   selectTitle,
@@ -19,6 +20,9 @@ const HCommonHeaders = ({
   selectItems,
   onAdd,
   buttonTitle,
+  dateFilterLabel,
+  dateFilterValue,
+  onChangeFilterDate,
 }) => {
   return (
     <Box>
@@ -39,7 +43,7 @@ const HCommonHeaders = ({
         <InfoBox title={infoTitle} total={total} />
         <HSpacer size="large" />
         {selectItems ? (
-          <Box sx={{ flex: 0.3, alignSelf: "flex-end" }}>
+          <Box sx={{ flex: 0.4, alignSelf: "flex-end" }}>
             <HSelect
               onChange={onSelect}
               label={selectTitle}
@@ -48,6 +52,19 @@ const HCommonHeaders = ({
           </Box>
         ) : (
           <Box sx={{ flex: 1, alignSelf: "flex-end" }} />
+        )}
+
+        {onChangeFilterDate && (
+          <>
+            <HSpacer size="large" />
+            <Box sx={{ flex: 0.4, alignSelf: "flex-end" }}>
+              <HDatePicker
+                label={dateFilterLabel}
+                dateValue={dateFilterValue}
+                onChangeDate={onChangeFilterDate}
+              />
+            </Box>
+          </>
         )}
 
         <HSpacer size="large" />
@@ -65,12 +82,14 @@ const HCommonHeaders = ({
             flex: 0.2,
           }}
         >
-          <HButton
-            startIcon={<AddIcon />}
-            onClick={onAdd}
-            variant="contained"
-            title={buttonTitle}
-          />
+          {onAdd && (
+            <HButton
+              startIcon={<AddIcon />}
+              onClick={onAdd}
+              variant="contained"
+              title={buttonTitle}
+            />
+          )}
         </Box>
       </Box>
     </Box>

@@ -19,7 +19,6 @@ const HDetailsDecs = ({
   requirements,
   requirementsTitle,
 }) => {
-  console.log("ini base", BASE_URL);
   return (
     <Box
       sx={{

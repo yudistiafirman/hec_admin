@@ -12,7 +12,7 @@ const HDetailLocationText = ({ title, detail }) => {
         component="h2"
         variant="subtitle1"
       >
-        Lokasi
+        {title}
       </Typography>
       <Box sx={{ display: "flex" }}>
         <LocationOnIcon color="error" />
@@ -22,7 +22,7 @@ const HDetailLocationText = ({ title, detail }) => {
           component="h2"
           variant="subtitle1"
         >
-          Bandung, Jawa Barat
+          {detail}
         </Typography>
       </Box>
     </>

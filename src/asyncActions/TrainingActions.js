@@ -1,9 +1,15 @@
 import TrainingApi from "../hecApi/Training";
 import { apiRequest } from "../networking/request";
 
-export const getAllTraining = async (search, page, limit, filterBy) => {
+export const getAllTraining = async (
+  search,
+  page,
+  limit,
+  filterBy,
+  startDate
+) => {
   return apiRequest(
-    TrainingApi.getAllTraining(search, page, limit, filterBy),
+    TrainingApi.getAllTraining(search, page, limit, filterBy, startDate),
     "GET"
   );
 };

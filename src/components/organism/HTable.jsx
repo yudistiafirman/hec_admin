@@ -37,7 +37,9 @@ const HTable = ({
   handleChangeRowsPerPage,
   onChangeStatus,
   isFull,
+  isPopular,
   onChangeIsFull,
+  onChangeIsPopular,
 }) => {
   return (
     <Box sx={{ minWidth: "100%" }}>
@@ -50,6 +52,12 @@ const HTable = ({
             selected.length > 0 &&
             rows.filter((v) => v.id === selected[0])
           }
+          isPopular={
+            isPopular &&
+            rows.length > 0 &&
+            selected.length > 0 &&
+            rows.filter((v) => v.id === selected[0])
+          }
           isFull={
             isFull &&
             rows.length > 0 &&
@@ -58,6 +66,7 @@ const HTable = ({
           }
           onChangeIsFull={() => onChangeIsFull(selected)}
           onChangeStatus={() => onChangeStatus(selected)}
+          onChangeIsPopular={() => onChangeIsPopular(selected)}
           numSelected={selected && selected.length}
         />
         <TableContainer>
@@ -143,6 +152,16 @@ const HTable = ({
                             }
                             label={row.type_name}
                           />
+                        </TableCell>
+                      )}
+                      {row.isPopular === 0 && (
+                        <TableCell>
+                          <Checkbox checked={false} />
+                        </TableCell>
+                      )}
+                      {row.isPopular === 1 && (
+                        <TableCell>
+                          <Checkbox checked={true} />
                         </TableCell>
                       )}
                       {row.status_name && (

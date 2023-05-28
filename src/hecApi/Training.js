@@ -4,7 +4,7 @@ const API_URL_TRAINING =
     : process.env.REACT_APP_API_URL_TRAINING_DEV;
 
 export default class TrainingApi {
-  static getAllTraining = (search, page, limit, filterBy) => {
+  static getAllTraining = (search, page, limit, filterBy, startDate) => {
     const url = new URL(`${API_URL_TRAINING}/all`);
     const params = url.searchParams;
     if (search) {
@@ -18,6 +18,9 @@ export default class TrainingApi {
     }
     if (filterBy) {
       params.append("filterBy", filterBy);
+    }
+    if (startDate) {
+      params.append("startDate", startDate);
     }
 
     return url.toString();

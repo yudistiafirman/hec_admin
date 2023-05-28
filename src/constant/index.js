@@ -88,6 +88,10 @@ export const TRAINING_TABLE_HEAD_CELLS = [
     label: "Ketersediaan",
   },
   {
+    id: "popular",
+    label: "Populer",
+  },
+  {
     id: "status",
     label: "Status",
   },

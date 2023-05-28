@@ -32,6 +32,11 @@ const HCommonContent = ({
   onChangeStatus,
   isFull,
   onChangeIsFull,
+  dateFilterLabel,
+  dateFilterValue,
+  onChangeFilterDate,
+  isPopular,
+  onChangeIsPopular,
 }) => {
   return (
     <>
@@ -47,6 +52,9 @@ const HCommonContent = ({
         selectItems={selectItems}
         onAdd={onAdd}
         buttonTitle={buttonTitle}
+        dateFilterLabel={dateFilterLabel}
+        dateFilterValue={dateFilterValue}
+        onChangeFilterDate={onChangeFilterDate}
       />
       <HSpacer size="extraLarge" />
       {isLoading ? (
@@ -61,6 +69,8 @@ const HCommonContent = ({
           onSelectAllClick={handleSelectAllClick}
           headCells={headCells}
           isFull={isFull}
+          isPopular={isPopular}
+          onChangeIsPopular={onChangeIsPopular}
           rows={rows}
           count={count}
           rowsPerPage={rowsPerPage}

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { create } from "zustand";
 
 export const useReadStore = create((set, get) => ({
@@ -10,6 +11,7 @@ export const useReadStore = create((set, get) => ({
   totalPage: 0,
   categories: [],
   selectedCategories: "",
+  selectedDate: null,
   data: [],
   setCategories: (categories) => set(() => ({ categories: categories })),
   setSelectedCategories: (newCategory) => {
@@ -26,4 +28,5 @@ export const useReadStore = create((set, get) => ({
   increasePage: (newPage) => set(() => ({ page: newPage })),
   enableLoading: () => set(() => ({ loading: true })),
   disableLoading: () => set(() => ({ loading: false })),
+  onChangeDate: (dateValue) => set(() => ({ selectedDate: dateValue })),
 }));
