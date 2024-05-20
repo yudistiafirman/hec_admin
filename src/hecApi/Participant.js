@@ -34,6 +34,11 @@ export default class ParticipantApi {
 		return url.toString();
 	};
 
+	static editParticipant = (id) => {
+		const url = new URL(`${API_URL_PARTICIPANT}/edit/${id}`);
+		return url.toString();
+	};
+
 	static createCertificate = (id) => {
 		const url = new URL(`${API_URL_PARTICIPANT}/create/certificate/${id}`);
 		return url.toString();
@@ -50,6 +55,13 @@ export default class ParticipantApi {
 		if (searchValue) {
 			params.append("certificateNumber", searchValue);
 		}
+		return url.toString();
+	};
+
+	static editCertificate = (certificateId) => {
+		const url = new URL(
+			`${API_URL_PARTICIPANT}/edit/certificate/${certificateId}`
+		);
 		return url.toString();
 	};
 }

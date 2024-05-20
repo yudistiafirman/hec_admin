@@ -7,51 +7,51 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import HSpacer from "../../atoms/HSpacer";
 
-const AddCertificatesDialog = ({
+const EditCertificateDialog = ({
 	open,
 	handleClose,
 	onSubmit,
 	disabled,
-	certificateNumberValue,
-	onChangeCertificateNumber,
-	trainingNameValue,
-	onChangeTrainingName,
-	batchValue,
-	onChangeBatch,
+	certificateNumberDefaultValue,
+	certificateNumberEditValue,
+	onChangeCertificateNumberEditValue,
+	trainingNameDefaultValue,
+	trainingNameEditValue,
+	onChangeTrainingNameEditValue,
+	batchDefaultValue,
+	batchEditValue,
+	onChangeBatchEditValue,
 }) => {
 	return (
 		<Dialog fullWidth open={open} onClose={handleClose}>
-			<DialogTitle>Tambah Sertifikat</DialogTitle>
+			<DialogTitle>Edit Sertifikat</DialogTitle>
 			<DialogContent>
 				<TextField
 					autoFocus
-					required
 					margin="dense"
-					label="No Sertifikat"
-					value={certificateNumberValue}
-					onChange={onChangeCertificateNumber}
+					label={`No Sertifikat (${certificateNumberDefaultValue})`}
+					value={certificateNumberEditValue}
+					onChange={onChangeCertificateNumberEditValue}
 					fullWidth
 					variant="outlined"
 				/>
 				<HSpacer size="large" />
 				<TextField
 					autoFocus
-					required
 					margin="dense"
-					label="Nama Pelatihan"
-					value={trainingNameValue}
-					onChange={onChangeTrainingName}
+					label={`Nama Pelatihan (${trainingNameDefaultValue})`}
+					value={trainingNameEditValue}
+					onChange={onChangeTrainingNameEditValue}
 					fullWidth
 					variant="outlined"
 				/>
 				<HSpacer size="large" />
 				<TextField
 					autoFocus
-					required
 					margin="dense"
-					label="Batch"
-					value={batchValue}
-					onChange={onChangeBatch}
+					label={`Batch (${batchDefaultValue})`}
+					value={batchEditValue}
+					onChange={onChangeBatchEditValue}
 					fullWidth
 					variant="outlined"
 				/>
@@ -59,11 +59,11 @@ const AddCertificatesDialog = ({
 			<DialogActions>
 				<Button onClick={handleClose}>Batal</Button>
 				<Button onClick={onSubmit} disabled={disabled}>
-					Submit
+					Simpan
 				</Button>
 			</DialogActions>
 		</Dialog>
 	);
 };
 
-export default AddCertificatesDialog;
+export default EditCertificateDialog;

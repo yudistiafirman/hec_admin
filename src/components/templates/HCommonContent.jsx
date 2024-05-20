@@ -41,6 +41,8 @@ const HCommonContent = ({
 	hideSearch,
 	hideDetailButton,
 	hidePagination,
+	showEditButton,
+	onClickEdit,
 }) => {
 	return (
 		<>
@@ -86,6 +88,8 @@ const HCommonContent = ({
 					hideStatus={hideStatus}
 					hideDetailButton={hideDetailButton}
 					hidePagination={hidePagination}
+					showEditButton={showEditButton}
+					onClickEdit={onClickEdit}
 				/>
 			)}
 		</>

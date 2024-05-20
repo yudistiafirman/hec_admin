@@ -43,6 +43,8 @@ const HTable = ({
 	hideStatus,
 	hideDetailButton,
 	hidePagination,
+	showEditButton,
+	onClickEdit,
 }) => {
 	return (
 		<Box sx={{ minWidth: "100%" }}>
@@ -50,6 +52,8 @@ const HTable = ({
 				<HTableToolbar
 					onClickDetail={onClickDetail}
 					onDelete={() => onDelete(selected)}
+					showEditButton={showEditButton}
+					onClickEdit={() => onClickEdit(selected)}
 					hideStatus={hideStatus}
 					hideDetailButton={hideDetailButton}
 					status={

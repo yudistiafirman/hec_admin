@@ -4,6 +4,7 @@ import { useSnackBarStore } from "../../stores/useSnackBarStore";
 import {
 	createCertificate,
 	deleteCertificate,
+	editCertificate,
 	getOneParticipant,
 } from "../../asyncActions/ParticipateActions";
 import { CircularProgress } from "@mui/material";
@@ -14,6 +15,7 @@ import HCommonContent from "../../components/templates/HCommonContent";
 import { CERTIFICATE_TABLE_HEAD_CELLS } from "../../constant";
 import HecContainer from "../../components/atoms/HContainer";
 import AddCertificatesDialog from "../../components/templates/Dialog/AddCertificateDialog";
+import EditCertificateDialog from "../../components/templates/Dialog/EditCertificateDialog";
 
 const ParticipantDetail = () => {
 	const params = useParams();
@@ -24,6 +26,12 @@ const ParticipantDetail = () => {
 	const [certificateNumber, setCertificateNumber] = useState("");
 	const [trainingName, setTrainingName] = useState("");
 	const [batchValue, setBatchValue] = useState("");
+	const [openEditDialog, setOpenEditDialog] = useState(false);
+	const [certificateNumberEditValue, setCertificateNumberEditValue] =
+		useState("");
+	const [trainingNameEditValue, setTrainingNameEditValue] = useState("");
+	const [batchEditValue, setBatchEditValue] = useState("");
+	const [selectedCertificate, setSelectedCerificate] = useState(null);
 
 	const [setBackdrop] = useBackdropStore((state) => [state.setBackdrop]);
 
@@ -37,6 +45,59 @@ const ParticipantDetail = () => {
 		getParticipantDetail();
 	}, [participantId]);
 
+	const onClickEdit = (selected) => {
+		const certificateId = selected[0];
+
+		const selectedCertificate = details?.certificates.filter(
+			(v) => v.id === certificateId
+		);
+
+		setSelectedCerificate(selectedCertificate[0]);
+		setOpenEditDialog(true);
+	};
+
+	const editCertificates = async () => {
+		try {
+			setBackdrop(true);
+			const payload = {};
+			if (certificateNumberEditValue) {
+				payload.certificateNumber = certificateNumberEditValue;
+			}
+			if (batchEditValue) {
+				payload.batch = batchEditValue;
+			}
+			if (trainingNameEditValue) {
+				payload.trainingName = trainingNameEditValue;
+			}
+
+			const response = await editCertificate(
+				selectedCertificate.id,
+				payload
+			);
+			if (response.data.success) {
+				setBackdrop(false);
+				setOpenSnackbar({
+					openSnackbar: true,
+					type: "success",
+					message: response.data.message,
+				});
+				setSelected([]);
+				getParticipantDetail();
+				setOpenEditDialog(false);
+				setCertificateNumberEditValue("");
+				setTrainingNameEditValue("");
+				setBatchEditValue("");
+			}
+		} catch (error) {
+			setBackdrop(false);
+			setOpenSnackbar({
+				openSnackbar: true,
+				type: "error",
+				message:
+					error?.response?.data?.message ?? "Something went wrong",
+			});
+		}
+	};
 	const onDeleteCertificates = async (selected) => {
 		try {
 			setBackdrop(true);
@@ -152,6 +213,14 @@ const ParticipantDetail = () => {
 		);
 	};
 
+	const handleEditDisable = () => {
+		return !(
+			certificateNumberEditValue !== "" ||
+			batchEditValue !== "" ||
+			trainingNameEditValue !== ""
+		);
+	};
+
 	if (loading) {
 		return <CircularProgress size={50} sx={{ margin: "auto" }} />;
 	}
@@ -186,6 +255,8 @@ const ParticipantDetail = () => {
 					handleClick={handleClick}
 					hideStatus
 					rows={details?.certificates}
+					showEditButton
+					onClickEdit={(selected) => onClickEdit(selected)}
 				/>
 				<AddCertificatesDialog
 					open={openDialog}
@@ -202,6 +273,29 @@ const ParticipantDetail = () => {
 					}
 					batchValue={batchValue}
 					onChangeBatch={(e) => setBatchValue(e.target.value)}
+				/>
+				<EditCertificateDialog
+					open={openEditDialog}
+					handleClose={() => setOpenEditDialog(false)}
+					onSubmit={editCertificates}
+					disabled={handleEditDisable()}
+					certificateNumberDefaultValue={selectedCertificate?.number}
+					certificateNumberEditValue={certificateNumberEditValue}
+					onChangeCertificateNumberEditValue={(e) =>
+						setCertificateNumberEditValue(e.target.value)
+					}
+					trainingNameDefaultValue={
+						selectedCertificate?.training_name
+					}
+					trainingNameEditValue={trainingNameEditValue}
+					onChangeTrainingNameEditValue={(e) =>
+						setTrainingNameEditValue(e.target.value)
+					}
+					batchDefaultValue={selectedCertificate?.batch}
+					batchEditValue={batchEditValue}
+					onChangeBatchEditValue={(e) =>
+						setBatchEditValue(e.target.value)
+					}
 				/>
 			</HecContainer>
 		)

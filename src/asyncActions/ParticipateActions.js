@@ -20,6 +20,14 @@ export const deleteParticipant = async (data) => {
 	return apiRequest(ParticipantApi.deleteParticipant(), "DELETE", data);
 };
 
+export const editParticipant = async (id, data) => {
+	return apiRequest(ParticipantApi.editParticipant(id), "PUT", data);
+};
+
+export const editCertificate = async (id, data) => {
+	return apiRequest(ParticipantApi.editCertificate(id), "PUT", data);
+};
+
 export const createCertificate = async (id, data) => {
 	return apiRequest(ParticipantApi.createCertificate(id), "POST", data);
 };

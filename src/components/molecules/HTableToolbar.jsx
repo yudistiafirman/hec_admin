@@ -3,6 +3,7 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import HSpacer from "../atoms/HSpacer";
+import { EditNote } from "@mui/icons-material";
 
 const HTableToolbar = ({
 	numSelected,
@@ -16,6 +17,8 @@ const HTableToolbar = ({
 	onChangeIsFull,
 	onChangeIsPopular,
 	isPopular,
+	showEditButton,
+	onClickEdit,
 }) => {
 	return (
 		<Toolbar
@@ -101,6 +104,16 @@ const HTableToolbar = ({
 								label="Lihat Detail"
 								color="info"
 								onClick={onClickDetail}
+							/>
+						</Tooltip>
+					)}
+					{numSelected === 1 && showEditButton && (
+						<Tooltip title="Lihat Detail">
+							<Chip
+								icon={<EditNote />}
+								label="Edit"
+								color="info"
+								onClick={onClickEdit}
 							/>
 						</Tooltip>
 					)}

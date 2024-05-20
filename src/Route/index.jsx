@@ -65,7 +65,6 @@ const AdminRoute = () => {
 							}
 						/>
 						<Route
-							exact
 							path="/participant/add"
 							element={
 								<PrivateRoute>
@@ -74,7 +73,6 @@ const AdminRoute = () => {
 							}
 						/>
 						<Route
-							exact
 							path="/participant/detail/:participantId"
 							element={
 								<PrivateRoute>
@@ -83,7 +81,6 @@ const AdminRoute = () => {
 							}
 						/>
 						<Route
-							exact
 							path="/career"
 							element={
 								<PrivateRoute>
@@ -92,7 +89,6 @@ const AdminRoute = () => {
 							}
 						/>
 						<Route
-							exact
 							path="/career/detail/:careerId"
 							element={
 								<PrivateRoute>
@@ -101,7 +97,6 @@ const AdminRoute = () => {
 							}
 						/>
 						<Route
-							exact
 							path="/career/add"
 							element={
 								<PrivateRoute>
