@@ -1,23 +1,18 @@
 import React, { useEffect } from "react";
-
-import HContainer from "../../components/atoms/HContainer";
-import HCommonContent from "../../components/templates/HCommonContent";
 import { useNavigate } from "react-router-dom";
-import {
-	FACILITY_TABLE_HEAD_CELLS,
-	GALLERY_TABLE_HEAD_CELLS,
-} from "../../constant";
 import { useReadStore } from "../../stores/useReadStore";
 import { useBackdropStore } from "../../stores/useBackdropStore";
 import { useSnackBarStore } from "../../stores/useSnackBarStore";
 import {
-	deleteHomeGallery,
-	getAllHomeGallery,
-	updateHomeGalleryStatus,
-} from "../../asyncActions/HomeGalleryActions";
+	deleteParticipant,
+	getAllParticipant,
+} from "../../asyncActions/ParticipateActions";
+import HCommonContent from "../../components/templates/HCommonContent";
+import { PARTICIPANT_TABLE_HEAD_CELLS } from "../../constant";
+import HecContainer from "../../components/atoms/HContainer";
 import { Typography } from "@mui/material";
 
-const HomeGallery = () => {
+const Participant = () => {
 	const navigate = useNavigate();
 
 	const [
@@ -53,38 +48,32 @@ const HomeGallery = () => {
 	]);
 	const [selected, setSelected] = React.useState([]);
 
-	const goToHomeGalleryDetail = (selectedTrainingGallery) => {
-		const homeGalleryId = selectedTrainingGallery[0];
-		navigate(`/home-gallery/detail/${homeGalleryId}`);
-	};
-
 	useEffect(() => {
-		fetchDataHomeGallery();
+		fetchDataParticipant();
 	}, [page, searchQuery]);
 
-	const fetchDataHomeGallery = () => {
-		getAllHomeGalleryData();
+	const fetchDataParticipant = () => {
+		getAllParticipantData();
 	};
 
-	const getAllHomeGalleryData = async () => {
+	const getAllParticipantData = async () => {
 		try {
 			enableLoading();
-			const response = await getAllHomeGallery(
+			const response = await getAllParticipant(
 				searchQuery,
 				page === 0 ? 1 : page + 1,
-				limit,
-				selectedCategories
+				limit
 			);
-			console.log(response.data);
+
 			setData(response.data);
 			disableLoading();
 		} catch (error) {
-			console.log(error);
 			disableLoading();
 			setOpenSnackbar({
 				openSnackbar: true,
 				type: "error",
-				message: error.response.data.message,
+				message:
+					error?.response?.data?.message ?? "Something went wrong",
 			});
 		}
 	};
@@ -99,9 +88,9 @@ const HomeGallery = () => {
 		try {
 			setBackdrop(true);
 			const payload = {
-				idToDelete: selected,
+				participantIds: selected,
 			};
-			const response = await deleteHomeGallery(payload);
+			const response = await deleteParticipant(payload);
 			if (response.data.success) {
 				setBackdrop(false);
 				setOpenSnackbar({
@@ -110,44 +99,15 @@ const HomeGallery = () => {
 					message: response.data.message,
 				});
 				setSelected([]);
-				getAllHomeGalleryData();
+				getAllParticipantData();
 			}
 		} catch (error) {
 			setBackdrop(false);
 			setOpenSnackbar({
 				openSnackbar: true,
 				type: "error",
-				message: error.response.data.message,
-			});
-		}
-	};
-
-	const onChangeStatus = async (selected) => {
-		try {
-			setBackdrop(true);
-			const trainingGalleryId = selected[0];
-			const statusValue = data.filter((v) => v.id === trainingGalleryId);
-			const statusToUpdate =
-				statusValue[0].status_name === "DRAFT" ? "PUBLISHED" : "DRAFT";
-			const response = await updateHomeGalleryStatus(trainingGalleryId, {
-				status: statusToUpdate,
-			});
-			if (response.data.success) {
-				setBackdrop(false);
-				setOpenSnackbar({
-					openSnackbar: true,
-					type: "success",
-					message: response.data.message,
-				});
-				setSelected([]);
-				getAllHomeGalleryData();
-			}
-		} catch (error) {
-			setBackdrop(false);
-			setOpenSnackbar({
-				openSnackbar: true,
-				type: "error",
-				message: error.response.data.message,
+				message:
+					error?.response?.data?.message ?? "Something went wrong",
 			});
 		}
 	};
@@ -182,20 +142,24 @@ const HomeGallery = () => {
 	};
 	const isSelected = (id) => selected.indexOf(id) !== -1;
 
+	const goToParticipantDetail = (selectedParticipant) => {
+		const participantId = selectedParticipant[0];
+
+		navigate(`/participant/detail/${participantId}`);
+	};
+
 	return (
-		<HContainer>
+		<HecContainer>
 			<HCommonContent
-				headerTitle="Galeri Beranda"
-				infoTitle="Total Gambar"
+				headerTitle="Peserta Pelatihan"
+				infoTitle="Total Peserta"
 				total={totalItems}
-				searchLabel="Cari Nama Gambar Beranda"
+				searchLabel="Cari Peserta"
 				onDelete={onDelete}
 				onChangeSearch={onChangeSearch}
 				buttonTitle="Tambah"
-				onAdd={
-					data.length < 5 ? () => navigate("/home-gallery/add") : null
-				}
-				headCells={GALLERY_TABLE_HEAD_CELLS}
+				onAdd={() => navigate("/participant/add")}
+				headCells={PARTICIPANT_TABLE_HEAD_CELLS}
 				rowsPerPage={limit}
 				page={page}
 				count={totalItems}
@@ -205,14 +169,14 @@ const HomeGallery = () => {
 				handleSelectAllClick={handleSelectAllClick}
 				isSelected={isSelected}
 				handleClick={handleClick}
-				onChangeStatus={onChangeStatus}
-				onClickDetail={(selectedGallery) =>
-					goToHomeGalleryDetail(selectedGallery)
+				hideStatus
+				onClickDetail={(selectedParticipant) =>
+					goToParticipantDetail(selectedParticipant)
 				}
 				rows={data}
 			/>
-		</HContainer>
+		</HecContainer>
 	);
 };
 
-export default HomeGallery;
+export default Participant;

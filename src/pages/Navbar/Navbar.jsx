@@ -22,124 +22,137 @@ import AddHomeIcon from "@mui/icons-material/AddHome";
 import navStyle from "./navStyle";
 import "./Navbar.css";
 import { useUserStore } from "../../stores/useUserStore";
+import { AccountCircle } from "@mui/icons-material";
 
 const AdminNavbar = () => {
-  const navigate = useNavigate();
-  const [open, setOpen] = React.useState(true);
-  const location = useLocation();
-  const onLogoutAdmin = () => {
-    localStorage.clear();
-    setUserData(null);
-    navigate("/login", { replace: true });
-  };
+	const navigate = useNavigate();
+	const [open, setOpen] = React.useState(true);
+	const location = useLocation();
+	const onLogoutAdmin = () => {
+		localStorage.clear();
+		setUserData(null);
+		navigate("/login", { replace: true });
+	};
 
-  const handleOpenGallery = () => {
-    setOpen(!open);
-  };
+	const handleOpenGallery = () => {
+		setOpen(!open);
+	};
 
-  const [setUserData] = useUserStore((state) => [state.setUserData]);
+	const [setUserData] = useUserStore((state) => [state.setUserData]);
 
-  return (
-    <List
-      sx={navStyle.listContainer}
-      component="nav"
-      className="navbar-border navbar"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader
-          className="bg-light"
-          component="div"
-          id="nested-list-subheader"
-        >
-          <img alt="#" src={HecLogo} width="140px" />
-        </ListSubheader>
-      }
-    >
-      <NavListItems
-        selected={location.pathname.includes("career")}
-        onClick={() => {
-          navigate("/career");
-        }}
-        itemIcon={<BusinessCenterIcon />}
-        itemTitle="Lowongan Pekerjaan"
-      />
-      <NavListItems
-        selected={location.pathname.includes("facility")}
-        onClick={() => {
-          navigate("/facility");
-        }}
-        itemIcon={<FoundationIcon />}
-        itemTitle="Fasilitas"
-      />
-      <NavListItems
-        selected={location.pathname.includes("gallery")}
-        onClick={handleOpenGallery}
-        itemIcon={<CollectionsIcon />}
-        itemTitle="Galeri"
-        expand={open ? <ExpandLess /> : <ExpandMore />}
-      />
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <NavListItems
-            selected={location.pathname.includes("training-gallery")}
-            sx={{ pl: 4 }}
-            onClick={() => {
-              navigate("/training-gallery");
-            }}
-            itemIcon={<AddHomeIcon />}
-            itemTitle="Pelatihan"
-          />
-          <NavListItems
-            selected={location.pathname.includes("home-gallery")}
-            sx={{ pl: 4 }}
-            onClick={() => {
-              navigate("/home-gallery");
-            }}
-            itemIcon={<OnDeviceTrainingIcon />}
-            itemTitle="Beranda"
-          />
-          <NavListItems
-            selected={location.pathname.includes("partnership-gallery")}
-            sx={{ pl: 4 }}
-            onClick={() => {
-              navigate("/partnership-gallery");
-            }}
-            itemIcon={<HandshakeIcon />}
-            itemTitle="Partnership"
-          />
-        </List>
-      </Collapse>
-      <NavListItems
-        selected={location.pathname === "/pelatihan"}
-        onClick={() => {
-          navigate("/pelatihan");
-        }}
-        itemIcon={<ModelTrainingIcon />}
-        itemTitle="Pelatihan"
-      />
-      <NavListItems
-        selected={location.pathname === "/jasa"}
-        onClick={() => {
-          navigate("/jasa");
-        }}
-        itemIcon={<RoomServiceIcon />}
-        itemTitle="Jasa"
-      />
-      <NavListItems
-        selected={location.pathname === "/penjualan"}
-        onClick={() => {
-          navigate("/penjualan");
-        }}
-        itemIcon={<MonetizationOnIcon />}
-        itemTitle="Penjualan"
-      />
-      <NavListItems
-        onClick={onLogoutAdmin}
-        itemIcon={<LogoutIcon />}
-        itemTitle="Keluar"
-      />
-    </List>
-  );
+	return (
+		<List
+			sx={navStyle.listContainer}
+			component="nav"
+			className="navbar-border navbar"
+			aria-labelledby="nested-list-subheader"
+			subheader={
+				<ListSubheader
+					className="bg-light"
+					component="div"
+					id="nested-list-subheader"
+				>
+					<img alt="#" src={HecLogo} width="140px" />
+				</ListSubheader>
+			}
+		>
+			<NavListItems
+				selected={location.pathname.includes("participant")}
+				onClick={() => {
+					navigate("/participant");
+				}}
+				itemIcon={<AccountCircle />}
+				itemTitle="Peserta"
+			/>
+			<NavListItems
+				selected={location.pathname.includes("career")}
+				onClick={() => {
+					navigate("/career");
+				}}
+				itemIcon={<BusinessCenterIcon />}
+				itemTitle="Lowongan Pekerjaan"
+			/>
+			<NavListItems
+				selected={location.pathname.includes("facility")}
+				onClick={() => {
+					navigate("/facility");
+				}}
+				itemIcon={<FoundationIcon />}
+				itemTitle="Fasilitas"
+			/>
+			<NavListItems
+				selected={location.pathname.includes("gallery")}
+				onClick={handleOpenGallery}
+				itemIcon={<CollectionsIcon />}
+				itemTitle="Galeri"
+				expand={open ? <ExpandLess /> : <ExpandMore />}
+			/>
+			<Collapse in={open} timeout="auto" unmountOnExit>
+				<List component="div" disablePadding>
+					<NavListItems
+						selected={location.pathname.includes(
+							"training-gallery"
+						)}
+						sx={{ pl: 4 }}
+						onClick={() => {
+							navigate("/training-gallery");
+						}}
+						itemIcon={<AddHomeIcon />}
+						itemTitle="Pelatihan"
+					/>
+					<NavListItems
+						selected={location.pathname.includes("home-gallery")}
+						sx={{ pl: 4 }}
+						onClick={() => {
+							navigate("/home-gallery");
+						}}
+						itemIcon={<OnDeviceTrainingIcon />}
+						itemTitle="Beranda"
+					/>
+					<NavListItems
+						selected={location.pathname.includes(
+							"partnership-gallery"
+						)}
+						sx={{ pl: 4 }}
+						onClick={() => {
+							navigate("/partnership-gallery");
+						}}
+						itemIcon={<HandshakeIcon />}
+						itemTitle="Partnership"
+					/>
+				</List>
+			</Collapse>
+			<NavListItems
+				selected={location.pathname === "/pelatihan"}
+				onClick={() => {
+					navigate("/pelatihan");
+				}}
+				itemIcon={<ModelTrainingIcon />}
+				itemTitle="Pelatihan"
+			/>
+			<NavListItems
+				selected={location.pathname === "/jasa"}
+				onClick={() => {
+					navigate("/jasa");
+				}}
+				itemIcon={<RoomServiceIcon />}
+				itemTitle="Jasa"
+			/>
+			<NavListItems
+				selected={location.pathname === "/penjualan"}
+				onClick={() => {
+					navigate("/penjualan");
+				}}
+				itemIcon={<MonetizationOnIcon />}
+				itemTitle="Penjualan"
+			/>
+			<NavListItems
+				onClick={onLogoutAdmin}
+				itemIcon={<LogoutIcon />}
+				itemTitle="Keluar"
+			/>
+		</List>
+	);
 };
 
 export default AdminNavbar;
