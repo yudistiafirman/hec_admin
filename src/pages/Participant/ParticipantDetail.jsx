@@ -39,11 +39,23 @@ const ParticipantDetail = () => {
 		state.setOpenSnackbar,
 	]);
 
+	const [isDataChanged, setIsDataChanged] = useState(false);
+
 	const { participantId } = params;
 
 	useEffect(() => {
 		getParticipantDetail();
 	}, [participantId]);
+
+	useEffect(() => {
+		const hasDataChanged =
+			Number(certificateNumberEditValue) !==
+				Number(selectedCertificate?.number) ||
+			trainingNameEditValue !== selectedCertificate?.training_name ||
+			batchEditValue !== selectedCertificate?.batch;
+
+		setIsDataChanged(hasDataChanged);
+	}, [certificateNumberEditValue, trainingNameEditValue, batchEditValue]);
 
 	const onClickEdit = (selected) => {
 		const certificateId = selected[0];
@@ -53,6 +65,9 @@ const ParticipantDetail = () => {
 		);
 
 		setSelectedCerificate(selectedCertificate[0]);
+		setCertificateNumberEditValue(selectedCertificate[0].number);
+		setTrainingNameEditValue(selectedCertificate[0].training_name);
+		setBatchEditValue(selectedCertificate[0].batch);
 		setOpenEditDialog(true);
 	};
 
@@ -202,7 +217,7 @@ const ParticipantDetail = () => {
 			setOpenSnackbar({
 				openSnackbar: true,
 				type: "error",
-				message: error.response.data.message,
+				message: error?.response?.data?.message,
 			});
 		}
 	};
@@ -214,10 +229,10 @@ const ParticipantDetail = () => {
 	};
 
 	const handleEditDisable = () => {
-		return !(
-			certificateNumberEditValue !== "" ||
-			batchEditValue !== "" ||
-			trainingNameEditValue !== ""
+		return (
+			certificateNumberEditValue === "" ||
+			batchEditValue === "" ||
+			trainingNameEditValue === ""
 		);
 	};
 
@@ -229,6 +244,8 @@ const ParticipantDetail = () => {
 		details !== null && (
 			<HecContainer>
 				<HParticipantDetail
+					getParticipantDetail={getParticipantDetail}
+					participantId={details.id}
 					image={details.participant_photo}
 					address={details.address}
 					participantName={details.name}
@@ -278,20 +295,15 @@ const ParticipantDetail = () => {
 					open={openEditDialog}
 					handleClose={() => setOpenEditDialog(false)}
 					onSubmit={editCertificates}
-					disabled={handleEditDisable()}
-					certificateNumberDefaultValue={selectedCertificate?.number}
+					disabled={!isDataChanged || handleEditDisable()}
 					certificateNumberEditValue={certificateNumberEditValue}
 					onChangeCertificateNumberEditValue={(e) =>
 						setCertificateNumberEditValue(e.target.value)
-					}
-					trainingNameDefaultValue={
-						selectedCertificate?.training_name
 					}
 					trainingNameEditValue={trainingNameEditValue}
 					onChangeTrainingNameEditValue={(e) =>
 						setTrainingNameEditValue(e.target.value)
 					}
-					batchDefaultValue={selectedCertificate?.batch}
 					batchEditValue={batchEditValue}
 					onChangeBatchEditValue={(e) =>
 						setBatchEditValue(e.target.value)

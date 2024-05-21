@@ -12,13 +12,10 @@ const EditCertificateDialog = ({
 	handleClose,
 	onSubmit,
 	disabled,
-	certificateNumberDefaultValue,
 	certificateNumberEditValue,
 	onChangeCertificateNumberEditValue,
-	trainingNameDefaultValue,
 	trainingNameEditValue,
 	onChangeTrainingNameEditValue,
-	batchDefaultValue,
 	batchEditValue,
 	onChangeBatchEditValue,
 }) => {
@@ -29,7 +26,7 @@ const EditCertificateDialog = ({
 				<TextField
 					autoFocus
 					margin="dense"
-					label={`No Sertifikat (${certificateNumberDefaultValue})`}
+					label={`No Sertifikat`}
 					value={certificateNumberEditValue}
 					onChange={onChangeCertificateNumberEditValue}
 					fullWidth
@@ -39,7 +36,7 @@ const EditCertificateDialog = ({
 				<TextField
 					autoFocus
 					margin="dense"
-					label={`Nama Pelatihan (${trainingNameDefaultValue})`}
+					label={`Nama Pelatihan`}
 					value={trainingNameEditValue}
 					onChange={onChangeTrainingNameEditValue}
 					fullWidth
@@ -49,7 +46,7 @@ const EditCertificateDialog = ({
 				<TextField
 					autoFocus
 					margin="dense"
-					label={`Batch (${batchDefaultValue})`}
+					label={`Batch`}
 					value={batchEditValue}
 					onChange={onChangeBatchEditValue}
 					fullWidth
