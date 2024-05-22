@@ -67,7 +67,7 @@ const HParticipantDetail = ({
 			address !== editedData.address ||
 			dayjs(registerDate).format("MM/DD/YYYY") !==
 				dayjs(editedData.registerDate).format("MM/DD/YYYY") ||
-			Number(nis) !== Number(editedData.nis);
+			nis !== editedData.nis;
 		setIsDataChanged(hasDataChanged);
 	}, [
 		editedData,

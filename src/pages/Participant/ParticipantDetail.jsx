@@ -49,8 +49,7 @@ const ParticipantDetail = () => {
 
 	useEffect(() => {
 		const hasDataChanged =
-			Number(certificateNumberEditValue) !==
-				Number(selectedCertificate?.number) ||
+			certificateNumberEditValue !== selectedCertificate?.number ||
 			trainingNameEditValue !== selectedCertificate?.training_name ||
 			batchEditValue !== selectedCertificate?.batch;
 
