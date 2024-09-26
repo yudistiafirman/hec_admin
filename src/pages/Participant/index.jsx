@@ -10,7 +10,6 @@ import {
 import HCommonContent from "../../components/templates/HCommonContent";
 import { PARTICIPANT_TABLE_HEAD_CELLS } from "../../constant";
 import HecContainer from "../../components/atoms/HContainer";
-import { Typography } from "@mui/material";
 
 const Participant = () => {
 	const navigate = useNavigate();
@@ -28,6 +27,7 @@ const Participant = () => {
 		increasePage,
 		enableLoading,
 		disableLoading,
+		totalPage,
 	] = useReadStore((state) => [
 		state.page,
 		state.limit,
@@ -41,6 +41,7 @@ const Participant = () => {
 		state.increasePage,
 		state.enableLoading,
 		state.disableLoading,
+		state.totalPage,
 	]);
 	const [setBackdrop] = useBackdropStore((state) => [state.setBackdrop]);
 	const [setOpenSnackbar] = useSnackBarStore((state) => [
@@ -79,7 +80,7 @@ const Participant = () => {
 	};
 
 	const handleChangePage = (event, newPage) => {
-		if (newPage < data.length) {
+		if (newPage <= totalPage) {
 			increasePage(newPage);
 		}
 	};
@@ -148,6 +149,11 @@ const Participant = () => {
 		navigate(`/participant/detail/${participantId}`);
 	};
 
+	const onSearchParticipant = (e) => {
+		increasePage(0);
+		onChangeSearch(e);
+	};
+
 	return (
 		<HecContainer>
 			<HCommonContent
@@ -156,7 +162,7 @@ const Participant = () => {
 				total={totalItems}
 				searchLabel="Cari Peserta"
 				onDelete={onDelete}
-				onChangeSearch={onChangeSearch}
+				onChangeSearch={onSearchParticipant}
 				buttonTitle="Tambah"
 				onAdd={() => navigate("/participant/add")}
 				headCells={PARTICIPANT_TABLE_HEAD_CELLS}
